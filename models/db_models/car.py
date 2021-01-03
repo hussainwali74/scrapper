@@ -1,9 +1,14 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-
+from sqlalchemy import func
+from sqlalchemy import TIMESTAMP
 from database import Base
 
 """
+# For deleting a table
+DROP TABLE cars; 
+# For emptying the table
+TRUNCATE cars;
 # Car table for testing
 CREATE TABLE car_dev (
     id SERIAL PRIMARY KEY,
@@ -12,27 +17,32 @@ CREATE TABLE car_dev (
     price INTEGER
 );
 ALTER TABLE cars ADD COLUMN price INTEGER;
+
+INSERT INTO car_dev(name, mileage, price, entry_date) VALUES ('kia', '213234', 229910, '2020-10-01');
 """
 
-class Car(Base):
+class CarDB(Base):
     __tablename__ = "cars"
 
     id = Column(Integer, primary_key=True, index=True)
     car_name = Column(String)
     body_style = Column(String)
-    mileage = Column(String)
+    mileage = Column(Integer)
     exterior = Column(String)
     drivetrain = Column(String)
     transmission = Column(String)
     engine = Column(String)
     city = Column(String)
-    price = Column(String)
+    price = Column(Integer)
     vin = Column(String)
     stock = Column(String)
     website = Column(String)
+    entry_date = Column(TIMESTAMP, default=func.now())
+    # updated_at = Column(TIMESTAMP, nullable=False,
+    # server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
-    def __init__(self, car_name="", body_style="", mileage="", exterior="", drivetrain="", transmission="", engine="",
-                 city="", price=None, vin="", stock="", website=""):
+    def __init__(self, car_name="", body_style="", mileage=None, exterior="", drivetrain="", transmission="", engine="",
+                 city="", price=None, vin="", stock="", website="", entry_date=None):
         self.car_name = car_name
         self.body_style = body_style
         self.mileage = mileage
@@ -45,6 +55,7 @@ class Car(Base):
         self.vin = vin
         self.stock = stock
         self.website = website
+        self.entry_date = entry_date
 
     def __repr__(self):
         return f"<Car(car_name: {self.car_name}, mileage: {self.mileage}, exterior: {self.exterior}, " \

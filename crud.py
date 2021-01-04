@@ -36,8 +36,22 @@ def get_car_by_specs(db: Session, car_info: dict):
     # simple comma separated constraints in filter apply AND
     return db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior).all()
 
+def car_exists_in_db(db: Session, incoming_car: CarDB):
+    """
+    :return: bool
+    """
+    car_name = incoming_car.car_name
+    mileage = incoming_car.mileage
+    exterior = incoming_car.exterior
+    # print(f'type: {type(incoming_car)} ')
+    # print(f'{incoming_car}')
+    res = db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior).all()
+
+    return True if len(res) else False
+
 def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
     """
+    Before adding into DB makes sure car doesn't already exists in DB.
     :param db:
     :param car_in:
     :param autocommit: This is here to introduce transaction type effect. If True each car_in passed is committed to DB
@@ -48,13 +62,20 @@ def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
     # car = CarDB(**car_in_data, id=None)
     car = CarDB(**car_in_data)
 
-    db.add(car)
-    if autocommit:
-        db.commit()
-        db.refresh(car)
+    if not car_exists_in_db(db, car):
+        db.add(car)
+        if autocommit:
+            db.commit()
+            db.refresh(car)
+        else:
+            db.flush()
+        car_ret = jsonable_encoder(car)
+        car_ret["in_db"] = "Added"
     else:
-        db.flush()
-    return car
+        car_ret = jsonable_encoder(car)
+        car_ret["in_db"] = "Existed"
+
+    return car_ret
 
 # Old Function
 # def create(db: Session, car_name="", body_style="", mileage=None, exterior="", drivetrain="", transmission="",

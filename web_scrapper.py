@@ -4,12 +4,14 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import re
 import time
+from os import getenv
 # import pandas as pd
 
-FAIL_SAFE_RUNS = 2
-
+FAIL_SAFE_RUNS = 20
+GECKODRIVER_PATH = getenv("GECKODRIVER_PATH")
 CAR_CUT_PRICE = 20_000
 
+print(GECKODRIVER_PATH)
 # ==========  Helper functions ==========
 def process_mileage(raw_num='2,000  km'):
     """ :returns : mileage in Kilometers """
@@ -22,7 +24,6 @@ def process_mileage(raw_num='2,000  km'):
         mileage_km = None
     return mileage_km
 
-
 def extract_integer(price_string):
     try:
         price = re.sub(r'[^\d.]', '', price_string)
@@ -30,10 +31,54 @@ def extract_integer(price_string):
     except:
         price = None
     return price
+
+def cars_found(main_soap, html_tag='h3', class_attribute='srp__vehicle-count'):
+    """ Cars found on the website """
+    cars_count_html = main_soap.find(html_tag, attrs={'class': class_attribute})
+    car_count_str = cars_count_html.getText()
+    return extract_integer( car_count_str )
+
+def cars_count_in_soup(main_soap, html_tag='div', class_attribute='mb-lg grid-view col'):
+    """ Cars currently loaded in the main-soup object """
+    all_div_cars_cards = main_soap.find_all(html_tag, attrs={'class': class_attribute})
+    return len(all_div_cars_cards)
+
+def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attr=None, cs_tag=None, cs_class_attr=None):
+
+    print(page_url)
+    # run firefox webdriver from executable pa`th of your choice
+    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+    # get web page
+    driver.get(page_url)
+    time.sleep(3)
+    page = driver.page_source
+    main_soup = BeautifulSoup(page, 'html.parser')
+
+    cars_in_soup = 0
+    total_cars = cars_found(main_soup, html_tag=cf_tag, class_attribute=cf_class_attr)
+    print(f'Total cars on page: {total_cars}')
+    current_loop_runs = 0
+    while cars_in_soup < total_cars:
+        current_loop_runs += 1
+        print(f'Cars currently in soup: {cars_in_soup}')
+        # execute script to scroll down the page
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+        time.sleep(5)
+        page = driver.page_source
+        main_soup = BeautifulSoup(page, 'html.parser')
+
+        cars_in_soup = cars_count_in_soup(main_soup, html_tag=cs_tag, class_attribute=cs_class_attr)
+
+        if current_loop_runs == FAIL_SAFE_RUNS:
+            break
+
+    return main_soup, driver
+
 # ========== main function ==========
 def filter_cars(car: dict) -> bool:
     """ function designed to be called in filter function """
-    if car["price"] > CAR_CUT_PRICE:
+
+    if car["price"] is not None and car["price"] > CAR_CUT_PRICE:
         return True
     else:
         return False
@@ -60,6 +105,8 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = universalford(url)
     elif "camclarkfordairdrie" in url:
         list_of_cars = camclarkfordairdrie(url)
+    elif "zenderford" in url:
+        list_of_cars = zenderford(url)
     # elif "westlockford" in url:
     #     list_of_cars = westlockford(url)
 
@@ -175,7 +222,7 @@ def regal_n_junct_north(url: str = 'https://www.regalmotorsltd.com/used/used-veh
         return car_info
 
     # run firefox webdriver from executable path of your choice
-    driver = webdriver.Firefox(executable_path='/home/teemo/softwares/geckodriver')
+    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH )
     # get web page
     driver.get(url)
 
@@ -302,7 +349,7 @@ def woodridgeford(url: str) -> list:
 
     # # # main
     # run firefox webdriver from executable path of your choice
-    driver = webdriver.Firefox(executable_path='/home/teemo/softwares/geckodriver')
+    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     # execute script to scroll down the page
@@ -425,7 +472,7 @@ def zarowny_n_westlock(url: str) -> list:
 
     # # # Function Main
     # run firefox webdriver from executable path of your choice
-    driver = webdriver.Firefox(executable_path='/home/teemo/softwares/geckodriver')
+    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     # execute script to scroll down the page
@@ -557,7 +604,7 @@ def fourlane(url: str) -> list:
         return car_info
 
     # # # Function Main
-    driver = webdriver.Firefox(executable_path='/home/teemo/softwares/geckodriver')
+    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     # execute script to scroll down the page
@@ -677,7 +724,7 @@ def marlborough(url: str) -> list:
         return car_info
 
     # # # Function Main
-    driver = webdriver.Firefox(executable_path='/home/teemo/softwares/geckodriver')
+    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     # execute script to scroll down the page
@@ -919,7 +966,7 @@ def camclarkfordairdrie(url: str) -> list:
         return car_info
 
     # # # Function Main
-    driver = webdriver.Firefox(executable_path='/home/teemo/softwares/geckodriver')
+    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     time.sleep(3)
@@ -952,6 +999,146 @@ def camclarkfordairdrie(url: str) -> list:
         if a_vehicle.has_attr("href"):
             single_car_url = a_vehicle["href"]
             print(f'page url: {single_car_url}')
+            driver.get(single_car_url)
+            page = driver.page_source
+            time.sleep(4)
+            soup = BeautifulSoup(page, 'html.parser')
+
+            list_of_car_info.append( get_car_info(soup, url) )
+
+    driver.quit()
+
+    return list_of_car_info
+
+
+def get_car_name(soap, html_tag='h1', class_attr='vdp-title'):
+    try:
+        car_name = soap.find(html_tag, attrs={'class': class_attr}).getText().strip()
+    except:
+        car_name = ""
+    return car_name
+
+def get_car_price(soap, html_tag='div', attrs=None):
+    """
+    :param soap:
+    :param html_tag: e.g. div, ul, li
+    :param dict attrs: e.g. {'class': 'price-block__price'}
+    :return:
+    """
+    try:
+        price_html = soap.find(html_tag, attrs=attrs)
+        price = extract_integer( price_html.getText() )
+    except:
+        price = None
+    return price
+
+def get_car_specs_raw(soap, html_tag='li', attrs=None):
+    """
+    :param soap:
+    :param html_tag: e.g. div, ul, li
+    :param dict attrs: e.g. {'class': 'detailed-specs__single'}
+    :return:
+    """
+    # Get car specs raw
+    spec_list = []
+    car_specs = soap.find_all(html_tag, attrs=attrs)
+    for spec in car_specs:
+        spec_list.append( spec.getText() )
+
+    return spec_list
+
+def extract_car_specs(raw_car_specs: list, search_dict=None) -> dict:
+    """
+    :param list raw_car_specs: list of dictionaries. Each dict has car's specs
+    :param dict search_dict: its keys are based on database name, values are search criterion e.g.
+            {"body_style": "Body Style: ", "mileage": "Kilometres: ", "exterior": "Exterior Colour: "}
+
+    Compressed form of
+
+    search_body_style = 'Body Style: '
+    search_mileage = 'Kilometres: '
+    search_exterior = 'Exterior Colour: '
+    search_drivetrain = 'Drive Train: '
+    search_transmission = 'Transmission: '
+    search_engine = 'Engine: '
+    car_info = {}
+    for elem in raw_car_specs:
+        if search_body_style in elem:
+            res = elem.split( search_body_style )[1]
+            car_info["body_style"] = res
+
+        if search_mileage in elem:
+            res = elem.split( search_mileage )[1]
+            car_info["mileage"] = extract_integer(res)
+
+        if search_exterior in elem:
+            res = elem.split( search_exterior )[1]
+            car_info["exterior"] = res
+
+        if search_drivetrain in elem:
+            res = elem.split( search_drivetrain )[1]
+            car_info["drivetrain"] = res
+
+        if search_transmission in elem:
+            res = elem.split( search_transmission )[1]
+            car_info["transmission"] = res
+
+        if search_engine in elem:
+            res = elem.split( search_engine )[1]
+            car_info["engine"] = res
+    return car_info
+    """
+    car_info = {}
+
+    for elem in raw_car_specs:
+        for key, search_criterion in search_dict.items():
+            if search_criterion in elem and search_criterion == "mileage":
+                result = elem.split(search_criterion)[1]
+                car_info[key] = extract_integer(result)
+            elif search_criterion in elem:
+                result = elem.split(search_criterion)[1]
+                car_info[key] = result
+
+    return car_info
+
+def zenderford(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+
+        car_info = {"car_name": get_car_name(soap, html_tag='h1', class_attr='vdp-title'),
+                    "price": get_car_price(soap, html_tag='div', attrs={'class': 'price-block__price'}),
+                    "website": website}
+
+        raw_car_specs = get_car_specs_raw(soap, html_tag='li', attrs={'class': 'detailed-specs__single'})
+
+        search_dict = {"body_style": "Body Style: ", "mileage": "Kilometres: ", "exterior": "Exterior Colour: ",
+                       "drivetrain": "Drive Train: ", "transmission": "Transmission: ", "engine": "Engine: "}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        print(f'Done for car: {car_info["car_name"]}')
+
+        return car_info
+
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag='h3', cf_class_attr="srp__vehicle-count",
+                                               cs_tag="div", cs_class_attr="mb-lg grid-view col")
+
+    list_of_car_info = []  # car_info: dict
+    all_a_vehicle = main_soup.find_all('a', href=True,
+                                       attrs={'class': 'button gtm_vehicle_tile_cta vehicle-card__cta'})
+    for a_vehicle in all_a_vehicle:
+        if a_vehicle.has_attr("href"):
+            single_car_url = a_vehicle["href"]
+
             driver.get(single_car_url)
             page = driver.page_source
             time.sleep(4)

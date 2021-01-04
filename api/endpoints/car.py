@@ -39,7 +39,8 @@ async def add_cars(db: Session = Depends(get_db)):
         # 'https://www.marlboroughford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc',
         # 'https://www.universalford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc&page=1',
         # 'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
-        'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
+        # 'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
+        'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
     ]
     # url_list = ['https://www.regalmotorsltd.com/used/used-vehicle-inventory.html']
     done_for = []

@@ -17,7 +17,8 @@ app = FastAPI()
 app.include_router(api.api_router)
 
 # car1 = Car(carName="toyota")
-@app.get('/url-list')
+# @app.get('/url-list')
+@app.get('/')
 def get_all_urls():
     url_list = [
         {'path': route.path, 'name': route.name}

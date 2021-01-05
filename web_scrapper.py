@@ -6,8 +6,11 @@ import re
 import time
 from os import getenv
 # import pandas as pd
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 FAIL_SAFE_RUNS = 20
+FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
+firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
 GECKODRIVER_PATH = getenv("GECKODRIVER_PATH")
 CAR_CUT_PRICE = 20_000
 
@@ -47,7 +50,7 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attr=None, cs_tag=Non
 
     print(page_url)
     # run firefox webdriver from executable pa`th of your choice
-    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+    driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(page_url)
     time.sleep(3)
@@ -222,7 +225,7 @@ def regal_n_junct_north(url: str = 'https://www.regalmotorsltd.com/used/used-veh
         return car_info
 
     # run firefox webdriver from executable path of your choice
-    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH )
+    driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH )
     # get web page
     driver.get(url)
 
@@ -349,7 +352,7 @@ def woodridgeford(url: str) -> list:
 
     # # # main
     # run firefox webdriver from executable path of your choice
-    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+    driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     # execute script to scroll down the page
@@ -472,7 +475,7 @@ def zarowny_n_westlock(url: str) -> list:
 
     # # # Function Main
     # run firefox webdriver from executable path of your choice
-    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+    driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     # execute script to scroll down the page
@@ -604,7 +607,7 @@ def fourlane(url: str) -> list:
         return car_info
 
     # # # Function Main
-    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+    driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     # execute script to scroll down the page
@@ -724,7 +727,7 @@ def marlborough(url: str) -> list:
         return car_info
 
     # # # Function Main
-    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+    driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     # execute script to scroll down the page
@@ -966,7 +969,7 @@ def camclarkfordairdrie(url: str) -> list:
         return car_info
 
     # # # Function Main
-    driver = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+    driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(url)
     time.sleep(3)

@@ -11,12 +11,9 @@ from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 FAIL_SAFE_RUNS = 20
 FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
 firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
-print(" ------- print paths for firefox bin & geckodriver")
-print(FIREFOX_BIN)
 GECKODRIVER_PATH = getenv("GECKODRIVER_PATH")
 CAR_CUT_PRICE = 20_000
 
-print(GECKODRIVER_PATH)
 # ==========  Helper functions ==========
 def process_mileage(raw_num='2,000  km'):
     """ :returns : mileage in Kilometers """
@@ -89,6 +86,9 @@ def filter_cars(car: dict) -> bool:
         return False
 
 def get_car_info_from_web(url: str) -> list:
+    print(" ------- print paths for firefox bin & geckodriver")
+    print(f'firefox: {FIREFOX_BIN}')
+    print(f'Gecko: {GECKODRIVER_PATH}')
     list_of_cars = None
     if "regalmotors" in url:
         list_of_cars = regal_n_junct_north(url)

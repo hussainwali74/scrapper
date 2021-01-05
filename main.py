@@ -16,6 +16,7 @@ app = FastAPI()
 
 app.include_router(api.api_router)
 
+print("Starting app")
 # car1 = Car(carName="toyota")
 # @app.get('/url-list')
 @app.get('/')

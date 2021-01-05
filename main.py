@@ -5,7 +5,7 @@ from models.db_models.car import CarDB
 
 from sqlalchemy.orm import Session
 import crud
-
+from os import getenv
 from web_scrapper import get_car_info_from_web
 from datetime import date
 from api import api
@@ -21,6 +21,9 @@ print("Starting app")
 # @app.get('/url-list')
 @app.get('/')
 def get_all_urls():
+    GECKODRIVER_PATH = getenv("GECKODRIVER_PATH")
+    print("------- Bout to print gecko driver ")
+    print(GECKODRIVER_PATH)
     url_list = [
         {'path': route.path, 'name': route.name}
         for route in app.routes

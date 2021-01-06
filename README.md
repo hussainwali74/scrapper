@@ -6,7 +6,13 @@ Python==3.8
 
 ##### Starting Web Server
     
-    uvicorn main:app --reload
+    ./run_server.sh
+
+### Heroku 
+Project is designed to be deployed on Heroku.
+#### How to SSH to heroku
+
+    $ heroku ps:exec
 
 ### Luxury ToDos
 - Make scroll page down dynamic

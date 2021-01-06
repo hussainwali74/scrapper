@@ -36,18 +36,19 @@ def extract_integer(price_string):
         price = None
     return price
 
-def cars_found(main_soap, html_tag='h3', class_attribute='srp__vehicle-count'):
+def cars_found(main_soap, html_tag='h3', attrs: dict = None):
     """ Cars found on the website """
-    cars_count_html = main_soap.find(html_tag, attrs={'class': class_attribute})
+    cars_count_html = main_soap.find(html_tag, attrs=attrs)
     car_count_str = cars_count_html.getText()
     return extract_integer( car_count_str )
 
-def cars_count_in_soup(main_soap, html_tag='div', class_attribute='mb-lg grid-view col'):
+def cars_count_in_soup(main_soap, html_tag='div', attrs: dict = None):
     """ Cars currently loaded in the main-soup object """
-    all_div_cars_cards = main_soap.find_all(html_tag, attrs={'class': class_attribute})
+    all_div_cars_cards = main_soap.find_all(html_tag, attrs=attrs)
     return len(all_div_cars_cards)
 
-def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attr=None, cs_tag=None, cs_class_attr=None):
+def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_count_in_soup=cars_count_in_soup,
+                           cs_tag=None, cs_class_attrs=None):
 
     print(page_url)
     # run firefox webdriver from executable pa`th of your choice
@@ -64,20 +65,20 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attr=None, cs_tag=Non
     main_soup = BeautifulSoup(page, 'html.parser')
 
     cars_in_soup = 0
-    total_cars = cars_found(main_soup, html_tag=cf_tag, class_attribute=cf_class_attr)
+    total_cars = cars_found(main_soup, html_tag=cf_tag, attrs=cf_class_attrs)
     print(f'Total cars on page: {total_cars}')
     current_loop_runs = 0
     while cars_in_soup < total_cars:
         current_loop_runs += 1
-        print(f'Cars currently in soup: {cars_in_soup}')
         # execute script to scroll down the page
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
         time.sleep(5)
         page = driver.page_source
         main_soup = BeautifulSoup(page, 'html.parser')
 
-        cars_in_soup = cars_count_in_soup(main_soup, html_tag=cs_tag, class_attribute=cs_class_attr)
+        cars_in_soup = cars_count_in_soup(main_soup, html_tag=cs_tag, attrs=cs_class_attrs)
 
+        print(f'Cars currently in soup: {cars_in_soup}')
         if current_loop_runs == FAIL_SAFE_RUNS:
             break
 
@@ -103,6 +104,8 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = regal_n_junct_north(url)
     elif "northstarfordsales" in url:
         list_of_cars = regal_n_junct_north(url)
+    elif "collegefordlincoln" in url:
+        list_of_cars = collegefordlincoln(url)
     elif "woodridgeford" in url:
         list_of_cars = woodridgeford(url)
     elif "zarownymotors" in url:
@@ -125,7 +128,7 @@ def get_car_info_from_web(url: str) -> list:
     # # # Apply universal checks
     if list_of_cars is not None:
         print("get_car_info_from_web() Filtering cars now")
-        print("Based on price")
+        print("get_car_info_from_web() Based on price")
         itr_object = filter( filter_cars, list_of_cars )
         return list( itr_object )
     else:
@@ -1134,7 +1137,7 @@ def extract_car_specs(raw_car_specs: list, search_dict=None) -> dict:
 
     for elem in raw_car_specs:
         for key, search_criterion in search_dict.items():
-            if search_criterion in elem and search_criterion == "mileage":
+            if search_criterion in elem and key == "mileage":
                 result = elem.split(search_criterion)[1]
                 car_info[key] = extract_integer(result)
             elif search_criterion in elem:
@@ -1142,6 +1145,68 @@ def extract_car_specs(raw_car_specs: list, search_dict=None) -> dict:
                 car_info[key] = result
 
     return car_info
+
+def collegefordlincoln(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+    def cars_count_in_soup(main_soap, html_tag='div', attrs: dict = None):
+        """ Cars currently loaded in the main-soup object """
+        count = 0
+        all_div_table_row_lg = main_soap.find_all(html_tag, attrs=attrs)
+        for div_table_row_lg in all_div_table_row_lg:
+            all_div_padding = div_table_row_lg.find_all('div', attrs={'class': 'padding'})
+            count += len(all_div_padding)
+
+        return count
+
+    def get_car_name(soap):
+        """ Intended to return single name """
+        html_car_name = soap.find('h2', attrs={'class': 'centered'})
+
+        single_name = html_car_name.find_all("span")
+        car_name_pieces = []
+        for prop in single_name:
+            car_name_pieces.append(prop.getText())
+        concat_car_name = " ".join(car_name_pieces)
+        return concat_car_name
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+
+        car_info = {"car_name": get_car_name(soap),
+                    "price": get_car_price(soap, html_tag='span', attrs={'data-field': 'selected_price'}),
+                    "website": website}
+
+        raw_car_specs = get_car_specs_raw(soap, html_tag='li')
+
+        search_dict = {"mileage": "Mileage: ", "exterior": "Exterior: ", "drivetrain": "Drivetrain: ",
+                       "transmission": "Transmission: ", "engine": "Engine: "}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        print(f'Done for car: {car_info["car_name"]}')
+
+        return car_info
+
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag='span', cf_class_attrs={"class": "match-count"},
+                                               cars_count_in_soup=cars_count_in_soup,
+                                               cs_tag="div", cs_class_attrs={'class': 'table-row lg'})
+    list_of_car_info = []
+    all_div_table_row_lg = main_soup.find_all('div', attrs={'class': 'table-row lg'})
+    for div_table_row_lg in all_div_table_row_lg:
+        all_div_padding = div_table_row_lg.find_all('div', attrs={'class': 'padding'})
+        for div_padding in all_div_padding:
+            list_of_car_info.append( get_car_info(div_padding, website=url) )
+
+    driver.quit()
+
+    return list_of_car_info
 
 def zenderford(url: str) -> list:
     """
@@ -1171,8 +1236,8 @@ def zenderford(url: str) -> list:
 
         return car_info
 
-    main_soup, driver = get_main_soup_n_driver(url, cf_tag='h3', cf_class_attr="srp__vehicle-count",
-                                               cs_tag="div", cs_class_attr="mb-lg grid-view col")
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag='h3', cf_class_attrs="srp__vehicle-count",
+                                               cs_tag="div", cs_class_attrs="mb-lg grid-view col")
 
     list_of_car_info = []  # car_info: dict
     all_a_vehicle = main_soup.find_all('a', href=True,

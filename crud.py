@@ -32,9 +32,11 @@ def get_car_by_specs(db: Session, car_info: dict):
     car_name = car_info.get("car_name", "")
     mileage = car_info.get("mileage", None)
     exterior = car_info.get("exterior", "")
+    price = car_info.get("price", None)
 
     # simple comma separated constraints in filter apply AND
-    return db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior).all()
+    return db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior,
+                                  CarDB.price == price).all()
 
 def car_exists_in_db(db: Session, incoming_car: CarDB):
     """

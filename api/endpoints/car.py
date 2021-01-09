@@ -25,23 +25,26 @@ async def root(db: Session = Depends(get_db)):
 
 @router.get("/add-cars")
 async def add_cars(db: Session = Depends(get_db)):
-
+    """ Add cars from websites to DB """
     # res = crud.create_car(db, "toyota", f"12245km", "black", "4x4", "auto", "vti",
     # "uo", "yes", "https://www.google.com")
 
     url_list = [
-        # 'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
-        # 'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
+        'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
         # 'https://www.woodridgeford.com/used/pg/1',
         # 'https://www.zarownymotors.com/inventory/search?stock_type=Used&page=1&page_length=100',
+        'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
+        'https://www.griffithsford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC&query=',
+        'https://www.rainbowford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC',
         # 'https://www.fourlaneford.com/used-cars-just-south-of-red-deer-in-innisfail?sort-by=price&direction=high-to-low',
         # 'https://www.marlboroughford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc',
         # 'https://www.universalford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc&page=1',
-        # 'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
-        # 'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
-        # 'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
+        'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
     ]
     # url_list = ['https://www.regalmotorsltd.com/used/used-vehicle-inventory.html']
     done_for = []
@@ -51,7 +54,8 @@ async def add_cars(db: Session = Depends(get_db)):
         done_for.append(url)
         for one_car in res:
             print(one_car)
-            crud.create(db, car_in=one_car, autocommit=True)
+            car_return = crud.create(db, car_in=one_car, autocommit=True)
+            print(f'Car ka status in DB: {car_return["in_db"]}')
             # crud.create_car_dict(db, one_car, website=url)
     # db.commit()  # Uncomment if using autocommit=False
     return done_for
@@ -72,7 +76,23 @@ async def search_car(db: Session = Depends(get_db), name: str = "", price_ge: in
     result = crud.get_car(db, name=name, price_ge=price_ge, price_le=price_le, mileage_ge=mileage_ge,
                           mileage_le=mileage_le, date_ge=date_ge, date_le=date_le, limit=limit)
     return result
-# -------------------
+
+# ------------- For testing -------------------
+
+@router.get("/add-highriverford")
+async def add_cars(db: Session = Depends(get_db)):
+    """ Adds cars to DB from the following website """
+    url_list = [ 'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc', ]
+    done_for = []
+    for url in url_list:
+        print(f'For url: {url}')
+        res = get_car_info_from_web(url)
+        done_for.append(url)
+        for one_car in res:
+            print(one_car)
+            crud.create(db, car_in=one_car, autocommit=True)
+    return done_for
+
 
 @router.get("/one-car")
 async def add_single_car( db: Session = Depends(get_db) ):

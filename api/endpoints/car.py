@@ -36,14 +36,15 @@ async def add_cars(db: Session = Depends(get_db)):
         # 'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
         # 'https://www.woodridgeford.com/used/pg/1',
         # 'https://www.zarownymotors.com/inventory/search?stock_type=Used&page=1&page_length=100',
-        'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
-        'https://www.griffithsford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC&query=',
-        'https://www.rainbowford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC',
+        # 'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
+        # 'https://www.griffithsford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC&query=',
+        # 'https://www.rainbowford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC',
         # 'https://www.fourlaneford.com/used-cars-just-south-of-red-deer-in-innisfail?sort-by=price&direction=high-to-low',
         # 'https://www.marlboroughford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc',
         # 'https://www.universalford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc&page=1',
         # 'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
-        # 'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
         # 'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
     ]
     # url_list = ['https://www.regalmotorsltd.com/used/used-vehicle-inventory.html']
@@ -93,6 +94,23 @@ async def add_cars(db: Session = Depends(get_db)):
             crud.create(db, car_in=one_car, autocommit=True)
     return done_for
 
+@router.get("/add-zarowny-n-others")
+async def add_zarowny_n_others(db: Session = Depends(get_db)):
+    url_list = [
+        'https://www.zarownymotors.com/inventory/search?stock_type=Used&page=1&page_length=100',
+        'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
+        'https://www.griffithsford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC&query=',
+        'https://www.rainbowford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC',
+    ]
+    done_for = []
+    for url in url_list:
+        print(f'For url: {url}')
+        res = get_car_info_from_web(url)
+        done_for.append(url)
+        for one_car in res:
+            print(one_car)
+            crud.create(db, car_in=one_car, autocommit=True)
+    return done_for
 
 @router.get("/one-car")
 async def add_single_car( db: Session = Depends(get_db) ):
@@ -103,7 +121,11 @@ async def add_single_car( db: Session = Depends(get_db) ):
                 "transmission": "auto",
                 "engine": "vti",
                 "date": "2020-11-10"}
-    res = crud.create_car_dict(db, car_info, "xyz site")
+    car_info = {'car_name': '2018 Ford F-350 Lariat | Nav | Quad Beams | BLIS | Only 37K!', 'price': 74221,
+                'website': 'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
+                'mileage': 37825, 'body_style': 'Truck', 'engine': '6.7L Power Stroke', 'exterior': 'White',
+                'transmission': '6 Speed Automatic', 'drivetrain': '4x4'}
+    res = crud.create(db, car_in=car_info, autocommit=True)
     return res
 
 @router.get("/multi-car")

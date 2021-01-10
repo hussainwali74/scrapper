@@ -126,6 +126,8 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = camclarkfordairdrie(url)
     elif "zenderford" in url:
         list_of_cars = zenderford(url)
+    elif "boundaryford" in url:
+        list_of_cars = zenderford(url)
     elif "highriverford" in url:
         list_of_cars = highriverford(url)
     # elif "westlockford" in url:
@@ -424,14 +426,6 @@ def zarowny_n_westlock(url: str) -> list:
             car_name = ""
         return car_name
 
-    def get_car_price(soap):
-        try:
-            price_html = soap.find('strong', attrs={'itemprop': 'price'})
-            price = extract_integer(price_html["content"])
-        except:
-            price = None
-        return price
-
     def get_car_specs_raw(soap) -> list:
         search_mileage = 'Odometer'
         search_exterior = 'Exterior Colour:'
@@ -450,53 +444,23 @@ def zarowny_n_westlock(url: str) -> list:
 
         return car_specs
 
-    def extract_car_specs(raw_car_specs: list) -> dict:
-        search_mileage = 'Odometer'
-        search_exterior = 'Color'
-        search_drivetrain = 'Drivetrain'
-        search_transmission = 'Transmission'
-        search_engine = 'Engine'
-
-        car_info = {}
-
-        for elem in raw_car_specs:
-            if search_mileage in elem:
-                res = elem.split(search_mileage)[1]
-                res = process_mileage(res)
-                car_info["mileage"] = extract_integer(res)
-
-            if search_exterior in elem:
-                res = elem.split(search_exterior)[1]
-                car_info["exterior"] = res
-
-            if search_drivetrain in elem:
-                res = elem.split(search_drivetrain)[1]
-                car_info["drivetrain"] = res
-
-            if search_transmission in elem:
-                res = elem.split(search_transmission)[1]
-                car_info["transmission"] = res
-
-            if search_engine in elem:
-                res = elem.split(search_engine)[1]
-                car_info["engine"] = res
-
-        return car_info
-
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
-        car_info = {"car_name": get_car_name(soap), "price": get_car_price(soap), "website": website}
+        car_info = {"car_name": get_car_name(soap),
+                    "price": get_car_price(soap, html_tag='strong', attrs={'class': 'price _bpcolor'}),
+                    "website": website}
 
         raw_car_specs = get_car_specs_raw(soap)
 
-        car_specs = extract_car_specs(raw_car_specs)
+        search_dict = {"mileage": "Odometer ", "exterior": "Color", "drivetrain": "Drivetrain",
+                       "transmission": "Transmission", "engine": "Engine"}
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
 
         car_info.update(car_specs)
 
         return car_info
 
     # # # Function Main
-    # run firefox webdriver from executable path of your choice
     if ENV == "prod":
         opts = webdriver.FirefoxOptions()
         opts.add_argument("--headless")
@@ -526,6 +490,7 @@ def zarowny_n_westlock(url: str) -> list:
     driver.quit()
 
     return list_of_car_info
+
 
 def fourlane(url: str) -> list:
     """
@@ -1239,7 +1204,13 @@ def zenderford(url: str) -> list:
         return car_info
 
     # # # Function Main
-    main_soup, driver = get_main_soup_n_driver(url, cf_tag='h3', cf_class_attrs={"class": "srp__vehicle-count"},
+    if "boundaryford" in url:
+        cf_tag = 'h5'
+        cf_class_attrs = {"class": "srp__found-header wrapper"}
+    else:  # elif "zenderford" in url:
+        cf_tag = 'h3'
+        cf_class_attrs = {"class": "srp__vehicle-count"}
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag=cf_tag, cf_class_attrs=cf_class_attrs,
                                                cs_tag="div", cs_class_attrs={"class", "mb-lg grid-view col"})
 
     list_of_car_info = []  # car_info: dict

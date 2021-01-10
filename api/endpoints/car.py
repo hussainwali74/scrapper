@@ -30,11 +30,11 @@ async def add_cars(db: Session = Depends(get_db)):
     # "uo", "yes", "https://www.google.com")
 
     url_list = [
-        # 'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
-        # 'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
-        # 'https://www.woodridgeford.com/used/pg/1',
+        'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
+        'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
+        'https://www.woodridgeford.com/used/pg/1',
         # 'https://www.zarownymotors.com/inventory/search?stock_type=Used&page=1&page_length=100',
         # 'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
         # 'https://www.griffithsford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC&query=',

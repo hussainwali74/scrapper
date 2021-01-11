@@ -116,6 +116,8 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = zarowny_n_westlock(url)
     elif "rainbowford" in url:
         list_of_cars = zarowny_n_westlock(url)
+    elif "bigmford" in url:
+        list_of_cars = zarowny_n_westlock(url)
     elif "fourlaneford" in url:
         list_of_cars = fourlane(url)
     elif "marlborough" in url:
@@ -405,7 +407,7 @@ def woodridgeford(url: str) -> list:
 def zarowny_n_westlock(url: str) -> list:
     """
     This Major function has minor website specific functions. They are defined in this function to avoid
-    function's names overlapping. works for: griffithsford, rainbowford
+    function's names overlapping. works for: griffithsford, rainbowford, bigmford
     :param url: Website url from where to scrape
     :return:
     """

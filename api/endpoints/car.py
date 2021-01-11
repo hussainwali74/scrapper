@@ -30,15 +30,16 @@ async def add_cars(db: Session = Depends(get_db)):
     # "uo", "yes", "https://www.google.com")
 
     url_list = [
-        'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
-        'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
-        'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
-        'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
-        'https://www.woodridgeford.com/used/pg/1',
+        # 'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
+        # 'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
+        # 'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
+        # 'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
+        # 'https://www.woodridgeford.com/used/pg/1',
         # 'https://www.zarownymotors.com/inventory/search?stock_type=Used&page=1&page_length=100',
         # 'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
         # 'https://www.griffithsford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC&query=',
         # 'https://www.rainbowford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC',
+        'https://www.bigmford.com/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC',
         # 'https://www.fourlaneford.com/used-cars-just-south-of-red-deer-in-innisfail?sort-by=price&direction=high-to-low',
         # 'https://www.marlboroughford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc',
         # 'https://www.universalford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc&page=1',

@@ -84,6 +84,45 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_coun
 
     return main_soup, driver
 
+
+def get_car_page_links(soap, html_tag='a', attrs: dict = None):
+    car_page_links = []
+    links_in_soap = soap.find_all(html_tag, attrs=attrs)
+    for single_link_soap in links_in_soap:
+        car_page_links.append(single_link_soap["href"])
+
+    return car_page_links
+
+
+def get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',
+                           base_url='https://www.hansenford.ca') -> list:
+    car_page_links = []
+
+    page = requests.get(url)
+    main_soup = BeautifulSoup(page.content, 'html.parser')
+
+    total_cars = cars_found(main_soup, html_tag='div', attrs={"class": "sc-puHdH fiyXIl"})
+    print(f'Total cars on page: {total_cars}')
+    current_loop_runs = 0
+    while len(car_page_links) < total_cars:
+        current_loop_runs += 1
+        time.sleep(4)
+        car_page_links.extend(get_car_page_links(main_soup, 'a', attrs={'class': 'sc-oTAMn cEnJNJ'}))
+
+        next_page_soup = main_soup.find_all('a', attrs={'class': 'sc-ptbNe hCFcIE'})[-1]
+
+        if next_page_soup.getText() == 'Next':
+            next_page_link = next_page_soup["href"]
+            next_page_link = base_url + next_page_link
+
+            page = requests.get(next_page_link)
+            main_soup = BeautifulSoup(page.content, 'html.parser')
+
+        print(f'Cars currently in car_page_link: {len(car_page_links)}')
+        if current_loop_runs == FAIL_SAFE_RUNS:
+            break
+    return car_page_links
+
 # ========== main function ==========
 def filter_cars(car: dict) -> bool:
     """ function designed to be called in filter function """
@@ -106,7 +145,11 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = regal_n_junct_north(url)
     elif "collegefordlincoln" in url:
         list_of_cars = collegefordlincoln(url)
+    elif "truenorthford" in url:
+        list_of_cars = collegefordlincoln(url)
     elif "woodridgeford" in url:
+        list_of_cars = woodridgeford(url)
+    elif "okotoksford" in url:
         list_of_cars = woodridgeford(url)
     elif "zarownymotors" in url:
         list_of_cars = zarowny_n_westlock(url)
@@ -118,6 +161,8 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = zarowny_n_westlock(url)
     elif "bigmford" in url:
         list_of_cars = zarowny_n_westlock(url)
+    elif "jerryford" in url:
+        list_of_cars = zarowny_n_westlock(url)
     elif "fourlaneford" in url:
         list_of_cars = fourlane(url)
     elif "marlborough" in url:
@@ -126,12 +171,18 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = universalford(url)
     elif "camclarkfordairdrie" in url:
         list_of_cars = camclarkfordairdrie(url)
+    elif "integrityford" in url:
+        list_of_cars = camclarkfordairdrie(url)
     elif "zenderford" in url:
         list_of_cars = zenderford(url)
     elif "boundaryford" in url:
         list_of_cars = zenderford(url)
+    elif "denhamford" in url:
+        list_of_cars = zenderford(url)
     elif "highriverford" in url:
         list_of_cars = highriverford(url)
+    elif "hansenford" in url:
+        list_of_cars = hansenford(url)
     # elif "westlockford" in url:
     #     list_of_cars = westlockford(url)
 
@@ -280,23 +331,14 @@ def regal_n_junct_north(url: str = 'https://www.regalmotorsltd.com/used/used-veh
 def woodridgeford(url: str) -> list:
     """
     This Major function has minor website specific functions. They are defined in this function to avoid
-    function's names overlapping.
+    function's names overlapping. Works for: okotoksford
     :param url: Website url from where to scrape
     :return:
     """
-    def get_car_name(soap):
-        """ Intended to return single name """
-        html_car_name = soap.find('p')
-        try:
-            car_name = html_car_name.getText()
-        except:
-            car_name = ""
-        return car_name
-
     def get_car_price(soap):
         try:
-            price_html = soap.find('span', attrs={'itemprop': 'price'})
-            price = int(price_html["content"])
+            price_html = soap.find_all('span', attrs={'itemprop': 'price'})[-1]
+            price = extract_integer(price_html.getText())
         except:
             price = None
         return price
@@ -304,100 +346,39 @@ def woodridgeford(url: str) -> list:
     def get_car_mileage(soap):
         """ Intended to return single value """
         search_mileage = 'Mileage:'
-
         html_mileage_payment = soap.find('p', attrs={'class': 'mileage-payment'})
         try:
             car_mileage = html_mileage_payment.getText()
             car_mileage = car_mileage.split(search_mileage)[1]
-            mileage = process_mileage(car_mileage)
+            mileage = extract_integer(car_mileage)
         except:
             mileage = ""
         return mileage
 
-    def get_car_specs_raw(soap):
-        """Made to handle single car's specs
-        :return List containing pieces of car's information
-        """
-        car_specs = []
-        for tr in soap.find_all('tr'):
-            car_specs.append(tr.getText())
-        return car_specs
-
-    def extract_car_specs(raw_car_specs: list) -> dict:
-        search_body_style = 'Body Style:'
-        search_exterior = 'Exterior Colour:'
-        search_drivetrain = 'Drivetrain:'
-        search_transmission = 'Transmission:'
-        search_engine = 'Engine:'
-        search_city = 'City:'
-
-        car_info = {}
-
-        for elem in raw_car_specs:
-            if search_body_style in elem:
-                res = elem.split(search_body_style)[1]
-                car_info["body_style"] = res
-
-            if search_exterior in elem:
-                res = elem.split(search_exterior)[1]
-                car_info["exterior"] = res
-
-            if search_drivetrain in elem:
-                res = elem.split(search_drivetrain)[1]
-                car_info["drivetrain"] = res
-
-            if search_transmission in elem:
-                res = elem.split(search_transmission)[1]
-                car_info["transmission"] = res
-
-            if search_engine in elem:
-                res = elem.split(search_engine)[1]
-                car_info["engine"] = res
-
-            if search_city in elem:
-                res = elem.split(search_city)[1]
-                car_info["city"] = res
-
-        return car_info
-
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
-        car_info = {"car_name": get_car_name(soap), "mileage": get_car_mileage(soap), "price": get_car_price(soap),
-                    "website": website}
-        raw_car_specs = get_car_specs_raw(soap)
+        car_info = {"car_name": get_car_name(soap, html_tag='p', attrs={}), "price": get_car_price(soap),
+                    "mileage": get_car_mileage(soap), "website": website}
 
-        car_specs = extract_car_specs(raw_car_specs)
+        raw_car_specs = get_car_specs_raw(soap, html_tag='tr', attrs={})
+
+        search_dict = {"body_style": "Body Style: ", "exterior": "Exterior Colour:", "city": "City:",
+                       "drivetrain": "Drivetrain:", "transmission": "Transmission:", "engine": "Engine:"}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
 
         car_info.update(car_specs)
 
         return car_info
 
-    # # # main
-    # run firefox webdriver from executable path of your choice
-    if ENV == "prod":
-        opts = webdriver.FirefoxOptions()
-        opts.add_argument("--headless")
-        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH, options=opts)
-    else:
-        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
-    # get web page
-    driver.get(url)
-    # execute script to scroll down the page
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(3)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(4)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(3)
-
-    # # Create Base Soup object
-    page = driver.page_source
-    soup = BeautifulSoup(page, 'html.parser')
+    # # # Function Main
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag='div', cf_class_attrs={"id": "total-vehicle-number"},
+                                               cs_tag="div", cs_class_attrs={"class": "col-xs-12 col-sm-12 col-md-7"})
 
     list_of_car_info = []
-    all_class_outside_box = soup.find_all('div', attrs={'class': 'col-xs-12 col-sm-12 col-md-7'})
+    all_class_outside_box = main_soup.find_all('div', attrs={'class': 'col-xs-12 col-sm-12 col-md-7'})
     for class_outside_box in all_class_outside_box:
-        list_of_car_info.append(get_car_info(class_outside_box, url))
+        list_of_car_info.append(get_car_info( class_outside_box, url) )
 
     driver.quit()
 
@@ -407,7 +388,7 @@ def woodridgeford(url: str) -> list:
 def zarowny_n_westlock(url: str) -> list:
     """
     This Major function has minor website specific functions. They are defined in this function to avoid
-    function's names overlapping. works for: griffithsford, rainbowford, bigmford
+    function's names overlapping. Works for: griffithsford, rainbowford, bigmford
     :param url: Website url from where to scrape
     :return:
     """
@@ -454,7 +435,7 @@ def zarowny_n_westlock(url: str) -> list:
 
         raw_car_specs = get_car_specs_raw(soap)
 
-        search_dict = {"mileage": "Odometer ", "exterior": "Color", "drivetrain": "Drivetrain",
+        search_dict = {"mileage": "Odometer", "exterior": "Color", "drivetrain": "Drivetrain",
                        "transmission": "Transmission", "engine": "Engine"}
         car_specs = extract_car_specs(raw_car_specs, search_dict)
 
@@ -463,28 +444,11 @@ def zarowny_n_westlock(url: str) -> list:
         return car_info
 
     # # # Function Main
-    if ENV == "prod":
-        opts = webdriver.FirefoxOptions()
-        opts.add_argument("--headless")
-        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH, options=opts)
-    else:
-        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
-    # get web page
-    driver.get(url)
-    # execute script to scroll down the page
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(2)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(4)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(3)
-
-    # # Create Base Soup object
-    page = driver.page_source
-    soup = BeautifulSoup(page, 'html.parser')
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag='div', cf_class_attrs={"class": "total-count"},
+                                               cs_tag="li", cs_class_attrs={'class': 'vehicle-card-used'})
 
     list_of_car_info = []
-    all_class_vehicle_card = soup.find_all('li', attrs={'class': 'vehicle-card-used'})
+    all_class_vehicle_card = main_soup.find_all('li', attrs={'class': 'vehicle-card-used'})
 
     for class_vehicle_card in all_class_vehicle_card:
         list_of_car_info.append( get_car_info(class_vehicle_card, url) )
@@ -889,41 +853,6 @@ def camclarkfordairdrie(url: str) -> list:
     :return list: list of car_info dictionaries
     """
 
-    def cars_found(main_soap):
-        """ Cars found on the website """
-        cars_count_html = main_soap.find('p', attrs={'class': 'srp__found-header wrapper'})
-        car_count_str = cars_count_html.getText()
-        return extract_integer(car_count_str)
-
-    def cars_count_in_soup(main_soap):
-        """ Cars currently loaded in the main-soup object """
-        all_div_cars_cards = main_soap.find_all('div', attrs={'class': 'mb-lg grid-view col'})
-        return len(all_div_cars_cards)
-
-    def get_car_name(soap):
-        try:
-            car_name = soap.find('h1', attrs={'class': 'vdp-title'}).getText().strip()
-        except:
-            car_name = ""
-        return car_name
-
-    def get_car_price(soap):
-        try:
-            price_html = soap.find('span', attrs={'class': 'df aifs'})
-            price = extract_integer(price_html.getText())
-        except:
-            price = None
-        return price
-
-    def get_car_specs_raw(soap):
-        # Get car specs raw
-        spec_list = []
-        car_specs = soup.find_all('div', attrs={'class': 'detailed-specs__single-content'})
-        for spec in car_specs:
-            spec_list.append(spec.getText())
-
-        return spec_list
-
     def extract_car_specs(raw_car_specs: list) -> dict:
         search_body_style = 'Body Style '
         search_mileage = 'Kilometres '
@@ -964,9 +893,10 @@ def camclarkfordairdrie(url: str) -> list:
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
 
-        car_info = {"car_name": get_car_name(soap), "price": get_car_price(soap), "website": website}
+        car_info = {"car_name": get_car_name(soap, html_tag='h1', attrs={'class': 'vdp-title'}),
+                    "price": get_car_price(soap, html_tag='span', attrs={'class': 'df aifs'}), "website": website}
 
-        raw_car_specs = get_car_specs_raw(soap)
+        raw_car_specs = get_car_specs_raw(soap, html_tag='div', attrs={'class': 'detailed-specs__single-content'})
 
         car_specs = extract_car_specs(raw_car_specs)
 
@@ -975,36 +905,14 @@ def camclarkfordairdrie(url: str) -> list:
         return car_info
 
     # # # Function Main
-    if ENV == "prod":
-        opts = webdriver.FirefoxOptions()
-        opts.add_argument("--headless")
-        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH, options=opts)
+    if 'integrityford' in url:
+        main_soup, driver = get_main_soup_n_driver(url, cf_tag='h5',
+                                                   cf_class_attrs={"class": "srp__found-header wrapper"},
+                                                   cs_tag="div", cs_class_attrs={"class": "mb-lg grid-view col"})
     else:
-        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
-    # get web page
-    driver.get(url)
-    time.sleep(3)
-    page = driver.page_source
-    main_soup = BeautifulSoup(page, 'html.parser')
-
-    cars_in_soup = 0
-    total_cars = cars_found(main_soup)
-    print(f'Total cars on page: {total_cars}')
-    current_loop_runs = 0
-    while cars_in_soup < total_cars:
-        current_loop_runs += 1
-        print(f'Cars currently in soup: {cars_in_soup}')
-        # execute script to scroll down the page
-        driver.execute_script(
-            "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-        time.sleep(5)
-        page = driver.page_source
-        main_soup = BeautifulSoup(page, 'html.parser')
-
-        cars_in_soup = cars_count_in_soup(main_soup)
-
-        if current_loop_runs == FAIL_SAFE_RUNS:
-            break
+        main_soup, driver = get_main_soup_n_driver(url, cf_tag='p',
+                                                   cf_class_attrs={"class": "srp__found-header wrapper"},
+                                                   cs_tag="div", cs_class_attrs={"class": "mb-lg grid-view col"})
 
     list_of_car_info = []  # car_info: dict
     all_a_vehicle = main_soup.find_all('a', href=True,
@@ -1118,7 +1026,7 @@ def extract_car_specs(raw_car_specs: list, search_dict=None) -> dict:
 def collegefordlincoln(url: str) -> list:
     """
     This Major function has minor website specific functions. They are defined in this function to avoid
-    function's names overlapping.
+    function's names overlapping. Works for: truenorthford,
     :param url: Website url from where to scrape
     :return list: list of car_info dictionaries
     """
@@ -1132,28 +1040,28 @@ def collegefordlincoln(url: str) -> list:
 
         return count
 
-    def get_car_name(soap):
-        """ Intended to return single name """
-        html_car_name = soap.find('h2', attrs={'class': 'centered'})
-
-        single_name = html_car_name.find_all("span")
-        car_name_pieces = []
-        for prop in single_name:
-            car_name_pieces.append(prop.getText())
-        concat_car_name = " ".join(car_name_pieces)
-        return concat_car_name
+    # def get_car_name(soap):
+    #     """ Intended to return single name """
+    #     html_car_name = soap.find('h2', attrs={'class': 'centered'})
+    #
+    #     single_name = html_car_name.find_all("span")
+    #     car_name_pieces = []
+    #     for prop in single_name:
+    #         car_name_pieces.append(prop.getText())
+    #     concat_car_name = " ".join(car_name_pieces)
+    #     return concat_car_name
 
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
 
-        car_info = {"car_name": get_car_name(soap),
+        car_info = {"car_name": get_car_name(soap, html_tag='h2', attrs={'class': 'centered'}),
                     "price": get_car_price(soap, html_tag='span', attrs={'data-field': 'selected_price'}),
                     "website": website}
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='li')
 
-        search_dict = {"mileage": "Mileage: ", "exterior": "Exterior: ", "drivetrain": "Drivetrain: ",
-                       "transmission": "Transmission: ", "engine": "Engine: "}
+        search_dict = {"body_style": "Body Style: ", "mileage": "Mileage: ", "exterior": "Exterior: ",
+                       "drivetrain": "Drivetrain: ", "transmission": "Transmission: ", "engine": "Engine: "}
 
         car_specs = extract_car_specs(raw_car_specs, search_dict)
 
@@ -1180,7 +1088,7 @@ def collegefordlincoln(url: str) -> list:
 def zenderford(url: str) -> list:
     """
     This Major function has minor website specific functions. They are defined in this function to avoid
-    function's names overlapping.
+    function's names overlapping. Works for: denhamford
     :param url: Website url from where to scrape
     :return list: list of car_info dictionaries
     """
@@ -1206,7 +1114,7 @@ def zenderford(url: str) -> list:
         return car_info
 
     # # # Function Main
-    if "boundaryford" in url:
+    if "boundaryford" in url or "denhamford" in url:
         cf_tag = 'h5'
         cf_class_attrs = {"class": "srp__found-header wrapper"}
     else:  # elif "zenderford" in url:
@@ -1280,5 +1188,55 @@ def highriverford(url: str) -> list:
         list_of_car_info.append(get_car_info(vehicle_card, url))
 
     driver.quit()
+
+    return list_of_car_info
+
+
+def hansenford(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+    def get_car_specs_raw(soap):
+        # Website specific. Get car specs raw
+        spec_list = []
+        spec_soup = soup.find('div', attrs={
+            'class': 'elementor-element elementor-element-f64281c elementor-widget elementor-widget-jazel-vdp-details'})
+        car_specs = spec_soup.find_all('span')
+        for i in range(0, len(car_specs), 2):
+            spec_list.append(f'{car_specs[i].getText()} {car_specs[i + 1].getText()}')
+        return spec_list
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+
+        car_info = {"car_name": get_car_name(soap, html_tag='h1',
+                                             attrs={'class': 'elementor-heading-title elementor-size-default'}),
+                    "price": get_car_price(soap, html_tag='div', attrs={'class': 'price-field-saleprice-6837'}),
+                    "website": website}
+
+        raw_car_specs = get_car_specs_raw(soap)
+
+        search_dict = {"body_style": "Body Style: ", "mileage": "Odometer: ", "exterior": "Ext. Color: ",
+                       "drivetrain": "Drivetrain: ", "transmission": "Trans.: ", "engine": "Engine: "}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        return car_info
+
+    # # # Function Main
+    car_page_links = get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',
+                                            base_url='https://www.hansenford.ca')
+
+    list_of_car_info = []  # car_info: dict
+    for single_car_page_link in car_page_links:
+        page = requests.get(single_car_page_link)
+        soup = BeautifulSoup(page.content, 'html.parser')
+        time.sleep(3)
+        list_of_car_info.append(get_car_info(soup, url))
 
     return list_of_car_info

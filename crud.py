@@ -45,9 +45,11 @@ def car_exists_in_db(db: Session, incoming_car: CarDB):
     car_name = incoming_car.car_name
     mileage = incoming_car.mileage
     exterior = incoming_car.exterior
+    price = incoming_car.price
     # print(f'type: {type(incoming_car)} ')
     # print(f'{incoming_car}')
-    res = db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior).all()
+    res = db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior,
+                                 CarDB.price == price).all()
 
     return True if len(res) else False
 

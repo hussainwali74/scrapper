@@ -18,7 +18,8 @@ Project is designed to be deployed on Heroku.
 - Make scroll page down dynamic
 
 ### ToDo
-- Full test run website: universalFord
+- Add code to read 2nd page of https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid
+- Change functions of junctionmotors to new type of functions
 - Field(..., gt=0, lt=450)  # means str 0 < length < 450 (from shoaib)
 
 ### Features / things done

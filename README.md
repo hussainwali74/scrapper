@@ -17,11 +17,6 @@ Project is designed to be deployed on Heroku.
 ### Luxury ToDos
 - Make scroll page down dynamic
 
-### ToDo
-- Add code to read 2nd page of https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid
-- Change functions of junctionmotors to new type of functions
-- Field(..., gt=0, lt=450)  # means str 0 < length < 450 (from shoaib)
-
 ### Features / things done
 ##### Resources:
 https://towardsdatascience.com/data-science-skills-web-scraping-javascript-using-python-97a29738353f

@@ -61,7 +61,7 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_coun
         driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
     # get web page
     driver.get(page_url)
-    time.sleep(3)
+    time.sleep(6)
     page = driver.page_source
     main_soup = BeautifulSoup(page, 'html.parser')
 
@@ -163,6 +163,40 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = collegefordlincoln(url)
     elif "westergardford" in url:
         list_of_cars = collegefordlincoln(url)
+    elif "royalford.ca" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "jubileeford" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "senchuk" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "centennialford.sk.ca" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "formomotors.com" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "meritford.com" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "twowayservice.com" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "northlandford.mb.ca" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "rhinelandcar.com" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "steeltownford.com" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "gimliford.ca" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "hometownford.ca" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "kelleherforddauphin.com" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "metcalfesgarage.ca" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "roblinfordsales.com" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "virdenford.ca" in url:
+        list_of_cars = collegefordlincoln(url)
+    elif "westwardford.com" in url:
+        list_of_cars = collegefordlincoln(url)
     elif "woodridgeford" in url:
         list_of_cars = woodridgeford(url)
     elif "okotoksford" in url:
@@ -201,6 +235,12 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = camclarkfordairdrie(url)
     elif "integrityford" in url:
         list_of_cars = camclarkfordairdrie(url)
+    elif "moosejawfordsales" in url:
+        list_of_cars = camclarkfordairdrie(url)
+    elif "bennettdunlopford" in url:
+        list_of_cars = camclarkfordairdrie(url)
+    elif "rivercityford" in url:
+        list_of_cars = camclarkfordairdrie(url)
     elif "zenderford" in url:
         list_of_cars = zenderford(url)
     elif "boundaryford" in url:
@@ -214,6 +254,13 @@ def get_car_info_from_web(url: str) -> list:
     elif "legacyfordrimbey" in url:
         list_of_cars = zenderford(url)
     elif "vegford" in url:
+        list_of_cars = zenderford(url)
+    elif "vickarford" in url:
+        list_of_cars = zenderford(url)
+    elif "mid-townford" in url:
+        list_of_cars = zenderford(url)
+    # multi-page
+    elif "greatplainsford" in url:
         list_of_cars = zenderford(url)
     elif "highriverford" in url:
         list_of_cars = highriverford(url)
@@ -917,12 +964,12 @@ def camclarkfordairdrie(url: str) -> list:
         return car_info
 
     # # # Function Main
-    if 'integrityford' in url:
-        main_soup, driver = get_main_soup_n_driver(url, cf_tag='h5',
+    if 'camclarkfordairdrie' in url:
+        main_soup, driver = get_main_soup_n_driver(url, cf_tag='p',
                                                    cf_class_attrs={"class": "srp__found-header wrapper"},
                                                    cs_tag="div", cs_class_attrs={"class": "mb-lg grid-view col"})
     else:
-        main_soup, driver = get_main_soup_n_driver(url, cf_tag='p',
+        main_soup, driver = get_main_soup_n_driver(url, cf_tag='h5',
                                                    cf_class_attrs={"class": "srp__found-header wrapper"},
                                                    cs_tag="div", cs_class_attrs={"class": "mb-lg grid-view col"})
 
@@ -1066,9 +1113,26 @@ def collegefordlincoln(url: str) -> list:
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
 
-        car_info = {"car_name": get_car_name(soap, html_tag='h2', attrs={'class': 'centered'}),
-                    "price": get_car_price(soap, html_tag='span', attrs={'data-field': 'selected_price'}),
-                    "website": website}
+        car_info = { "website": website }
+
+        if "royalford.ca" in website:
+            raw_car_name = get_car_name(soap, html_tag='h2', attrs={'class': 'centered'})
+            car_name_pieces = raw_car_name.split('\n')[:4]
+            car_info["car_name"] = " ".join(car_name_pieces)
+        else:
+            car_info["car_name"] = get_car_name(soap, html_tag='h2', attrs={'class': 'centered'})
+
+        # For Price
+        if "northlandford.mb.ca" in website:
+            car_info["price"] = get_car_price(soap, html_tag='span', attrs={'class': 'fee-value'})
+        else:
+            # For "formomotors.com"
+            price_html = soap.find('span', attrs={'data-field': 'selected_price'})
+            dealer_price = price_html.find('div', attrs={'class': 'fee-row dealerPrice'})
+            if dealer_price is None:
+                car_info["price"] = get_car_price(soap, html_tag='span', attrs={'data-field': 'selected_price'})
+            else:
+                car_info["price"] = get_car_price(soap, html_tag='div', attrs={'class': 'fee-row dealerPrice'})
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='li')
 
@@ -1083,11 +1147,21 @@ def collegefordlincoln(url: str) -> list:
 
         return car_info
 
-    main_soup, driver = get_main_soup_n_driver(url, cf_tag='span', cf_class_attrs={"class": "match-count"},
-                                               cars_count_in_soup=cars_count_in_soup,
-                                               cs_tag="div", cs_class_attrs={'class': 'table-row lg'})
+    # # # Function Main
+    if "royalford.ca" in url or "hometownford.ca" in url:
+        main_soup, driver = get_main_soup_n_driver(url, cf_tag='span', cf_class_attrs={"class": "match-count"},
+                                                   cars_count_in_soup=cars_count_in_soup,
+                                                   cs_tag="div", cs_class_attrs={'class': 'table-row lg md'})
+    else:
+        main_soup, driver = get_main_soup_n_driver(url, cf_tag='span', cf_class_attrs={"class": "match-count"},
+                                                   cars_count_in_soup=cars_count_in_soup,
+                                                   cs_tag="div", cs_class_attrs={'class': 'table-row lg'})
+
     list_of_car_info = []
-    all_div_table_row_lg = main_soup.find_all('div', attrs={'class': 'table-row lg'})
+    if "royalford.ca" in url or "hometownford.ca" in url:
+        all_div_table_row_lg = main_soup.find_all('div', attrs={'class': 'table-row lg md'})
+    else:
+        all_div_table_row_lg = main_soup.find_all('div', attrs={'class': 'table-row lg'})
     for div_table_row_lg in all_div_table_row_lg:
         all_div_padding = div_table_row_lg.find_all('div', attrs={'class': 'padding'})
         for div_padding in all_div_padding:
@@ -1104,6 +1178,13 @@ def zenderford(url: str) -> list:
     :param url: Website url from where to scrape
     :return list: list of car_info dictionaries
     """
+    def get_max_pages(main_soap):
+        try:
+            max_page_str = main_soap.find('div', attrs={'class': 'pagination__numbers'}).span.getText()
+            max_page_num = extract_integer(max_page_str)
+        except:
+            max_page_num = 1
+        return max_page_num
 
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
@@ -1136,18 +1217,55 @@ def zenderford(url: str) -> list:
                                                cs_tag="div", cs_class_attrs={"class", "mb-lg grid-view col"})
 
     list_of_car_info = []  # car_info: dict
-    all_a_vehicle = main_soup.find_all('a', href=True,
-                                       attrs={'class': 'button gtm_vehicle_tile_cta vehicle-card__cta'})
-    for a_vehicle in all_a_vehicle:
-        if a_vehicle.has_attr("href"):
-            single_car_url = a_vehicle["href"]
 
-            driver.get(single_car_url)
+    if 'greatplainsford' in url:
+        # Cars on multiple pages
+        max_pages = get_max_pages(main_soup)
+        current_page = 1
+
+        current_loop_runs = 0
+        while current_page <= max_pages:
+            current_loop_runs += 1
+
+            # Scrape all cars on a single page
+            all_a_vehicle = main_soup.find_all('a', href=True,
+                                               attrs={'class': 'button gtm_vehicle_tile_cta vehicle-card__cta'})
+            for a_vehicle in all_a_vehicle:
+                if a_vehicle.has_attr("href"):
+                    single_car_url = a_vehicle["href"]
+
+                    driver.get(single_car_url)
+                    page = driver.page_source
+                    time.sleep(4)
+                    soup = BeautifulSoup(page, 'html.parser')
+
+                    list_of_car_info.append(get_car_info(soup, url))
+
+            # visi all pages
+            url = url.replace(f'pg={current_page}', f'pg={current_page + 1}')
+            current_page += 1
+            time.sleep(2)
+            driver.get(url)
             page = driver.page_source
-            time.sleep(1)
-            soup = BeautifulSoup(page, 'html.parser')
+            main_soup = BeautifulSoup(page, 'html.parser')
+            # print(f'loop status: ', current_loop_runs, FAIL_SAFE_RUNS)
+            if current_loop_runs > FAIL_SAFE_RUNS:
+                # print(current_loop_runs, FAIL_SAFE_RUNS)
+                break
+    else:
+        # All cars on single page
+        all_a_vehicle = main_soup.find_all('a', href=True,
+                                           attrs={'class': 'button gtm_vehicle_tile_cta vehicle-card__cta'})
+        for a_vehicle in all_a_vehicle:
+            if a_vehicle.has_attr("href"):
+                single_car_url = a_vehicle["href"]
 
-            list_of_car_info.append( get_car_info(soup, url) )
+                driver.get(single_car_url)
+                page = driver.page_source
+                time.sleep(1)
+                soup = BeautifulSoup(page, 'html.parser')
+
+                list_of_car_info.append( get_car_info(soup, url) )
 
     driver.quit()
 

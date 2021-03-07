@@ -108,10 +108,11 @@ def get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicle
         current_loop_runs += 1
         time.sleep(4)
         car_page_links.extend(get_car_page_links(main_soup, 'a', attrs={'class': 'sc-oTAMn cEnJNJ'}))
-
-        next_page_soup = main_soup.find_all('a', attrs={'class': 'sc-ptbNe hCFcIE'})[-1]
-
-        if next_page_soup.getText() == 'Next':
+        try:
+            next_page_soup = main_soup.find_all('a', attrs={'class': 'sc-ptbNe hCFcIE'})[-1]
+        except:
+            next_page_soup = None
+        if next_page_soup is not None and next_page_soup.getText() == 'Next':
             next_page_link = next_page_soup["href"]
             next_page_link = base_url + next_page_link
 
@@ -203,6 +204,8 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = woodridgeford(url)
     elif "advantageford" in url:
         list_of_cars = woodridgeford(url)
+    elif "countryford.ca" in url:
+        list_of_cars = woodridgeford(url)
     elif "zarownymotors" in url:
         list_of_cars = zarowny_n_westlock(url)
     elif "westlockford" in url:
@@ -219,6 +222,18 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = zarowny_n_westlock(url)
     elif "harwoodford" in url:
         list_of_cars = zarowny_n_westlock(url)
+    elif "discoveryfordsales.com" in url:
+        list_of_cars = zarowny_n_westlock(url)
+    elif "langenburgmotors.com" in url:
+        list_of_cars = zarowny_n_westlock(url)
+    elif "melodymotors.com" in url:
+        list_of_cars = zarowny_n_westlock(url)
+    elif "valleyfordhague.ca" in url:
+        list_of_cars = zarowny_n_westlock(url)
+    elif "fairwayford.ca" in url:
+        list_of_cars = zarowny_n_westlock(url)
+    elif "coldlakeford.com" in url:
+        list_of_cars = zarowny_n_westlock(url)
     elif "fourlaneford" in url:
         list_of_cars = fourlane(url)
     elif "aspenford" in url:
@@ -226,6 +241,10 @@ def get_car_info_from_web(url: str) -> list:
     elif "webbsford" in url:
         list_of_cars = fourlane(url)
     elif "suncityford" in url:
+        list_of_cars = fourlane(url)
+    elif "pineridgeford.com" in url:
+        list_of_cars = fourlane(url)
+    elif "wilfselieford.ca" in url:
         list_of_cars = fourlane(url)
     elif "marlborough" in url:
         list_of_cars = marlborough(url)
@@ -262,6 +281,10 @@ def get_car_info_from_web(url: str) -> list:
     # multi-page
     elif "greatplainsford" in url:
         list_of_cars = zenderford(url)
+    elif "esterhazyford.ca" in url:
+        list_of_cars = zenderford(url)
+    elif "futureford.ca" in url:
+        list_of_cars = zenderford(url)
     elif "highriverford" in url:
         list_of_cars = highriverford(url)
     elif "hansenford" in url:
@@ -274,6 +297,23 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = strathmoreford(url)
     elif "revolutionford" in url:
         list_of_cars = revolutionford(url)
+    elif "novlanbros.com" in url:
+        list_of_cars = novlanbros(url)
+    elif "knightfordlincoln.ca" in url:
+        list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
+    elif "capitalfordlincoln.com" in url:
+        list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
+    elif "capitalfordwinnipeg.ca" in url:
+        list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
+    elif "cypressmotors.com" in url:
+        list_of_cars = cypressmotors(url)
+    elif "birchwoodford.ca" in url:
+        list_of_cars = birchwoodford(url)
+    elif "merlinford.com" in url:
+        list_of_cars = merlinford(url)
+    elif "kelleherford.com" in url:
+        list_of_cars = kelleherford(url)
+
     # elif "westlockford" in url:
     #     list_of_cars = westlockford(url)
 
@@ -436,14 +476,12 @@ def woodridgeford(url: str) -> list:
 
     def get_car_mileage(soap):
         """ Intended to return single value """
-        search_mileage = 'Mileage:'
-        html_mileage_payment = soap.find('p', attrs={'class': 'mileage-payment'})
+        html_mileage_payment = soap.find('span', attrs={'itemprop': 'mileageFromOdometer'})
         try:
             car_mileage = html_mileage_payment.getText()
-            car_mileage = car_mileage.split(search_mileage)[1]
             mileage = extract_integer(car_mileage)
         except:
-            mileage = ""
+            mileage = None
         return mileage
 
     def get_car_info(soap, website):
@@ -647,6 +685,10 @@ def fourlane(url: str) -> list:
         base_url = 'https://www.webbsford.com'
     elif "suncityford" in url:
         base_url = 'https://www.suncityford.ca'
+    elif "pineridgeford.com" in url:
+        base_url = 'https://www.pineridgeford.com'
+    elif "wilfselieford.ca" in url:
+        base_url = "https://www.wilfselieford.ca"
     else:
         base_url = 'https://www.fourlaneford.com'
 
@@ -1024,7 +1066,7 @@ def get_car_specs_raw(soap, html_tag='li', attrs=None):
     spec_list = []
     car_specs = soap.find_all(html_tag, attrs=attrs)
     for spec in car_specs:
-        spec_list.append( spec.getText() )
+        spec_list.append( spec.getText().strip() )
 
     return spec_list
 
@@ -1218,7 +1260,7 @@ def zenderford(url: str) -> list:
 
     list_of_car_info = []  # car_info: dict
 
-    if 'greatplainsford' in url:
+    if 'greatplainsford' in url or "esterhazyford.ca" in url or "futureford.ca" in url:
         # Cars on multiple pages
         max_pages = get_max_pages(main_soup)
         current_page = 1
@@ -1496,6 +1538,8 @@ def northstarfordcarsandtrucks(url: str) -> list:
 
             list_of_car_info.append(get_car_info(soup, url))
 
+    driver.quit()
+
     return list_of_car_info
 
 
@@ -1644,7 +1688,7 @@ def revolutionford(url: str) -> list:
             soup = BeautifulSoup(page, 'html.parser')
             list_of_car_info.append(get_car_info(soup, url))
 
-        # visi all pages
+        # visit all pages
         url = url.replace(f'page/{current_page}', f'page/{current_page + 1}')
         current_page += 1
         time.sleep(2)
@@ -1655,5 +1699,424 @@ def revolutionford(url: str) -> list:
         if current_loop_runs > FAIL_SAFE_RUNS:
             # print(current_loop_runs, FAIL_SAFE_RUNS)
             break
+
+    driver.quit()
+
+    return list_of_car_info
+
+
+def novlanbros(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+        website = website.split('#')[0]
+        car_info = {"car_name": get_car_name(soap, 'h2', attrs={'class': 'fn'}),
+                    "price": get_car_price(soap, 'dd', {'class': 'vehicle_price'}), "website": website}
+
+        raw_car_specs = soap.find('div', attrs={'class': 'e-description description'}).getText().split('\n')
+
+        search_dict = {"mileage": "Odometer: ", "exterior": "Exterior: ",
+                       "transmission": "Transmission: ", "engine": "Engine: "}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        return car_info
+
+    # # # Function Main
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag='span', cf_class_attrs={"class": "stock stock-size"},
+                                               cs_tag="div",
+                                               cs_class_attrs={"class": "h-product hproduct vehicleModule"})
+    list_of_car_info = []
+    all_class_outside_box = main_soup.find_all('div', attrs={'class': 'h-product hproduct vehicleModule'})
+    for class_outside_box in all_class_outside_box:
+        list_of_car_info.append(get_car_info(class_outside_box, url))
+
+    driver.quit()
+
+    return list_of_car_info
+
+
+def knightfordlincoln_n_capitalfordlincoln(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+
+    # Website specific function
+    def get_max_pages(main_soap):
+        try:
+            max_page_str = main_soap.find('div', attrs={'class': 'pagination-state'}).getText()
+            max_page_str = max_page_str.split('of')[-1]
+            max_page_num = extract_integer(max_page_str)
+        except:
+            max_page_num = 1
+        return max_page_num
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+
+        car_info = {"car_name": get_car_name(soap, html_tag='h1', attrs={}),
+                    "price": get_car_price(soap, html_tag='span', attrs={'class': 'pricing-item__price'}),
+                    "website": website}
+
+        raw_car_specs = get_car_specs_raw(soap, html_tag='li', attrs={'class': 'basic-info-item'})
+
+        search_dict = {"mileage": "Odometer:\n", "exterior": "Exterior:\n",
+                       "drivetrain": "Drivetrain:\n", "transmission": "Transmission:\n", "engine": "Engine:\n"}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        return car_info
+
+    # # # Function Main
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag='span', cf_class_attrs={'id': 'results-title'},
+                                               cs_tag="div",
+                                               cs_class_attrs={"class": "result-wrap used-vehicle stat-image-link"})
+
+    list_of_car_info = []  # car_info: dict
+    max_pages = get_max_pages(main_soup) - 1  # It starts from 0
+    current_page = 0
+
+    current_loop_runs = 0
+    while current_page <= max_pages:
+        current_loop_runs += 1
+
+        all_car_cards = main_soup.find_all('div', attrs={'class': 'result-wrap used-vehicle stat-image-link'})
+        for car_card in all_car_cards:
+            link_soup = car_card.find('a', {'class': 'hit-link'}, href=True)
+            car_page_link = link_soup["href"]
+
+            # Visit car page
+            page = requests.get(car_page_link)
+            soup = BeautifulSoup(page.content, 'html.parser')
+            time.sleep(1)
+            list_of_car_info.append(get_car_info(soup, url))
+
+        # visi all pages
+        url = url.replace(f'_p={current_page}', f'_p={current_page + 1}')
+        current_page += 1
+        time.sleep(2)
+        driver.get(url)
+        page = driver.page_source
+        main_soup = BeautifulSoup(page, 'html.parser')
+        # print(f'loop status: ', current_loop_runs, FAIL_SAFE_RUNS)
+        if current_loop_runs > FAIL_SAFE_RUNS:
+            # print(current_loop_runs, FAIL_SAFE_RUNS)
+            break
+
+    driver.quit()
+
+    return list_of_car_info
+
+
+def cypressmotors(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+    def get_car_city(soap, html_tag='span', attrs=None):
+        """ soap should be car info page """
+        try:
+            city = soap.find(html_tag, attrs=attrs).getText().strip()
+        except:
+            city = ""
+        return city
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+
+        car_info = {"car_name": get_car_name(soap, html_tag='a', attrs={'class': 'vehicle-title'}),
+                    "price": get_car_price(soap, html_tag='div', attrs={'class': 'price_value'}),
+                    "city": get_car_city(soap, html_tag='span', attrs={'class': 'inventory-item_sub-title_item'}),
+                    "website": website}
+
+        raw_car_specs = get_car_specs_raw(soap, html_tag='li', attrs={})
+
+        search_dict = {"mileage": "Mileage: ", "drivetrain": "Drivetrain: ", "transmission": "Transmission:\n",
+                       "engine": "Engine: "}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        return car_info
+
+    # # # Function Main
+    if ENV == "prod":
+        opts = webdriver.FirefoxOptions()
+        opts.add_argument("--headless")
+        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH, options=opts)
+    else:
+        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
+    driver.get(url)
+    page = driver.page_source
+    main_soup = BeautifulSoup(page, 'html.parser')
+    car_count_str = main_soup.find('div', {'class': 'inventory-heading_count'}).getText()
+    total_cars = extract_integer(car_count_str)
+    driver.quit()
+    url = url + f'?limit={total_cars}'
+
+    main_soup, driver = get_main_soup_n_driver(url, cf_tag='div', cf_class_attrs={'class': 'inventory-heading_count'},
+                                               cs_tag="div",
+                                               cs_class_attrs={"class": "inventory-item clearfix js-vehicle-item"})
+
+    list_of_car_info = []
+    all_vehicle_cards = main_soup.find_all('div', attrs={"class": "inventory-item clearfix js-vehicle-item"})
+    for vehicle_card in all_vehicle_cards:
+        list_of_car_info.append(get_car_info(vehicle_card, url))
+
+    driver.quit()
+
+    return list_of_car_info
+
+
+def birchwoodford(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+
+    def get_all_car_page_links(url='https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
+                               base_url='https://www.birchwoodford.ca') -> list:
+        # All car page links
+        car_page_links = []
+
+        page = requests.get(url)
+        main_soup = BeautifulSoup(page.content, 'html.parser')
+
+        total_cars = cars_found(main_soup, html_tag='span', attrs={'class': 'result-count'})
+        print(f'Total cars on page: {total_cars}')
+        current_page = 1
+        current_loop_runs = 0
+        while len(car_page_links) < total_cars:
+            current_loop_runs += 1
+            time.sleep(4)
+
+            # Get car page links
+            car_card_soups = main_soup.find_all('div', {'class': 'phoenix4-vehiclecard'})
+            for car_card in car_card_soups:
+                link_in_list = get_car_page_links(car_card)
+                car_page_links.append(base_url + link_in_list[0])
+
+            # Go to next page
+            url = url.replace(f'results_page={current_page}', f'results_page={current_page + 1}')
+            current_page += 1
+            page = requests.get(url)
+            main_soup = BeautifulSoup(page.content, 'html.parser')
+
+            print(f'Cars currently in car_page_link: {len(car_page_links)}')
+            if current_loop_runs == FAIL_SAFE_RUNS:
+                break
+
+        return car_page_links
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+
+        car_info = {"car_name": get_car_name(soap, html_tag='h1', attrs={}),
+                    "price": get_car_price(soap, 'span', {'class': 'price-value'}),
+                    "website": website}
+
+        li_soap = soap.find('ul', {'class': 'feature-or-specification-list'})
+        raw_car_specs = get_car_specs_raw(li_soap, html_tag='li', attrs={})
+
+        search_dict = {"city": "Location: ", "mileage": "Mileage: ", "exterior": "Exterior Colour: ",
+                       "drivetrain": "Drive Type: ", "transmission": "Transmission: ", "engine": "Engine: "}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        return car_info
+
+    # # # Function Main
+    if "birchwoodford.ca" in url:
+        base_url = 'https://www.birchwoodford.ca'
+    else:
+        base_url = None
+    car_page_links = get_all_car_page_links(url, base_url)
+
+    list_of_car_info = []  # car_info: dict
+    for single_car_page_link in car_page_links:
+        page = requests.get(single_car_page_link)
+        soup = BeautifulSoup(page.content, 'html.parser')
+        time.sleep(2)
+        list_of_car_info.append(get_car_info(soup, url))
+
+    return list_of_car_info
+
+
+def merlinford(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+
+    def main_soup_n_driver_scroll_down(url, driver=None):
+        if driver is None:
+            if ENV == "prod":
+                opts = webdriver.FirefoxOptions()
+                opts.add_argument("--headless")
+                driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH,
+                                           options=opts)
+            else:
+                driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
+        driver.get(url)
+        # execute script to scroll down the page
+        driver.execute_script(
+            "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+        page = driver.page_source
+        main_soup = BeautifulSoup(page, 'html.parser')
+        return main_soup, driver
+
+    def get_car_mileage(soap, html_tag='span', attrs: dict = None):
+        try:
+            price_html = soap.find(html_tag, attrs=attrs)
+            price = extract_integer(price_html.getText())
+        except:
+            price = None
+        return price
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+
+        car_info = {"car_name": get_car_name(soap, 'h3', {'class': 'pt-4'}),
+                    "mileage": get_car_mileage(soap, 'span', {'class': 'mileage-value'}),
+                    "price": get_car_price(soap, 'strong', {'class': 'price-label'}),
+                    "website": website}
+
+        raw_car_specs = get_car_specs_raw(soap, html_tag='div', attrs={'class': 'w-4/5'})
+
+        search_dict = {"exterior": "Exterior:\xa0", "drivetrain": "Drivetrain:\xa0",
+                       "transmission": "Transmission:\xa0", "engine": "Engine:\xa0"}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        return car_info
+
+    # # # Function Main
+    main_soup, driver = main_soup_n_driver_scroll_down(url)
+
+    list_of_car_info = []
+    total_cars = cars_found(main_soup, html_tag='p',
+                            attrs={'class': 'text-4xl font-semibold leading-none text-primary lg:pr-2 total-value'})
+    current_page = 1
+    current_loop_runs = 0
+    while len(list_of_car_info) < total_cars:
+        current_loop_runs += 1
+        print(f'Scraping on Page: {current_page}')
+        # Scrape all cars on a single page
+        all_vehicle_card = main_soup.find_all('div', {'class': 'vehicle-card'})
+        for vehicle_card_soup in all_vehicle_card:
+            list_of_car_info.append(get_car_info(vehicle_card_soup, url))
+
+        # visi all pages
+        url = url.replace(f'pag={current_page}', f'pag={current_page + 1}')
+        current_page += 1
+        time.sleep(2)
+
+        main_soup, driver = main_soup_n_driver_scroll_down(url, driver)
+
+        if current_loop_runs > FAIL_SAFE_RUNS:
+            # print(current_loop_runs, FAIL_SAFE_RUNS)
+            break
+
+    driver.quit()
+
+    return list_of_car_info
+
+
+def kelleherford(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+
+    def main_soup_n_driver_scroll_down(url, driver=None):
+        if driver is None:
+            if ENV == "prod":
+                opts = webdriver.FirefoxOptions()
+                opts.add_argument("--headless")
+                driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH,
+                                           options=opts)
+            else:
+                driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
+        driver.get(url)
+        # execute script to scroll down the page
+        driver.execute_script(
+            "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+        page = driver.page_source
+        main_soup = BeautifulSoup(page, 'html.parser')
+        return main_soup, driver
+
+    def get_car_info(soap, website):
+        """ Return all the information in the car's card """
+
+        car_info = {"car_name": get_car_name(soap, 'a', {'class': 'title'}),
+                    "price": get_car_price(soap, 'strong', {'class': 'sale-price-value'}),
+                    "website": website}
+
+        raw_car_specs = get_car_specs_raw(soap, 'li', {'class': 'text-secondary'})
+
+        search_dict = {"mileage": "Mileage: ", "exterior": "Exterior: ", "drivetrain": "Drivetrain: ",
+                       "transmission": "Transmission: ", "engine": "Engine:  "}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        return car_info
+
+    # # # Function Main
+    main_soup, driver = main_soup_n_driver_scroll_down(url)
+
+    list_of_car_info = []
+    total_cars = cars_found(main_soup, html_tag='p', attrs={'class': 'text-primary'})
+    print(f'Total cars: {total_cars}')
+    current_page = 1
+    current_loop_runs = 0
+    while len(list_of_car_info) < total_cars:
+        current_loop_runs += 1
+        print(f'Scraping on Page: {current_page}')
+        # Scrape all cars on a single page
+        all_vehicle_card = main_soup.find_all('div', {'class': 'card-1-inventory-item'})
+        for vehicle_card_soup in all_vehicle_card:
+            list_of_car_info.append(get_car_info(vehicle_card_soup, url))
+
+        print(f'Cars done: {len(list_of_car_info)}')
+        # visi all pages
+        url = url.replace(f'pag={current_page}', f'pag={current_page + 1}')
+        current_page += 1
+        time.sleep(2)
+
+        main_soup, driver = main_soup_n_driver_scroll_down(url, driver)
+
+        if current_loop_runs > FAIL_SAFE_RUNS:
+            # print(current_loop_runs, FAIL_SAFE_RUNS)
+            break
+
+    driver.quit()
 
     return list_of_car_info

@@ -14,9 +14,6 @@ Project is designed to be deployed on Heroku.
 
     $ heroku ps:exec
 
-### Luxury ToDos
-- Make scroll page down dynamic
-
 ### Features / things done
 ##### Resources:
 https://towardsdatascience.com/data-science-skills-web-scraping-javascript-using-python-97a29738353f

@@ -3,19 +3,27 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import re
+import io
 import time
 from os import getenv
-# import pandas as pd
+from os.path import join
+from PIL import Image
+import hashlib
+from datetime import datetime
+from pathlib import Path
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 FAIL_SAFE_RUNS = 20
 FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
 firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
 GECKODRIVER_PATH = getenv("GECKODRIVER_PATH", "/home/teemo/softwares/geckodriver")
+DIRECTORY_PATH = "/home/teemo/free_work"
 CAR_CUT_PRICE = 20_000
 
 ENV = getenv("ENV")
 
+current_day = datetime.now().strftime("%Y-%m-%d")
+DIR_PATH = join(DIRECTORY_PATH, current_day)
 # ==========  Helper functions ==========
 def process_mileage(raw_num='2,000  km'):
     """ :returns : mileage in Kilometers """
@@ -123,6 +131,33 @@ def get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicle
         if current_loop_runs == FAIL_SAFE_RUNS:
             break
     return car_page_links
+
+
+def persist_image(dir_path: str, url: str):
+    # create dir if doesn't exists
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+    error_return = None
+    try:
+        image_content = requests.get(url).content
+    except Exception as e:
+        print(f"ERROR - Could not download {url} - {e}")
+        return error_return
+
+    try:
+        image_file = io.BytesIO(image_content)
+        image = Image.open(image_file).convert('RGB')
+        file_path = join(dir_path, hashlib.sha1(image_content).hexdigest()[:20] + '.jpg')
+        #     file_path = os.path.join(folder_path, "123" + '.jpg')
+
+        with open(file_path, 'wb') as f:
+            image.save(f, "JPEG", quality=85)
+        # print(f"SUCCESS - saved {url} - as {file_path}")
+    except Exception as e:
+        print(f"ERROR - Could not save {url} - {e}")
+        return error_return
+
+    return file_path
 
 # ========== main function ==========
 def filter_cars(car: dict) -> bool:
@@ -329,6 +364,13 @@ def get_car_info_from_web(url: str) -> list:
 
 
 # ========== Web scrapping functions ==========
+def get_car_image_link_n_save(soap: BeautifulSoup, html_tag: str, attrs: dict, dir_path: str = DIR_PATH):
+    try:
+        image_url = soap.find(html_tag, attrs=attrs)["src"]
+        save_path = persist_image(dir_path, image_url)
+    except:
+        save_path = None
+    return save_path
 
 
 def regal_n_junct_north(url: str = 'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html') -> list:
@@ -560,6 +602,7 @@ def zarowny_n_westlock(url: str) -> list:
         """ Return all the information in the car's card """
         car_info = {"car_name": get_car_name(soap),
                     "price": get_car_price(soap, html_tag='strong', attrs={'class': 'price _bpcolor'}),
+                    "img_path": get_car_image_link_n_save(soap, 'img', {'class': 'img-defer'}),
                     "website": website}
 
         raw_car_specs = get_car_specs_raw(soap)

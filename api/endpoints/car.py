@@ -1,4 +1,4 @@
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter,File, UploadFile
 
 from database import SessionLocal, engine, Base, get_db
 from models.db_models.car import CarDB
@@ -10,7 +10,6 @@ from web_scrapper import get_car_info_from_web
 from datetime import date
 
 Base.metadata.create_all(bind=engine)
-
 
 router = APIRouter()
 # car1 = Car(carName="toyota")
@@ -66,7 +65,7 @@ async def add_cars(db: Session = Depends(get_db)):
         # 'https://www.advantageford.ca/used/',
         # 'https://www.countryford.ca/used/',
 
-        # 'https://www.zarownymotors.com/inventory/search?stock_type=Used&page=1&page_length=100',
+        'https://www.zarownymotors.com/inventory/search?stock_type=Used&page=1&page_length=100',
         # 'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',
         # 'https://www.griffithsford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC&query=',
         # 'https://www.rainbowford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC',
@@ -126,7 +125,7 @@ async def add_cars(db: Session = Depends(get_db)):
         # 'https://www.cypressmotors.com/used-vehicles-swift-current-sk',
         # 'https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
         # 'https://merlinford.com/used-inventory/?pag=1',
-        'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
+        # 'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
     ]
     # url_list = ['https://www.regalmotorsltd.com/used/used-vehicle-inventory.html']
     done_for = []

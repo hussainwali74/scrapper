@@ -51,7 +51,17 @@ def car_exists_in_db(db: Session, incoming_car: CarDB):
     res = db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior,
                                  CarDB.price == price).all()
 
-    return True if len(res) else False
+    # Prob: If old car saved didn't have an image.
+    # On next run the incoming car object might have image saved.
+    if len(res):
+        one_car = res[0]
+        if one_car.img_path == "":
+            return False
+        else:
+            return True
+    else:
+        return False
+
 
 def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
     """

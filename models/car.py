@@ -18,6 +18,7 @@ class Car(BaseModel):
     stock = str
     website = str
     entry_date: datetime
+    img_path: str
 
     class Config:
         orm_mode = True
@@ -37,6 +38,7 @@ class CarIN(BaseModel):
     stock: str
     website: str
     entry_date: datetime
+    img_path: str
 
     class Config:
         orm_mode = True

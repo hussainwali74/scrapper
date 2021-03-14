@@ -98,6 +98,24 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_coun
     return main_soup, driver
 
 
+def main_soup_n_driver_scroll_down(url, driver=None):
+    if driver is None:
+        if ENV == "prod":
+            opts = webdriver.FirefoxOptions()
+            opts.add_argument("--headless")
+            driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH,
+                                       options=opts)
+        else:
+            driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
+    driver.get(url)
+    # execute script to scroll down the page
+    driver.execute_script(
+        "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+    page = driver.page_source
+    main_soup = BeautifulSoup(page, 'html.parser')
+    return main_soup, driver
+
+
 def get_car_page_links(soap, html_tag='a', attrs: dict = None):
     car_page_links = []
     links_in_soap = soap.find_all(html_tag, attrs=attrs)
@@ -137,13 +155,24 @@ def get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicle
     return car_page_links
 
 
-def persist_image(dir_path: str, url: str):
+def persist_image(dir_path: str, url: str, driver):
     # create dir if doesn't exists
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-    error_return = None
+    headers = {
+        "User-Agent":
+            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
+    }
+    s = requests.session()
+    s.headers.update(headers)
+
+    for cookie in driver.get_cookies():
+        c = {cookie['name']: cookie['value']}
+        s.cookies.update(c)
+
+    error_return = ""
     try:
-        image_content = requests.get(url).content
+        image_content = s.get(url, allow_redirects=True).content
     except Exception as e:
         print(f"ERROR - Could not download {url} - {e}")
         return error_return
@@ -251,8 +280,6 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = zarowny_n_westlock(url)
     elif "griffithsford" in url:
         list_of_cars = zarowny_n_westlock(url)
-    elif "rainbowford" in url:
-        list_of_cars = zarowny_n_westlock(url)
     elif "bigmford" in url:
         list_of_cars = zarowny_n_westlock(url)
     elif "jerryford" in url:
@@ -264,9 +291,15 @@ def get_car_info_from_web(url: str) -> list:
     elif "discoveryfordsales.com" in url:
         list_of_cars = zarowny_n_westlock(url)
     elif "langenburgmotors.com" in url:
-        list_of_cars = zarowny_n_westlock(url)
+        try:
+            list_of_cars = zarowny_n_westlock(url)
+        except:
+            list_of_cars = zarowny_n_westlock(url)
     elif "melodymotors.com" in url:
-        list_of_cars = zarowny_n_westlock(url)
+        try:
+            list_of_cars = zarowny_n_westlock(url)
+        except:
+            list_of_cars = zarowny_n_westlock(url)
     elif "valleyfordhague.ca" in url:
         list_of_cars = zarowny_n_westlock(url)
     elif "fairwayford.ca" in url:
@@ -352,6 +385,8 @@ def get_car_info_from_web(url: str) -> list:
         list_of_cars = merlinford(url)
     elif "kelleherford.com" in url:
         list_of_cars = kelleherford(url)
+    elif "rainbowford" in url:
+        list_of_cars = rainbowford(url)
 
     # elif "westlockford" in url:
     #     list_of_cars = westlockford(url)
@@ -2165,5 +2200,78 @@ def kelleherford(url: str) -> list:
             break
 
     driver.quit()
+
+    return list_of_car_info
+
+
+def rainbowford(url: str) -> list:
+    """
+    This Major function has minor website specific functions. They are defined in this function to avoid
+    function's names overlapping.
+    :param url: Website url from where to scrape
+    :return list: list of car_info dictionaries
+    """
+
+    def get_car_info(soap, car_image_link, url, driver):
+        """ Return all the information in the car's card """
+
+        image_save_path = persist_image(DIR_PATH, car_image_link, driver)
+
+        car_price = get_car_price(soap, html_tag='span', attrs={'class': 'h3'})
+        if car_price is None:
+            car_price = get_car_price(soap, html_tag='td', attrs={'class': 'table-rw'})
+
+        car_info = {"car_name": get_car_name(soap, 'h1', {'class': 'title h2'}),
+                    "price": car_price,
+                    "img_path": image_save_path,
+                    "website": url}
+
+        raw_car_specs = get_car_specs_raw(soap, html_tag='tr', attrs={})
+
+        search_dict = {"body_style": "Bodystyle\n", "mileage": "Mileage\n", "exterior": "Exterior Color\n",
+                       "drivetrain": "Drivetrain\n", "transmission": "Transmission\n", "engine": "Engine\n"}
+
+        car_specs = extract_car_specs(raw_car_specs, search_dict)
+
+        car_info.update(car_specs)
+
+        return car_info
+
+    # # # Function Main
+    main_soup, driver = main_soup_n_driver_scroll_down(url)
+
+    # script
+    list_of_car_info = []
+    # Scrape First Page
+    car_cards_list = main_soup.find_all('div', {'class': 'listing-list-loop'})
+    for car_card in car_cards_list:
+        # Get picture link
+        car_image_link = car_card.find('img', {'class': 'img-responsive wp-post-image'})["src"]
+
+        single_car_url = car_card.find('a', {'class': 'rmv_txt_drctn'})["href"]
+        soup, driver = main_soup_n_driver_scroll_down(single_car_url, driver)
+
+        list_of_car_info.append(get_car_info(soup, car_image_link, url, driver))
+
+    # Scrape Rest of the pages
+    next_page_link_html = main_soup.find("a", {'class': 'next page-numbers'})
+    while next_page_link_html is not None:
+        next_page_link = next_page_link_html["href"]
+
+        # Go to next page
+        main_soup, driver = main_soup_n_driver_scroll_down(next_page_link, driver)
+
+        car_cards_list = main_soup.find_all('div', {'class': 'listing-list-loop'})
+        for car_card in car_cards_list:
+            # Get picture link
+            car_image_link = car_card.find('img', {'class': 'img-responsive wp-post-image'})["src"]
+
+            single_car_url = car_card.find('a', {'class': 'rmv_txt_drctn'})["href"]
+            soup, driver = main_soup_n_driver_scroll_down(single_car_url, driver)
+
+            list_of_car_info.append(get_car_info(soup, car_image_link, url, driver))
+
+        # Check next page
+        next_page_link_html = main_soup.find("a", {'class': 'next page-numbers'})
 
     return list_of_car_info

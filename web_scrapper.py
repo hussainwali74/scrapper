@@ -172,6 +172,12 @@ def persist_image(dir_path: str, url: str, driver):
 
     error_return = ""
     try:
+        website_name = driver.current_url.split('.')[1]
+    except Exception as e:
+        print(f"Possible Error in driver.current_url - e {e}")
+        website_name = ""
+
+    try:
         image_content = s.get(url, allow_redirects=True).content
     except Exception as e:
         print(f"ERROR - Could not download {url} - {e}")
@@ -180,7 +186,7 @@ def persist_image(dir_path: str, url: str, driver):
     try:
         image_file = io.BytesIO(image_content)
         image = Image.open(image_file).convert('RGB')
-        file_path = join(dir_path, hashlib.sha1(image_content).hexdigest()[:20] + '.jpg')
+        file_path = join(dir_path, website_name+"_"+hashlib.sha1(image_content).hexdigest()[:20] + '.jpg')
         #     file_path = os.path.join(folder_path, "123" + '.jpg')
 
         with open(file_path, 'wb') as f:
@@ -2273,5 +2279,7 @@ def rainbowford(url: str) -> list:
 
         # Check next page
         next_page_link_html = main_soup.find("a", {'class': 'next page-numbers'})
+
+    driver.quit()
 
     return list_of_car_info

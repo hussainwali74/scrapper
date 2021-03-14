@@ -61,35 +61,39 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_coun
 
     print(page_url)
     # run firefox webdriver from executable pa`th of your choice
-    if ENV == "prod":
-        opts = webdriver.FirefoxOptions()
-        opts.add_argument("--headless")
-        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH, options=opts)
-    else:
-        driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
-    # get web page
-    driver.get(page_url)
-    time.sleep(6)
-    page = driver.page_source
-    main_soup = BeautifulSoup(page, 'html.parser')
-
-    cars_in_soup = 0
-    total_cars = cars_found(main_soup, html_tag=cf_tag, attrs=cf_class_attrs)
-    print(f'Total cars on page: {total_cars}')
-    current_loop_runs = 0
-    while cars_in_soup < total_cars:
-        current_loop_runs += 1
-        # execute script to scroll down the page
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-        time.sleep(5)
+    try:
+        if ENV == "prod":
+            opts = webdriver.FirefoxOptions()
+            opts.add_argument("--headless")
+            driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH, options=opts)
+        else:
+            driver = webdriver.Firefox(firefox_binary=firefox_binary_path, executable_path=GECKODRIVER_PATH)
+        # get web page
+        driver.get(page_url)
+        time.sleep(6)
         page = driver.page_source
         main_soup = BeautifulSoup(page, 'html.parser')
 
-        cars_in_soup = cars_count_in_soup(main_soup, html_tag=cs_tag, attrs=cs_class_attrs)
+        cars_in_soup = 0
+        total_cars = cars_found(main_soup, html_tag=cf_tag, attrs=cf_class_attrs)
+        print(f'Total cars on page: {total_cars}')
+        current_loop_runs = 0
+        while cars_in_soup < total_cars:
+            current_loop_runs += 1
+            # execute script to scroll down the page
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+            time.sleep(5)
+            page = driver.page_source
+            main_soup = BeautifulSoup(page, 'html.parser')
 
-        print(f'Cars currently in soup: {cars_in_soup}')
-        if current_loop_runs == FAIL_SAFE_RUNS:
-            break
+            cars_in_soup = cars_count_in_soup(main_soup, html_tag=cs_tag, attrs=cs_class_attrs)
+
+            print(f'Cars currently in soup: {cars_in_soup}')
+            if current_loop_runs == FAIL_SAFE_RUNS:
+                break
+
+    except:
+        driver.quit()
 
     return main_soup, driver
 
@@ -369,7 +373,7 @@ def get_car_image_link_n_save(soap: BeautifulSoup, html_tag: str, attrs: dict, d
         image_url = soap.find(html_tag, attrs=attrs)["src"]
         save_path = persist_image(dir_path, image_url)
     except:
-        save_path = None
+        save_path = ""
     return save_path
 
 
@@ -616,10 +620,10 @@ def zarowny_n_westlock(url: str) -> list:
         return car_info
 
     # # # Function Main
+    list_of_car_info = []
     main_soup, driver = get_main_soup_n_driver(url, cf_tag='div', cf_class_attrs={"class": "total-count"},
                                                cs_tag="li", cs_class_attrs={'class': 'vehicle-card-used'})
 
-    list_of_car_info = []
     all_class_vehicle_card = main_soup.find_all('li', attrs={'class': 'vehicle-card-used'})
 
     for class_vehicle_card in all_class_vehicle_card:

@@ -60,6 +60,6 @@ class CarDB(Base):
         self.img_path = img_path
 
     def __repr__(self):
-        return f"<Car(car_name: {self.car_name}, mileage: {self.mileage}, exterior: {self.exterior}, " \
+        return f"<Car(id: {self.id}, car_name: {self.car_name}, mileage: {self.mileage}, exterior: {self.exterior}, " \
                f"drivetrain: {self.drivetrain}, transmission: {self.transmission}, engine: {self.engine}, " \
                f"city: {self.city}, price: {self.price}, website: {self.website}, img_path: {self.img_path})"

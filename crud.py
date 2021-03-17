@@ -38,6 +38,13 @@ def get_car_by_specs(db: Session, car_info: dict):
     return db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior,
                                   CarDB.price == price).all()
 
+def delete_car(db: Session, car: CarDB):
+
+    car_obj = db.query(CarDB).filter(CarDB.id == car.id).first()
+    db.delete(car_obj)
+    print(f"Going to delete car with ID: {car_obj.id}")
+    return 0
+
 def car_exists_in_db(db: Session, incoming_car: CarDB):
     """
     :return: bool
@@ -48,6 +55,7 @@ def car_exists_in_db(db: Session, incoming_car: CarDB):
     price = incoming_car.price
     # print(f'type: {type(incoming_car)} ')
     # print(f'{incoming_car}')
+    # Returns list of CarDB
     res = db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior,
                                  CarDB.price == price).all()
 
@@ -56,6 +64,8 @@ def car_exists_in_db(db: Session, incoming_car: CarDB):
     if len(res):
         one_car = res[0]
         if one_car.img_path == "":
+            # Delete this car with null img_path
+            delete_car(db, one_car)
             return False
         else:
             return True
@@ -72,11 +82,12 @@ def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
     before moving to next, if False all car_ins are kinda stagged and commit outside this function via: db.commit()
     :return:
     """
+    # print(f'Car before jsonable_encoder: {car_in}')
     car_in_data = jsonable_encoder(car_in)
-    # car = CarDB(**car_in_data, id=None)
     car = CarDB(**car_in_data)
-
+    # print(f'Car after CarDB: {car}')
     if not car_exists_in_db(db, car):
+        print(f"Car doesn't exists in DB")
         db.add(car)
         if autocommit:
             db.commit()
@@ -86,6 +97,7 @@ def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
         car_ret = jsonable_encoder(car)
         car_ret["in_db"] = "Added"
     else:
+        print(f"Car exists in DB")
         car_ret = jsonable_encoder(car)
         car_ret["in_db"] = "Existed"
 

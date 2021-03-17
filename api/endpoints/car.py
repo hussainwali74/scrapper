@@ -129,8 +129,8 @@ async def add_cars(db: Session = Depends(get_db)):
     ]
     # url_list = ['https://www.regalmotorsltd.com/used/used-vehicle-inventory.html']
     done_for = []
-    car_count = 0
     for url in url_list:
+        car_count = 0
         print(f'For url: {url}')
         res = get_car_info_from_web(url)
         done_for.append(url)
@@ -207,7 +207,8 @@ async def add_single_car( db: Session = Depends(get_db) ):
     car_info = {'car_name': '2018 Ford F-350 Lariat | Nav | Quad Beams | BLIS | Only 37K!', 'price': 74221,
                 'website': 'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
                 'mileage': 37825, 'body_style': 'Truck', 'engine': '6.7L Power Stroke', 'exterior': 'White',
-                'transmission': '6 Speed Automatic', 'drivetrain': '4x4'}
+                'transmission': '6 Speed Automatic', 'drivetrain': '4x4',
+                'img_path': '/home/teemo/free_work/2021-03-16/regalmotorsltd_35cd61546bf51cd84c4f.jpg'}
     res = crud.create(db, car_in=car_info, autocommit=True)
     return res
 

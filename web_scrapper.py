@@ -9,6 +9,7 @@ from os import getenv
 from os.path import join
 from PIL import Image
 import hashlib
+import logging
 from datetime import datetime
 from pathlib import Path
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
@@ -59,7 +60,8 @@ def cars_count_in_soup(main_soap, html_tag='div', attrs: dict = None):
 def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_count_in_soup=cars_count_in_soup,
                            cs_tag=None, cs_class_attrs=None):
 
-    print(page_url)
+    logging.info(page_url)
+    scroll_down_units = 500
     # run firefox webdriver from executable pa`th of your choice
     try:
         if ENV == "prod":
@@ -76,21 +78,29 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_coun
 
         cars_in_soup = 0
         total_cars = cars_found(main_soup, html_tag=cf_tag, attrs=cf_class_attrs)
-        print(f'Total cars on page: {total_cars}')
+        logging.info(f'Total cars on page: {total_cars}')
         current_loop_runs = 0
         while cars_in_soup < total_cars:
             current_loop_runs += 1
             # execute script to scroll down the page
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+            # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+            # execute script to scroll down the page slowly
+            driver.execute_script(f"window.scrollTo(0, {str(scroll_down_units)} )")
+            scroll_down_units += 500
             time.sleep(5)
             page = driver.page_source
             main_soup = BeautifulSoup(page, 'html.parser')
 
             cars_in_soup = cars_count_in_soup(main_soup, html_tag=cs_tag, attrs=cs_class_attrs)
 
-            print(f'Cars currently in soup: {cars_in_soup}')
+            logging.info(f'Cars currently in soup: {cars_in_soup}')
             if current_loop_runs == FAIL_SAFE_RUNS:
                 break
+
+        for i in range(10):
+            driver.execute_script(f"window.scrollTo(0, {str(scroll_down_units)} )")
+            scroll_down_units += 500
+            time.sleep(1)
 
     except:
         driver.quit()
@@ -132,7 +142,7 @@ def get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicle
     main_soup = BeautifulSoup(page.content, 'html.parser')
 
     total_cars = cars_found(main_soup, html_tag='div', attrs={"class": "sc-puHdH fiyXIl"})
-    print(f'Total cars on page: {total_cars}')
+    logging.info(f'Total cars on page: {total_cars}')
     current_loop_runs = 0
     while len(car_page_links) < total_cars:
         current_loop_runs += 1
@@ -149,38 +159,40 @@ def get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicle
             page = requests.get(next_page_link)
             main_soup = BeautifulSoup(page.content, 'html.parser')
 
-        print(f'Cars currently in car_page_link: {len(car_page_links)}')
+        logging.info(f'Cars currently in car_page_link: {len(car_page_links)}')
         if current_loop_runs == FAIL_SAFE_RUNS:
             break
     return car_page_links
 
 
-def persist_image(dir_path: str, url: str, driver):
+def persist_image(dir_path: str, url: str, driver=None):
     # create dir if doesn't exists
     Path(dir_path).mkdir(parents=True, exist_ok=True)
+    logging.debug("persist_image")
 
-    headers = {
-        "User-Agent":
-            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
-    }
-    s = requests.session()
-    s.headers.update(headers)
+    if driver is not None:
+        headers = { 'User-Agent': 'Mozilla/5.0 (Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0' }
+        s = requests.session()
+        s.headers.update(headers)
 
-    for cookie in driver.get_cookies():
-        c = {cookie['name']: cookie['value']}
-        s.cookies.update(c)
+        for cookie in driver.get_cookies():
+            c = {cookie['name']: cookie['value']}
+            s.cookies.update(c)
 
     error_return = ""
     try:
         website_name = driver.current_url.split('.')[1]
     except Exception as e:
-        print(f"Possible Error in driver.current_url - e {e}")
+        logging.error(f"Possible Error in driver.current_url - e {e}")
         website_name = ""
 
     try:
-        image_content = s.get(url, allow_redirects=True).content
+        # image_content = s.get(url, allow_redirects=True).content
+        image_content = s.get(url, timeout=10).content
+    except requests.exceptions.Timeout as err:
+        logging.error(f'Could not download {url} - {err}')
     except Exception as e:
-        print(f"ERROR - Could not download {url} - {e}")
+        logging.error(f"ERROR - Could not download {url} - {e}")
         return error_return
 
     try:
@@ -191,9 +203,9 @@ def persist_image(dir_path: str, url: str, driver):
 
         with open(file_path, 'wb') as f:
             image.save(f, "JPEG", quality=85)
-        # print(f"SUCCESS - saved {url} - as {file_path}")
+        # logging.debug(f"SUCCESS - saved {url} - as {file_path}")
     except Exception as e:
-        print(f"ERROR - Could not save {url} - {e}")
+        logging.error(f"ERROR - Could not save {url} - {e}")
         return error_return
 
     return file_path
@@ -208,16 +220,19 @@ def filter_cars(car: dict) -> bool:
         return False
 
 def get_car_info_from_web(url: str) -> list:
-    print(" ------- print paths for firefox bin & geckodriver")
-    print(f'firefox: {FIREFOX_BIN}')
-    print(f'Gecko: {GECKODRIVER_PATH}')
+    logging.info(" ------- Starting Scrapping ------- ")
+    logging.info(f'firefox: {FIREFOX_BIN}')
+    logging.info(f'Gecko: {GECKODRIVER_PATH}')
     list_of_cars = None
     if "regalmotors" in url:
-        list_of_cars = regal_n_junct_north(url)
+        # list_of_cars = regal_n_junct_north(url)
+        list_of_cars = collegefordlincoln(url)
     elif "junctionmotors" in url:
-        list_of_cars = regal_n_junct_north(url)
+        # list_of_cars = regal_n_junct_north(url)
+        list_of_cars = collegefordlincoln(url)
     elif "northstarfordsales" in url:
-        list_of_cars = regal_n_junct_north(url)
+        # list_of_cars = regal_n_junct_north(url)
+        list_of_cars = collegefordlincoln(url)
     elif "collegefordlincoln" in url:
         list_of_cars = collegefordlincoln(url)
     elif "truenorthford" in url:
@@ -399,21 +414,23 @@ def get_car_info_from_web(url: str) -> list:
 
     # # # Apply universal checks
     if list_of_cars is not None:
-        print("get_car_info_from_web() Filtering cars now")
-        print("get_car_info_from_web() Based on price")
+        logging.info("get_car_info_from_web() Filtering cars now based on price")
         itr_object = filter( filter_cars, list_of_cars )
         return list( itr_object )
     else:
-        print("get_car_info_from_web() List_of_cars list is None")
+        logging.info("get_car_info_from_web() List_of_cars list is None")
         return []
 
 
 # ========== Web scrapping functions ==========
-def get_car_image_link_n_save(soap: BeautifulSoup, html_tag: str, attrs: dict, dir_path: str = DIR_PATH):
+def get_car_image_link_n_save(soap: BeautifulSoup, html_tag: str, attrs: dict, driver=None, dir_path: str = DIR_PATH):
     try:
+        logging.debug(f'img soup: {soap.find(html_tag, attrs=attrs)}')
         image_url = soap.find(html_tag, attrs=attrs)["src"]
-        save_path = persist_image(dir_path, image_url)
-    except:
+        logging.debug(image_url)
+        save_path = persist_image(dir_path, image_url, driver)
+    except Exception as err:
+        logging.error(f'Error in get_car_image_link_n_save() err - {err}')
         save_path = ""
     return save_path
 
@@ -643,11 +660,11 @@ def zarowny_n_westlock(url: str) -> list:
 
         return car_specs
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, driver):
         """ Return all the information in the car's card """
         car_info = {"car_name": get_car_name(soap),
                     "price": get_car_price(soap, html_tag='strong', attrs={'class': 'price _bpcolor'}),
-                    "img_path": get_car_image_link_n_save(soap, 'img', {'class': 'img-defer'}),
+                    "img_path": get_car_image_link_n_save(soap, 'img', {'class': 'img-defer'}, driver),
                     "website": website}
 
         raw_car_specs = get_car_specs_raw(soap)
@@ -668,7 +685,7 @@ def zarowny_n_westlock(url: str) -> list:
     all_class_vehicle_card = main_soup.find_all('li', attrs={'class': 'vehicle-card-used'})
 
     for class_vehicle_card in all_class_vehicle_card:
-        list_of_car_info.append( get_car_info(class_vehicle_card, url) )
+        list_of_car_info.append( get_car_info(class_vehicle_card, url, driver) )
 
     driver.quit()
 
@@ -1219,6 +1236,15 @@ def collegefordlincoln(url: str) -> list:
     :param url: Website url from where to scrape
     :return list: list of car_info dictionaries
     """
+    def get_car_image_link_n_save(soap: BeautifulSoup, html_tag: str, attrs: dict, driver, dir_path: str = DIR_PATH):
+        try:
+            logging.debug(f'img soup: {soap.find(html_tag, attrs=attrs)}')
+            image_url = soap.find(html_tag, attrs=attrs)["data-original"]
+            save_path = persist_image(dir_path, image_url, driver)
+        except:
+            save_path = ""
+        return save_path
+
     def cars_count_in_soup(main_soap, html_tag='div', attrs: dict = None):
         """ Cars currently loaded in the main-soup object """
         count = 0
@@ -1240,11 +1266,13 @@ def collegefordlincoln(url: str) -> list:
     #     concat_car_name = " ".join(car_name_pieces)
     #     return concat_car_name
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, driver):
         """ Return all the information in the car's card """
-
-        car_info = { "website": website }
-
+        logging.debug("Collegeford.get_car_info() before image_link_n_save")
+        car_info = {"website": website,
+                    "img_path": get_car_image_link_n_save(soap, 'img', {'class': 'img-responsive'},
+                                                          driver)}
+        time.sleep(1)
         if "royalford.ca" in website:
             raw_car_name = get_car_name(soap, html_tag='h2', attrs={'class': 'centered'})
             car_name_pieces = raw_car_name.split('\n')[:4]
@@ -1295,7 +1323,7 @@ def collegefordlincoln(url: str) -> list:
     for div_table_row_lg in all_div_table_row_lg:
         all_div_padding = div_table_row_lg.find_all('div', attrs={'class': 'padding'})
         for div_padding in all_div_padding:
-            list_of_car_info.append( get_car_info(div_padding, website=url) )
+            list_of_car_info.append( get_car_info(div_padding, url, driver) )
 
     driver.quit()
 

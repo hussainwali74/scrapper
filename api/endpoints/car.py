@@ -5,6 +5,7 @@ from models.db_models.car import CarDB
 
 from sqlalchemy.orm import Session
 import crud
+import logging
 
 from web_scrapper import get_car_info_from_web
 from datetime import date
@@ -29,36 +30,36 @@ async def add_cars(db: Session = Depends(get_db)):
     # "uo", "yes", "https://www.google.com")
 
     url_list = [
-        # 'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
-        # 'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
-        # 'http://www.truenorthford.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.lambford.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.metroford.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.cslford.ca/used/used-vehicle-inventory.html?reset=2',
-        # 'https://www.norrisford.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.patriciafordsales.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.castleford.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.collegefordtaber.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.westergardford.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.royalford.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.jubileeford.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.senchuk.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.centennialford.sk.ca/used/used-vehicle-inventory.html',
-        # 'https://www.formomotors.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.meritford.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.twowayservice.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.northlandford.mb.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.rhinelandcar.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.steeltownford.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.gimliford.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.hometownford.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.kelleherforddauphin.com/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.metcalfesgarage.ca/used/used-vehicle-inventory.html?reset=1',
-        # 'https://www.roblinfordsales.com/used/used-vehicle-inventory?reset=1',
-        # 'https://www.virdenford.ca/pre-owned/pre-owned-vehicle-inventory.html?reset=1',
-        # 'https://www.westwardford.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
+        'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
+        'http://www.truenorthford.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.lambford.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.metroford.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.cslford.ca/used/used-vehicle-inventory.html?reset=2',
+        'https://www.norrisford.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.patriciafordsales.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.castleford.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.collegefordtaber.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.westergardford.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.royalford.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.jubileeford.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.senchuk.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.centennialford.sk.ca/used/used-vehicle-inventory.html',
+        'https://www.formomotors.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.meritford.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.twowayservice.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.northlandford.mb.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.rhinelandcar.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.steeltownford.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.gimliford.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.hometownford.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.kelleherforddauphin.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.metcalfesgarage.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.roblinfordsales.com/used/used-vehicle-inventory?reset=1',
+        'https://www.virdenford.ca/pre-owned/pre-owned-vehicle-inventory.html?reset=1',
+        'https://www.westwardford.com/used/used-vehicle-inventory.html?reset=1',
 
         # 'https://www.woodridgeford.com/used/',
         # 'https://www.okotoksford.com/used/',
@@ -131,15 +132,15 @@ async def add_cars(db: Session = Depends(get_db)):
     done_for = []
     for url in url_list:
         car_count = 0
-        print(f'For url: {url}')
+        logging.info(f'For url: {url}')
         res = get_car_info_from_web(url)
         done_for.append(url)
         for one_car in res:
-            print(one_car)
+            logging.info(one_car)
             car_return = crud.create(db, car_in=one_car, autocommit=True)
             car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
-            print(f'Car ka status in DB: {car_return["in_db"]}')
-        print(f'Total Cars added: {car_count}')
+            logging.info(f'Car ka status in DB: {car_return["in_db"]}')
+        logging.info(f'Total Cars added: {car_count}')
             # crud.create_car_dict(db, one_car, website=url)
     # db.commit()  # Uncomment if using autocommit=False
     return done_for

@@ -6,6 +6,7 @@ from models.db_models.car import CarDB
 
 from sqlalchemy.orm import Session
 import crud
+import logging
 from os import getenv
 from web_scrapper import get_car_info_from_web
 from datetime import date
@@ -31,6 +32,8 @@ app.add_middleware(
 )
 
 app.include_router(api.api_router)
+
+logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w')
 
 # car1 = Car(carName="toyota")
 # @app.get('/url-list')

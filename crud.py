@@ -5,6 +5,7 @@ from models.db_models.car import CarDB
 from models.car import CarIN
 from typing import List
 from datetime import date
+import logging
 
 """
        INTEGER1 -eq INTEGER2
@@ -42,7 +43,7 @@ def delete_car(db: Session, car: CarDB):
 
     car_obj = db.query(CarDB).filter(CarDB.id == car.id).first()
     db.delete(car_obj)
-    print(f"Going to delete car with ID: {car_obj.id}")
+    logging.info(f"Going to delete car with ID: {car_obj.id}")
     return 0
 
 def car_exists_in_db(db: Session, incoming_car: CarDB):
@@ -53,8 +54,8 @@ def car_exists_in_db(db: Session, incoming_car: CarDB):
     mileage = incoming_car.mileage
     exterior = incoming_car.exterior
     price = incoming_car.price
-    # print(f'type: {type(incoming_car)} ')
-    # print(f'{incoming_car}')
+    # logging.info(f'type: {type(incoming_car)} ')
+    # logging.info(f'{incoming_car}')
     # Returns list of CarDB
     res = db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior,
                                  CarDB.price == price).all()
@@ -82,12 +83,12 @@ def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
     before moving to next, if False all car_ins are kinda stagged and commit outside this function via: db.commit()
     :return:
     """
-    # print(f'Car before jsonable_encoder: {car_in}')
+    # logging.info(f'Car before jsonable_encoder: {car_in}')
     car_in_data = jsonable_encoder(car_in)
     car = CarDB(**car_in_data)
-    # print(f'Car after CarDB: {car}')
+    # logging.info(f'Car after CarDB: {car}')
     if not car_exists_in_db(db, car):
-        print(f"Car doesn't exists in DB")
+        logging.info(f"Car doesn't exists in DB")
         db.add(car)
         if autocommit:
             db.commit()
@@ -97,7 +98,7 @@ def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
         car_ret = jsonable_encoder(car)
         car_ret["in_db"] = "Added"
     else:
-        print(f"Car exists in DB")
+        logging.info(f"Car exists in DB")
         car_ret = jsonable_encoder(car)
         car_ret["in_db"] = "Existed"
 
@@ -141,7 +142,7 @@ def create_car_dict(db: Session, car_info: dict, website: str = ""):
 def get_car_filter_date(db: Session, date_gt: date = None, limit: int = None) -> List[CarDB]:
     queries = []
     if date_gt:
-        print(f'date_gt: {date_gt}')
+        logging.info(f'date_gt: {date_gt}')
         queries.append( func.DATE(CarDB.entry_date) > date_gt )
     return db.query(CarDB).filter(*queries).limit(limit).all()
 

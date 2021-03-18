@@ -17,7 +17,7 @@ FAIL_SAFE_RUNS = 20
 FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
 firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
 GECKODRIVER_PATH = getenv("GECKODRIVER_PATH", "/home/teemo/softwares/geckodriver")
-DIRECTORY_PATH = "/home/teemo/free_work"
+DIRECTORY_PATH = getenv("DIRECTORY_PATH", "/home/teemo/free_work")
 CAR_CUT_PRICE = 20_000
 
 ENV = getenv("ENV")

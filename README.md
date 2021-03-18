@@ -5,6 +5,9 @@ Python==3.8
 #### For Dev testing
 
 #### Instructions to Run
+
+    pip install -r requirements
+
 App runs on port `8000`
 Need to specify database credentials in `database.py`
 Set environment variables `FIREFOX_BIN` Path to firefox executable,

@@ -61,8 +61,8 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_coun
                            cs_tag=None, cs_class_attrs=None):
 
     logging.info(page_url)
-    scroll_down_units = 500
-    # run firefox webdriver from executable pa`th of your choice
+    # Part of slow scroll
+    # scroll_down_units = 500
     try:
         if ENV == "prod":
             opts = webdriver.FirefoxOptions()
@@ -83,10 +83,10 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_coun
         while cars_in_soup < total_cars:
             current_loop_runs += 1
             # execute script to scroll down the page
-            # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
             # execute script to scroll down the page slowly
-            driver.execute_script(f"window.scrollTo(0, {str(scroll_down_units)} )")
-            scroll_down_units += 500
+            # driver.execute_script(f"window.scrollTo(0, {str(scroll_down_units)} )")
+            # scroll_down_units += 500
             time.sleep(5)
             page = driver.page_source
             main_soup = BeautifulSoup(page, 'html.parser')
@@ -97,10 +97,12 @@ def get_main_soup_n_driver(page_url, cf_tag=None, cf_class_attrs=None, cars_coun
             if current_loop_runs == FAIL_SAFE_RUNS:
                 break
 
-        for i in range(10):
-            driver.execute_script(f"window.scrollTo(0, {str(scroll_down_units)} )")
-            scroll_down_units += 500
-            time.sleep(1)
+        # Part of slow scroll
+        # driver.execute_script(f"window.scrollTo(0, {str(scroll_down_units)} )")
+        # for i in range(10):
+        #     driver.execute_script(f"window.scrollTo(0, {str(scroll_down_units)} )")
+        #     scroll_down_units += 500
+        #     time.sleep(1)
 
     except:
         driver.quit()
@@ -588,10 +590,13 @@ def woodridgeford(url: str) -> list:
             mileage = None
         return mileage
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, driver):
         """ Return all the information in the car's card """
         car_info = {"car_name": get_car_name(soap, html_tag='p', attrs={}), "price": get_car_price(soap),
-                    "mileage": get_car_mileage(soap), "website": website}
+                    "mileage": get_car_mileage(soap), "website": website,
+                    "img_path": get_car_image_link_n_save(soap, 'img', {'itemprop': 'image'}, driver)}
+
+        time.sleep(1)
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='tr', attrs={})
 
@@ -609,9 +614,9 @@ def woodridgeford(url: str) -> list:
                                                cs_tag="div", cs_class_attrs={"class": "col-xs-12 col-sm-12 col-md-7"})
 
     list_of_car_info = []
-    all_class_outside_box = main_soup.find_all('div', attrs={'class': 'col-xs-12 col-sm-12 col-md-7'})
+    all_class_outside_box = main_soup.find_all('div', attrs={'class': 'col-xs-12 col-sm-12 col-md-12'})
     for class_outside_box in all_class_outside_box:
-        list_of_car_info.append(get_car_info( class_outside_box, url) )
+        list_of_car_info.append(get_car_info( class_outside_box, url, driver) )
 
     driver.quit()
 
@@ -1240,8 +1245,10 @@ def collegefordlincoln(url: str) -> list:
         try:
             logging.debug(f'img soup: {soap.find(html_tag, attrs=attrs)}')
             image_url = soap.find(html_tag, attrs=attrs)["data-original"]
+            logging.debug(image_url)
             save_path = persist_image(dir_path, image_url, driver)
-        except:
+        except Exception as err:
+            logging.error(f'Error in get_car_image_link_n_save() err - {err}')
             save_path = ""
         return save_path
 

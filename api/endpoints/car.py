@@ -61,10 +61,10 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.virdenford.ca/pre-owned/pre-owned-vehicle-inventory.html?reset=1',
         'https://www.westwardford.com/used/used-vehicle-inventory.html?reset=1',
 
-        # 'https://www.woodridgeford.com/used/',
-        # 'https://www.okotoksford.com/used/',
-        # 'https://www.advantageford.ca/used/',
-        # 'https://www.countryford.ca/used/',
+        'https://www.woodridgeford.com/used/',
+        'https://www.okotoksford.com/used/',
+        'https://www.advantageford.ca/used/',
+        'https://www.countryford.ca/used/',
 
         'https://www.zarownymotors.com/inventory/search?stock_type=Used&page=1&page_length=100',
         'https://www.westlockford.com/inventory/search?stock_type=Used&page=1&page_length=100',

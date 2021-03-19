@@ -380,12 +380,14 @@ def get_car_info_from_web(url: str) -> list:
 
 
 # ========== Web scrapping functions ==========
-def get_car_image_link_n_save(soap: BeautifulSoup, html_tag: str, attrs: dict, driver=None, dir_path: str = DIR_PATH):
+def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict, base_url=None):
     try:
-        logging.debug(f'img soup: {soap.find(html_tag, attrs=attrs)}')
-        image_url = soap.find(html_tag, attrs=attrs)["src"]
-        logging.debug(image_url)
-        save_path = persist_image(dir_path, image_url, driver)
+        image_soap = soap.find(html_tag, attrs=attrs)
+        logging.debug(f'img soup: {image_soap}')
+        if base_url is not None:
+            save_path = base_url + image_soap["src"]
+        else:
+            save_path = image_soap["src"]
     except Exception as err:
         logging.error(f'Error in get_car_image_link_n_save() err - {err}')
         save_path = ""
@@ -545,13 +547,11 @@ def woodridgeford(url: str) -> list:
             mileage = None
         return mileage
 
-    def get_car_info(soap, website, driver):
+    def get_car_info(soap, website):
         """ Return all the information in the car's card """
         car_info = {"car_name": get_car_name(soap, html_tag='p', attrs={}), "price": get_car_price(soap),
                     "mileage": get_car_mileage(soap), "website": website,
-                    "img_path": get_car_image_link_n_save(soap, 'img', {'itemprop': 'image'}, driver)}
-
-        time.sleep(1)
+                    "img_link": get_car_image_link(soap, 'img', {'itemprop': 'image'})}
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='tr', attrs={})
 
@@ -571,7 +571,7 @@ def woodridgeford(url: str) -> list:
     list_of_car_info = []
     all_class_outside_box = main_soup.find_all('div', attrs={'class': 'col-xs-12 col-sm-12 col-md-12'})
     for class_outside_box in all_class_outside_box:
-        list_of_car_info.append(get_car_info( class_outside_box, url, driver) )
+        list_of_car_info.append(get_car_info( class_outside_box, url) )
 
     driver.quit()
 
@@ -1086,7 +1086,7 @@ def camclarkfordairdrie(url: str) -> list:
     for a_vehicle in all_a_vehicle:
         if a_vehicle.has_attr("href"):
             single_car_url = a_vehicle["href"]
-            print(f'page url: {single_car_url}')
+            logging.debug(f'page url: {single_car_url}')
             driver.get(single_car_url)
             page = driver.page_source
             time.sleep(4)
@@ -1196,16 +1196,14 @@ def collegefordlincoln(url: str) -> list:
     :param url: Website url from where to scrape
     :return list: list of car_info dictionaries
     """
-    def get_car_image_link_n_save(soap: BeautifulSoup, html_tag: str, attrs: dict, driver, dir_path: str = DIR_PATH):
+    def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict):
         try:
             logging.debug(f'img soup: {soap.find(html_tag, attrs=attrs)}')
             image_url = soap.find(html_tag, attrs=attrs)["data-original"]
-            logging.debug(image_url)
-            save_path = persist_image(dir_path, image_url, driver)
         except Exception as err:
             logging.error(f'Error in get_car_image_link_n_save() err - {err}')
-            save_path = ""
-        return save_path
+            image_url = ""
+        return image_url
 
     def cars_count_in_soup(main_soap, html_tag='div', attrs: dict = None):
         """ Cars currently loaded in the main-soup object """
@@ -1232,9 +1230,8 @@ def collegefordlincoln(url: str) -> list:
         """ Return all the information in the car's card """
         logging.debug("Collegeford.get_car_info() before image_link_n_save")
         car_info = {"website": website,
-                    "img_path": get_car_image_link_n_save(soap, 'img', {'class': 'img-responsive'},
-                                                          driver)}
-        time.sleep(1)
+                    "img_link": get_car_image_link(soap, 'img', {'class': 'img-responsive'})}
+
         if "royalford.ca" in website:
             raw_car_name = get_car_name(soap, html_tag='h2', attrs={'class': 'centered'})
             car_name_pieces = raw_car_name.split('\n')[:4]

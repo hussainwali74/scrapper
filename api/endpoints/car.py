@@ -139,7 +139,7 @@ async def add_cars(db: Session = Depends(get_db)):
             logging.info(one_car)
             car_return = crud.create(db, car_in=one_car, autocommit=True)
             car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
-            logging.info(f'Car ka status in DB: {car_return["in_db"]}')
+            logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
         logging.info(f'Total Cars added: {car_count}')
             # crud.create_car_dict(db, one_car, website=url)
     # db.commit()  # Uncomment if using autocommit=False

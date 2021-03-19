@@ -167,51 +167,6 @@ def get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicle
     return car_page_links
 
 
-def persist_image(dir_path: str, url: str, driver=None):
-    # create dir if doesn't exists
-    Path(dir_path).mkdir(parents=True, exist_ok=True)
-    logging.debug("persist_image")
-
-    if driver is not None:
-        headers = { 'User-Agent': 'Mozilla/5.0 (Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0' }
-        s = requests.session()
-        s.headers.update(headers)
-
-        for cookie in driver.get_cookies():
-            c = {cookie['name']: cookie['value']}
-            s.cookies.update(c)
-
-    error_return = ""
-    try:
-        website_name = driver.current_url.split('.')[1]
-    except Exception as e:
-        logging.error(f"Possible Error in driver.current_url - e {e}")
-        website_name = ""
-
-    try:
-        # image_content = s.get(url, allow_redirects=True).content
-        image_content = s.get(url, timeout=10).content
-    except requests.exceptions.Timeout as err:
-        logging.error(f'Could not download {url} - {err}')
-    except Exception as e:
-        logging.error(f"ERROR - Could not download {url} - {e}")
-        return error_return
-
-    try:
-        image_file = io.BytesIO(image_content)
-        image = Image.open(image_file).convert('RGB')
-        file_path = join(dir_path, website_name+"_"+hashlib.sha1(image_content).hexdigest()[:20] + '.jpg')
-        #     file_path = os.path.join(folder_path, "123" + '.jpg')
-
-        with open(file_path, 'wb') as f:
-            image.save(f, "JPEG", quality=85)
-        # logging.debug(f"SUCCESS - saved {url} - as {file_path}")
-    except Exception as e:
-        logging.error(f"ERROR - Could not save {url} - {e}")
-        return error_return
-
-    return file_path
-
 # ========== main function ==========
 def filter_cars(car: dict) -> bool:
     """ function designed to be called in filter function """
@@ -1308,7 +1263,7 @@ def collegefordlincoln(url: str) -> list:
 
         car_info.update(car_specs)
 
-        print(f'Done for car: {car_info["car_name"]}')
+        logging.info(f'Done for car: {car_info["car_name"]}')
 
         return car_info
 

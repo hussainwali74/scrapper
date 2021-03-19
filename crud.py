@@ -54,22 +54,17 @@ def car_exists_in_db(db: Session, incoming_car: CarDB):
     mileage = incoming_car.mileage
     exterior = incoming_car.exterior
     price = incoming_car.price
+    img_link = incoming_car.img_link
     # logging.info(f'type: {type(incoming_car)} ')
     # logging.info(f'{incoming_car}')
     # Returns list of CarDB
     res = db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior,
-                                 CarDB.price == price).all()
+                                 CarDB.price == price, CarDB.img_link == img_link).all()
 
     # Prob: If old car saved didn't have an image.
     # On next run the incoming car object might have image saved.
     if len(res):
-        one_car = res[0]
-        if one_car.img_path == "":
-            # Delete this car with null img_path
-            delete_car(db, one_car)
-            return False
-        else:
-            return True
+        return True
     else:
         return False
 
@@ -88,7 +83,7 @@ def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
     car = CarDB(**car_in_data)
     # logging.info(f'Car after CarDB: {car}')
     if not car_exists_in_db(db, car):
-        logging.info(f"Car doesn't exists in DB")
+        logging.debug(f"Car doesn't exists in DB")
         db.add(car)
         if autocommit:
             db.commit()
@@ -98,7 +93,7 @@ def create(db: Session, *, car_in: CarIN, autocommit: bool = True):
         car_ret = jsonable_encoder(car)
         car_ret["in_db"] = "Added"
     else:
-        logging.info(f"Car exists in DB")
+        logging.debug(f"Car exists in DB")
         car_ret = jsonable_encoder(car)
         car_ret["in_db"] = "Existed"
 

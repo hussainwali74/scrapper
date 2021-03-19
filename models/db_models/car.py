@@ -38,12 +38,12 @@ class CarDB(Base):
     stock = Column(String)
     website = Column(String)
     entry_date = Column(TIMESTAMP, default=func.now())
-    img_path = Column(String)
+    img_link = Column(String)
     # updated_at = Column(TIMESTAMP, nullable=False,
     # server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
     def __init__(self, car_name="", body_style="", mileage=None, exterior="", drivetrain="", transmission="", engine="",
-                 city="", price=None, vin="", stock="", website="", entry_date=None, img_path=""):
+                 city="", price=None, vin="", stock="", website="", entry_date=None, img_link=""):
         self.car_name = car_name
         self.body_style = body_style
         self.mileage = mileage
@@ -57,9 +57,9 @@ class CarDB(Base):
         self.stock = stock
         self.website = website
         self.entry_date = entry_date
-        self.img_path = img_path
+        self.img_link = img_link
 
     def __repr__(self):
         return f"<Car(id: {self.id}, car_name: {self.car_name}, mileage: {self.mileage}, exterior: {self.exterior}, " \
                f"drivetrain: {self.drivetrain}, transmission: {self.transmission}, engine: {self.engine}, " \
-               f"city: {self.city}, price: {self.price}, website: {self.website}, img_path: {self.img_path})"
+               f"city: {self.city}, price: {self.price}, website: {self.website}, img_path: {self.img_link})"

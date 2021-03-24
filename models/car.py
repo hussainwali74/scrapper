@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 class Car(BaseModel):
     id: int
     car_name: str
+    car_page_link: str
     body_style: str
     mileage: int
     exterior: str  #= Field(..., gt=0, lt=450)  # means str 0 < length < 450
@@ -26,6 +27,7 @@ class Car(BaseModel):
 
 class CarIN(BaseModel):
     car_name: str
+    car_page_link: str
     body_style: str
     mileage: int
     exterior: str#= Field(..., gt=0, lt=450)

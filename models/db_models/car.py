@@ -26,6 +26,7 @@ class CarDB(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     car_name = Column(String)
+    car_page_link = Column(String)
     body_style = Column(String)
     mileage = Column(Integer)
     exterior = Column(String)
@@ -42,9 +43,11 @@ class CarDB(Base):
     # updated_at = Column(TIMESTAMP, nullable=False,
     # server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
-    def __init__(self, car_name="", body_style="", mileage=None, exterior="", drivetrain="", transmission="", engine="",
-                 city="", price=None, vin="", stock="", website="", entry_date=None, img_link=""):
+    def __init__(self, car_name="", car_page_link="", body_style="", mileage=None, exterior="", drivetrain="",
+                 transmission="", engine="", city="", price=None, vin="", stock="", website="", entry_date=None,
+                 img_link=""):
         self.car_name = car_name
+        self.car_page_link = car_page_link
         self.body_style = body_style
         self.mileage = mileage
         self.exterior = exterior
@@ -60,6 +63,7 @@ class CarDB(Base):
         self.img_link = img_link
 
     def __repr__(self):
-        return f"<Car(id: {self.id}, car_name: {self.car_name}, mileage: {self.mileage}, exterior: {self.exterior}, " \
+        return f"<Car(id: {self.id}, car_name: {self.car_name}, car_page_link: {self.car_page_link}, " \
+               f"mileage: {self.mileage}, exterior: {self.exterior}, " \
                f"drivetrain: {self.drivetrain}, transmission: {self.transmission}, engine: {self.engine}, " \
                f"city: {self.city}, price: {self.price}, website: {self.website}, img_path: {self.img_link})"

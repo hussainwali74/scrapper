@@ -59,12 +59,18 @@ def car_exists_in_db(db: Session, incoming_car: CarDB):
     # logging.info(f'{incoming_car}')
     # Returns list of CarDB
     res = db.query(CarDB).filter(CarDB.car_name == car_name, CarDB.mileage == mileage, CarDB.exterior == exterior,
-                                 CarDB.price == price, CarDB.img_link == img_link).all()
+                                 CarDB.price == price).all()
 
     # Prob: If old car saved didn't have an image.
     # On next run the incoming car object might have image saved.
     if len(res):
-        return True
+        one_car = res[0]
+        if one_car.img_link != img_link:
+            # Delete this car with null img_path
+            delete_car(db, one_car)
+            return False
+        else:
+            return True
     else:
         return False
 

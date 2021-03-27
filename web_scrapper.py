@@ -1126,11 +1126,15 @@ def camclarkfordairdrie(url: str) -> list:
     return list_of_car_info
 
 
-def get_car_page_link(soap, html_tag='a', attrs: dict = None):
+def get_car_page_link(soap, html_tag='a', attrs: dict = None, base_url: str = None):
     try:
         link_soap = soap.find(html_tag, attrs=attrs)
-        link = link_soap["href"]
-    except:
+        if base_url is None:
+            link = link_soap["href"]
+        else:
+            link = base_url + link_soap["href"]
+    except Exception as err:
+        logging.error(f'Error in get_car_page_link() err - {err}')
         link = ""
     return link
 
@@ -1695,6 +1699,28 @@ def strathmoreford(url: str) -> list:
     :param url: Website url from where to scrape
     :return list: list of car_info dictionaries
     """
+    def get_car_page_link(soap, html_tag='a', attrs: dict = None, base_url=None):
+        try:
+            link_soap = soap.find(html_tag, attrs=attrs)
+            link = base_url + link_soap["href"]
+        except Exception as err:
+            logging.error(f'Error in get_car_page_link() err - {err}')
+            link = ""
+        return link
+
+    def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict):
+        try:
+            image_soap = soap.find(html_tag, attrs=attrs)
+            if image_soap.get("data-src") is None:
+                image_url = image_soap["src"]
+            else:
+                image_url = image_soap["data-src"]
+        except Exception as err:
+            logging.error(f'Error in get_car_image_link() err - {err}')
+            logging.error(f'Image soup: {image_soap}')
+            image_url = ""
+        return image_url
+
     def get_car_specs_raw(soap) -> list:
         """ Website specific function """
         car_specs_pieces = []
@@ -1708,12 +1734,14 @@ def strathmoreford(url: str) -> list:
 
         return car_specs
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, base_url):
         """ Return all the information in the car's card """
+        image_soup = soup.find('div', {'class': 'media'})
 
         car_info = {"car_name": get_car_name(soup, 'h3', attrs={'class': 'fn'}),
                     "price": get_car_price(soup, 'span', attrs={'class': 'internetPrice final-price'}),
-                    "website": website}
+                    "website": website, "car_page_link": get_car_page_link(soap, 'a', {}, base_url),
+                    "img_link": get_car_image_link(soap, 'img', {}) }
 
         raw_car_specs = get_car_specs_raw(soup)
 
@@ -1724,9 +1752,12 @@ def strathmoreford(url: str) -> list:
 
         car_info.update(car_specs)
 
+        logging.info(f'Done for car: {car_info["car_name"]}')
+
         return car_info
 
     # # # Function Main
+    base_url = 'https://www.strathmoreford.com/'
     page = requests.get(url)
     main_soup = BeautifulSoup(page.content, 'html.parser')
     start = 0
@@ -1739,7 +1770,7 @@ def strathmoreford(url: str) -> list:
         current_loop_runs += 1
         cars_card_soups = main_soup.find_all('div', attrs={'class': 'hproduct auto ford has-sales-taxes'})
         for soup in cars_card_soups:
-            list_of_car_info.append(get_car_info(soup, url))
+            list_of_car_info.append(get_car_info(soup, url, base_url))
 
         url = url.replace(f"start={start}", f"start={start + cars_on_single_page}")
         start += cars_on_single_page
@@ -1779,12 +1810,13 @@ def revolutionford(url: str) -> list:
             price = None
         return price
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, car_page_url):
         """ Return all the information in the car's card """
 
-        car_info = {"car_name": get_car_name(soap, 'h1', attrs={'class': 'title h2'}),
+        car_info = {"car_name": get_car_name(soap, 'h1', attrs={'class': 'title h2'}), "website": website,
                     "price": get_car_price(soap, 'input', attrs={'class': 'numbersOnly vehicle_price'}),
-                    "website": website}
+                    "img_link": get_car_image_link(soap, 'img', {'class': 'img-responsive wp-post-image'}),
+                    "car_page_link": car_page_url }
 
         raw_specs = get_car_specs_raw(soap, 'tr', attrs={})
         raw_car_specs = list(map(lambda s: s.strip(), raw_specs))
@@ -1798,6 +1830,8 @@ def revolutionford(url: str) -> list:
                 car_specs[key] = val.strip()
 
         car_info.update(car_specs)
+
+        logging.info(f'Done for car: {car_info["car_name"]}')
 
         return car_info
 
@@ -1831,7 +1865,7 @@ def revolutionford(url: str) -> list:
             driver.get(car_page_url)
             page = driver.page_source
             soup = BeautifulSoup(page, 'html.parser')
-            list_of_car_info.append(get_car_info(soup, url))
+            list_of_car_info.append(get_car_info(soup, url, car_page_url))
 
         # visit all pages
         url = url.replace(f'page/{current_page}', f'page/{current_page + 1}')
@@ -1861,8 +1895,14 @@ def novlanbros(url: str) -> list:
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
         website = website.split('#')[0]
+        image_url_raw = soap.find('div', {'class': 'l-image'})["style"]
+        match = re.search(r'url\(.*\)', image_url_raw)
+        image_url_raw = match.group(0)
+        image_url = re.sub(r'url\(|\)', '', image_url_raw)
+
         car_info = {"car_name": get_car_name(soap, 'h2', attrs={'class': 'fn'}),
-                    "price": get_car_price(soap, 'dd', {'class': 'vehicle_price'}), "website": website}
+                    "price": get_car_price(soap, 'dd', {'class': 'vehicle_price'}), "website": website,
+                    "img_link": image_url, "car_page_link": get_car_page_link(soap, 'a', {'itemprop': 'url'}) }
 
         raw_car_specs = soap.find('div', attrs={'class': 'e-description description'}).getText().split('\n')
 
@@ -1897,6 +1937,15 @@ def knightfordlincoln_n_capitalfordlincoln(url: str) -> list:
     :return list: list of car_info dictionaries
     """
 
+    def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict):
+        try:
+            logging.debug(f'img soup: {soap.find(html_tag, attrs=attrs)}')
+            image_url = soap.find(html_tag, attrs=attrs)["data-background"]
+        except Exception as err:
+            logging.error(f'Error in get_car_image_link_n_save() err - {err}')
+            image_url = ""
+        return image_url
+
     # Website specific function
     def get_max_pages(main_soap):
         try:
@@ -1907,12 +1956,13 @@ def knightfordlincoln_n_capitalfordlincoln(url: str) -> list:
             max_page_num = 1
         return max_page_num
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, car_page_url):
         """ Return all the information in the car's card """
 
         car_info = {"car_name": get_car_name(soap, html_tag='h1', attrs={}),
                     "price": get_car_price(soap, html_tag='span', attrs={'class': 'pricing-item__price'}),
-                    "website": website}
+                    "website": website, "car_page_link": car_page_url,
+                    "img_link": get_car_image_link(soap, 'div', {'class': 'vehicle-image-bg'})}
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='li', attrs={'class': 'basic-info-item'})
 
@@ -1922,6 +1972,8 @@ def knightfordlincoln_n_capitalfordlincoln(url: str) -> list:
         car_specs = extract_car_specs(raw_car_specs, search_dict)
 
         car_info.update(car_specs)
+
+        logging.info(f'Done for car: {car_info["car_name"]}')
 
         return car_info
 
@@ -1947,7 +1999,7 @@ def knightfordlincoln_n_capitalfordlincoln(url: str) -> list:
             page = requests.get(car_page_link)
             soup = BeautifulSoup(page.content, 'html.parser')
             time.sleep(1)
-            list_of_car_info.append(get_car_info(soup, url))
+            list_of_car_info.append(get_car_info(soup, url, car_page_link))
 
         # visi all pages
         url = url.replace(f'_p={current_page}', f'_p={current_page + 1}')
@@ -1973,6 +2025,30 @@ def cypressmotors(url: str) -> list:
     :param url: Website url from where to scrape
     :return list: list of car_info dictionaries
     """
+    def get_car_page_link(soap, html_tag='a', attrs: dict = None):
+        base_url = "https://www.cypressmotors.com"
+        try:
+            link_soap = soap.find(html_tag, attrs=attrs)
+            link = base_url + link_soap["href"]
+        except Exception as err:
+            logging.error(f'Error in get_car_page_link() err - {err}')
+            link = ""
+        return link
+
+    def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict):
+        try:
+            image_soap = soap.find(html_tag, attrs=attrs)
+            if image_soap.get("data-src") is None:
+                image_url = image_soap["src"]
+            else:
+                image_url = image_soap["data-src"]
+            image_url = image_url[2:]
+        except Exception as err:
+            logging.error(f'Error in get_car_image_link() err - {err}')
+            logging.error(f'Image soup: {image_soap}')
+            image_url = ""
+        return image_url
+
     def get_car_city(soap, html_tag='span', attrs=None):
         """ soap should be car info page """
         try:
@@ -1987,7 +2063,8 @@ def cypressmotors(url: str) -> list:
         car_info = {"car_name": get_car_name(soap, html_tag='a', attrs={'class': 'vehicle-title'}),
                     "price": get_car_price(soap, html_tag='div', attrs={'class': 'price_value'}),
                     "city": get_car_city(soap, html_tag='span', attrs={'class': 'inventory-item_sub-title_item'}),
-                    "website": website}
+                    "website": website, "car_page_link": get_car_page_link(soap, 'a', {'class': 'vehicle-title'} ),
+                    "img_link": get_car_image_link(soap, 'img', {'class': 'img-responsive'})}
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='li', attrs={})
 
@@ -2071,12 +2148,13 @@ def birchwoodford(url: str) -> list:
 
         return car_page_links
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, car_page_url):
         """ Return all the information in the car's card """
+        image_soap = soap.find('a', {'class': 'main-image has-image'})
 
         car_info = {"car_name": get_car_name(soap, html_tag='h1', attrs={}),
-                    "price": get_car_price(soap, 'span', {'class': 'price-value'}),
-                    "website": website}
+                    "price": get_car_price(soap, 'span', {'class': 'price-value'}), "website": website,
+                    "car_page_link": car_page_url, "img_link": get_car_image_link(image_soap, 'img', {})}
 
         li_soap = soap.find('ul', {'class': 'feature-or-specification-list'})
         raw_car_specs = get_car_specs_raw(li_soap, html_tag='li', attrs={})
@@ -2087,6 +2165,8 @@ def birchwoodford(url: str) -> list:
         car_specs = extract_car_specs(raw_car_specs, search_dict)
 
         car_info.update(car_specs)
+
+        logging.info(f'Done for car: {car_info["car_name"]}')
 
         return car_info
 
@@ -2102,7 +2182,7 @@ def birchwoodford(url: str) -> list:
         page = requests.get(single_car_page_link)
         soup = BeautifulSoup(page.content, 'html.parser')
         time.sleep(2)
-        list_of_car_info.append(get_car_info(soup, url))
+        list_of_car_info.append(get_car_info(soup, url, single_car_page_link))
 
     return list_of_car_info
 
@@ -2114,6 +2194,29 @@ def merlinford(url: str) -> list:
     :param url: Website url from where to scrape
     :return list: list of car_info dictionaries
     """
+
+    def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict):
+        try:
+            image_soap = soap.find(html_tag, attrs=attrs)
+            if image_soap.get("data-src") is None:
+                image_url = image_soap["src"]
+            else:
+                image_url = image_soap["data-src"]
+        except Exception as err:
+            logging.error(f'Error in get_car_image_link() err - {err}')
+            logging.error(f'Image soup: {image_soap}')
+            image_url = ""
+        return image_url
+
+    def get_car_page_link(soap, html_tag='a', attrs: dict = None):
+        base_url = 'https://merlinford.com'
+        try:
+            link_soap = soap.find(html_tag, attrs=attrs)
+            link = base_url + link_soap["href"]
+        except Exception as err:
+            logging.error(f'Error in get_car_page_link() err - {err}')
+            link = ""
+        return link
 
     def main_soup_n_driver_scroll_down(url, driver=None):
         if driver is None:
@@ -2142,11 +2245,12 @@ def merlinford(url: str) -> list:
 
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
+        car_name = get_car_name(soap, 'h3', {'class': 'pt-4'}).split('\n')[0]
 
-        car_info = {"car_name": get_car_name(soap, 'h3', {'class': 'pt-4'}),
-                    "mileage": get_car_mileage(soap, 'span', {'class': 'mileage-value'}),
+        car_info = {"car_name": car_name, "mileage": get_car_mileage(soap, 'span', {'class': 'mileage-value'}),
                     "price": get_car_price(soap, 'strong', {'class': 'price-label'}),
-                    "website": website}
+                    "website": website,"car_page_link": get_car_page_link(soap, 'a', {'class': 'title-link'}),
+                    "img_link": get_car_image_link(soap, 'img', {'class': 'img-4-to-3 main-img'})[2:] }
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='div', attrs={'class': 'w-4/5'})
 
@@ -2169,7 +2273,7 @@ def merlinford(url: str) -> list:
     current_loop_runs = 0
     while len(list_of_car_info) < total_cars:
         current_loop_runs += 1
-        print(f'Scraping on Page: {current_page}')
+        logging.info(f'Scraping on Page: {current_page}')
         # Scrape all cars on a single page
         all_vehicle_card = main_soup.find_all('div', {'class': 'vehicle-card'})
         for vehicle_card_soup in all_vehicle_card:
@@ -2216,12 +2320,13 @@ def kelleherford(url: str) -> list:
         main_soup = BeautifulSoup(page, 'html.parser')
         return main_soup, driver
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, base_url):
         """ Return all the information in the car's card """
 
         car_info = {"car_name": get_car_name(soap, 'a', {'class': 'title'}),
                     "price": get_car_price(soap, 'strong', {'class': 'sale-price-value'}),
-                    "website": website}
+                    "website": website, "car_page_link": get_car_page_link(soap, 'a', {'class': 'title'}, base_url),
+                    "img_link": get_car_image_link(soap, 'img', {'class': 'w-full main-pic'})[2:]}
 
         raw_car_specs = get_car_specs_raw(soap, 'li', {'class': 'text-secondary'})
 
@@ -2238,19 +2343,20 @@ def kelleherford(url: str) -> list:
     main_soup, driver = main_soup_n_driver_scroll_down(url)
 
     list_of_car_info = []
+    base_url = 'https://kelleherford.com'
     total_cars = cars_found(main_soup, html_tag='p', attrs={'class': 'text-primary'})
-    print(f'Total cars: {total_cars}')
+    logging.info(f'Total cars: {total_cars}')
     current_page = 1
     current_loop_runs = 0
     while len(list_of_car_info) < total_cars:
         current_loop_runs += 1
-        print(f'Scraping on Page: {current_page}')
+        logging.info(f'Scraping on Page: {current_page}')
         # Scrape all cars on a single page
         all_vehicle_card = main_soup.find_all('div', {'class': 'card-1-inventory-item'})
         for vehicle_card_soup in all_vehicle_card:
-            list_of_car_info.append(get_car_info(vehicle_card_soup, url))
+            list_of_car_info.append(get_car_info(vehicle_card_soup, url, base_url))
 
-        print(f'Cars done: {len(list_of_car_info)}')
+        # print(f'Cars done: {len(list_of_car_info)}')
         # visi all pages
         url = url.replace(f'pag={current_page}', f'pag={current_page + 1}')
         current_page += 1
@@ -2275,19 +2381,16 @@ def rainbowford(url: str) -> list:
     :return list: list of car_info dictionaries
     """
 
-    def get_car_info(soap, car_image_link, url, driver):
+    def get_car_info(soap, car_image_link, url, car_page_url):
         """ Return all the information in the car's card """
-
-        image_save_path = persist_image(DIR_PATH, car_image_link, driver)
 
         car_price = get_car_price(soap, html_tag='span', attrs={'class': 'h3'})
         if car_price is None:
             car_price = get_car_price(soap, html_tag='td', attrs={'class': 'table-rw'})
 
         car_info = {"car_name": get_car_name(soap, 'h1', {'class': 'title h2'}),
-                    "price": car_price,
-                    "img_path": image_save_path,
-                    "website": url}
+                    "price": car_price, "car_page_link": car_page_url,
+                    "img_link": car_image_link, "website": url}
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='tr', attrs={})
 
@@ -2297,6 +2400,8 @@ def rainbowford(url: str) -> list:
         car_specs = extract_car_specs(raw_car_specs, search_dict)
 
         car_info.update(car_specs)
+
+        logging.info(f'Done for car: {car_info["car_name"]}')
 
         return car_info
 
@@ -2314,7 +2419,7 @@ def rainbowford(url: str) -> list:
         single_car_url = car_card.find('a', {'class': 'rmv_txt_drctn'})["href"]
         soup, driver = main_soup_n_driver_scroll_down(single_car_url, driver)
 
-        list_of_car_info.append(get_car_info(soup, car_image_link, url, driver))
+        list_of_car_info.append(get_car_info(soup, car_image_link, url, single_car_url))
 
     # Scrape Rest of the pages
     next_page_link_html = main_soup.find("a", {'class': 'next page-numbers'})
@@ -2332,7 +2437,7 @@ def rainbowford(url: str) -> list:
             single_car_url = car_card.find('a', {'class': 'rmv_txt_drctn'})["href"]
             soup, driver = main_soup_n_driver_scroll_down(single_car_url, driver)
 
-            list_of_car_info.append(get_car_info(soup, car_image_link, url, driver))
+            list_of_car_info.append(get_car_info(soup, car_image_link, url, single_car_url))
 
         # Check next page
         next_page_link_html = main_soup.find("a", {'class': 'next page-numbers'})

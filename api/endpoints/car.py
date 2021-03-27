@@ -110,24 +110,23 @@ async def add_cars(db: Session = Depends(get_db)):
         # 'https://www.esterhazyford.ca/vehicles/used/?st=year,desc&view=grid&sc=used',
         # 'https://www.futureford.ca/vehicles/used/?st=year,desc&view=grid&sc=used',
 
-        # Done
         'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
         'https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',
         'https://www.windsorford.com/inventory/Used/?page=1',
-        # 'http://www.northstarfordcarsandtrucks.com/used/used-vehicle-inventory.html',
-        # 'https://www.strathmoreford.com/used-inventory/index.htm?start=0',
-        # 'https://www.revolutionford.com/used-inventory/page/1',
+        'http://www.northstarfordcarsandtrucks.com/used/used-vehicle-inventory.html',
+        'https://www.strathmoreford.com/used-inventory/index.htm?start=0',
+        'https://www.revolutionford.com/used-inventory/page/1',
 
-        # 'https://novlanbros.com/inventory/list/#/?&orderBy=1&t=0&filter=[Used%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C',
-        # 'https://www.knightfordlincoln.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
-        # 'https://www.capitalfordlincoln.com/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
-        # 'https://www.capitalfordwinnipeg.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        'https://novlanbros.com/inventory/list/#/?&orderBy=1&t=0&filter=[Used%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C',
+        'https://www.knightfordlincoln.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        'https://www.capitalfordlincoln.com/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        'https://www.capitalfordwinnipeg.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
 
-        # 'https://www.cypressmotors.com/used-vehicles-swift-current-sk',
-        # 'https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
-        # 'https://merlinford.com/used-inventory/?pag=1',
-        # 'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
-        # 'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
+        'https://www.cypressmotors.com/used-vehicles-swift-current-sk',
+        'https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
+        'https://merlinford.com/used-inventory/?pag=1',
+        'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
+        'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
     ]
     # url_list = ['https://www.regalmotorsltd.com/used/used-vehicle-inventory.html']
     done_for = []
@@ -210,7 +209,7 @@ async def add_single_car( db: Session = Depends(get_db) ):
                 'website': 'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
                 'mileage': 37825, 'body_style': 'Truck', 'engine': '6.7L Power Stroke', 'exterior': 'White',
                 'transmission': '6 Speed Automatic', 'drivetrain': '4x4',
-                'img_path': '/home/teemo/free_work/2021-03-16/regalmotorsltd_35cd61546bf51cd84c4f.jpg'}
+                'img_link': '/home/teemo/free_work/2021-03-16/regalmotorsltd_35cd61546bf51cd84c4f.jpg'}
     res = crud.create(db, car_in=car_info, autocommit=True)
     return res
 

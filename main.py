@@ -33,7 +33,8 @@ app.add_middleware(
 
 app.include_router(api.api_router)
 
-logging.basicConfig(level=logging.INFO, filename='app.log', filemode='w')
+logging.basicConfig(level=logging.INFO, filename='app.log', filemode='a',
+                    format='%(asctime)s:%(levelname)s:%(name)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 # car1 = Car(carName="toyota")
 # @app.get('/url-list')

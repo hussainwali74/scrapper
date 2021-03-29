@@ -18,8 +18,19 @@ path to directory where images directories will be saved.
     
     ./run_server.sh
 
+##### Instructions on crontab
+You need curl for this.
+In crontab paste the following command to run code at 00:30 every
+night.
+
+    30 0 * * * /<path_to_project_directory>/run_add_cars.sh
+
+Here first number is minutes, second is hours.
+
+Where <path_to_project_directory> is your local path to project.
 ### Heroku 
 Project is designed to be deployed on Heroku.
+
 #### How to SSH to heroku
 
     $ heroku ps:exec

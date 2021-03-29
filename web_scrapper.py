@@ -143,7 +143,7 @@ def get_all_car_page_links(url='https://www.hansenford.ca/inventory/used-vehicle
     current_loop_runs = 0
     while len(car_page_links) < total_cars:
         current_loop_runs += 1
-        time.sleep(4)
+        time.sleep(2)
         car_page_links.extend(get_car_page_links(main_soup, 'a', attrs={'class': 'sc-oTAMn cEnJNJ'}))
         try:
             next_page_soup = main_soup.find_all('a', attrs={'class': 'sc-ptbNe hCFcIE'})[-1]
@@ -1130,7 +1130,7 @@ def camclarkfordairdrie(url: str) -> list:
             logging.debug(f'page url: {single_car_url}')
             driver.get(single_car_url)
             page = driver.page_source
-            time.sleep(4)
+            time.sleep(2)
             soup = BeautifulSoup(page, 'html.parser')
 
             list_of_car_info.append( get_car_info(soup, url, single_car_url) )
@@ -1599,7 +1599,7 @@ def windsorford(url: str) -> list:
                                                      base_url=base_url))
             url = url.replace(f"page={curr_page_number}", f"page={curr_page_number + 1}")
 
-            time.sleep(4)
+            time.sleep(2)
             page = requests.get(url)
             main_soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -1790,7 +1790,7 @@ def strathmoreford(url: str) -> list:
 
         url = url.replace(f"start={start}", f"start={start + cars_on_single_page}")
         start += cars_on_single_page
-        time.sleep(4)
+        time.sleep(2)
         page = requests.get(url)
         main_soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -2144,7 +2144,7 @@ def birchwoodford(url: str) -> list:
         current_loop_runs = 0
         while len(car_page_links) < total_cars:
             current_loop_runs += 1
-            time.sleep(4)
+            time.sleep(2)
 
             # Get car page links
             car_card_soups = main_soup.find_all('div', {'class': 'phoenix4-vehiclecard'})

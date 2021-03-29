@@ -98,7 +98,6 @@ async def add_cars(db: Session = Depends(get_db)):
 
         'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
         'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
-        'https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid',
         'https://www.maclinfordcalgary.com/vehicles/used/?st=price,desc&sc=used&view=grid',
         'https://www.legacyfordponoka.ca/vehicles/used/?view=grid&sc=used',
         'https://www.legacyfordrimbey.ca/vehicles/used/?view=grid&sc=used',
@@ -107,8 +106,9 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.mid-townford.com/vehicles/used/?sc=used&st=price,desc&view=grid',
         # Multi-page
         'https://www.greatplainsford.com/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
-        'https://www.esterhazyford.ca/vehicles/used/?st=year,desc&view=grid&sc=used',
-        'https://www.futureford.ca/vehicles/used/?st=year,desc&view=grid&sc=used',
+        'https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid&pg=1',
+        'https://www.esterhazyford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+        'https://www.futureford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
 
         'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
         'https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',

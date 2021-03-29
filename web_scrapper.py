@@ -3,28 +3,21 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import re
-import io
 import time
+import logging
 from os import getenv
 from os.path import join
-from PIL import Image
-import hashlib
-import logging
 from datetime import datetime
-from pathlib import Path
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
-FAIL_SAFE_RUNS = 20
+FAIL_SAFE_RUNS = 3
 FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
 firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
 GECKODRIVER_PATH = getenv("GECKODRIVER_PATH", "/home/teemo/softwares/geckodriver")
-DIRECTORY_PATH = getenv("DIRECTORY_PATH", "/home/teemo/free_work")
 CAR_CUT_PRICE = 20_000
 
 ENV = getenv("ENV")
 
-current_day = datetime.now().strftime("%Y-%m-%d")
-DIR_PATH = join(DIRECTORY_PATH, current_day)
 # ==========  Helper functions ==========
 def process_mileage(raw_num='2,000  km'):
     """ :returns : mileage in Kilometers """
@@ -382,7 +375,7 @@ def get_car_info_from_web(url: str) -> list:
 
 
 # ========== Web scrapping functions ==========
-def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict, base_url=None):
+def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict, base_url=None, car_name=""):
     try:
         image_soap = soap.find(html_tag, attrs=attrs)
         logging.debug(f'img soup: {image_soap}')
@@ -391,6 +384,7 @@ def get_car_image_link(soap: BeautifulSoup, html_tag: str, attrs: dict, base_url
         else:
             save_path = image_soap["src"]
     except Exception as err:
+        logging.error(f'Car: {car_name}')
         logging.error(f'Error in get_car_image_link() err - {err}')
         save_path = ""
     return save_path
@@ -549,11 +543,12 @@ def woodridgeford(url: str) -> list:
             mileage = None
         return mileage
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, base_url):
         """ Return all the information in the car's card """
         car_info = {"car_name": get_car_name(soap, html_tag='p', attrs={}), "price": get_car_price(soap),
                     "mileage": get_car_mileage(soap), "website": website,
-                    "img_link": get_car_image_link(soap, 'img', {'itemprop': 'image'})}
+                    "img_link": get_car_image_link(soap, 'img', {'itemprop': 'image'}),
+                    "car_page_link": get_car_page_link(soap, 'a', {'class': 'stat-text-link'}, base_url)}
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='tr', attrs={})
 
@@ -567,13 +562,22 @@ def woodridgeford(url: str) -> list:
         return car_info
 
     # # # Function Main
+    if "woodridgeford" in url:
+        base_url = "https://www.woodridgeford.com"
+    elif "okotoksford.com" in url:
+        base_url = "https://www.okotoksford.com"
+    elif "advantageford.ca" in url:
+        base_url = "https://www.advantageford.ca"
+    elif "countryford.ca" in url:
+        base_url = "https://www.countryford.ca"
+
     main_soup, driver = get_main_soup_n_driver(url, cf_tag='div', cf_class_attrs={"id": "total-vehicle-number"},
                                                cs_tag="div", cs_class_attrs={"class": "col-xs-12 col-sm-12 col-md-7"})
 
     list_of_car_info = []
     all_class_outside_box = main_soup.find_all('div', attrs={'class': 'col-xs-12 col-sm-12 col-md-12'})
     for class_outside_box in all_class_outside_box:
-        list_of_car_info.append(get_car_info( class_outside_box, url) )
+        list_of_car_info.append(get_car_info( class_outside_box, url, base_url) )
 
     driver.quit()
 
@@ -627,10 +631,13 @@ def zarowny_n_westlock(url: str) -> list:
 
     def get_car_info(soap, website):
         """ Return all the information in the car's card """
-        car_info = {"car_name": get_car_name(soap, website),
+        base_url = "/".join(url.split("/")[:3])
+        car_name = get_car_name(soap, website)
+
+        car_info = {"car_name": car_name,
                     "price": get_car_price(soap, html_tag='strong', attrs={'class': 'price _bpcolor'}),
-                    "img_link": get_car_image_link(soap, 'img', {'class': 'img-defer'}),
-                    "website": website}
+                    "img_link": get_car_image_link(soap, 'img', {'class': 'img-defer'}, car_name=car_name),
+                    "website": website, "car_page_link": get_car_page_link(soap, 'a', {'itemprop': 'url'}, base_url) }
 
         raw_car_specs = get_car_specs_raw(soap)
 
@@ -733,12 +740,14 @@ def fourlane(url: str) -> list:
 
         return car_info
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, car_page_url):
         """ Return all the information in the car's card """
         car_name_soap = soap.find('h1')
 
         car_info = {"car_name": get_car_name(car_name_soap, 'span', attrs={}), "city": get_car_city(soap),
-                    "website": website, "img_link": get_car_image_link(soap, 'img', {'class': 'single-image'}, website)}
+                    "website": website, "img_link": get_car_image_link(soap, 'img', {'class': 'single-image'},
+                                                                       website, car_name=car_page_url),
+                    "car_page_link": car_page_url}
 
         if "aspenford.ca" in base_url:
             car_info["price"] = get_car_price(soap, html_tag='div', attrs={'id': 'fd-vehicle-price'})
@@ -781,7 +790,7 @@ def fourlane(url: str) -> list:
             time.sleep(2)
             soup = BeautifulSoup(page.content, 'html.parser')
 
-            list_of_car_info.append(get_car_info(soup, base_url))
+            list_of_car_info.append(get_car_info(soup, base_url, base_url + url))
 
     driver.quit()
 
@@ -854,18 +863,21 @@ def marlborough(url: str) -> list:
 
         return car_info
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, car_page_url):
         """ Return all the information in the car's card """
 
         image_soap = soap.find('div', {'class': 'gallery-media'})
         car_info = {"car_name": get_car_name(soap), "price": get_car_price(soap), "website": website,
-                    "img_path": get_car_image_link(image_soap, 'img', {})}
+                    "img_link": get_car_image_link(image_soap, 'img', {}, car_name=car_page_url),
+                    "car_page_link": car_page_url}
 
         raw_car_specs = get_car_specs_raw(soap)
 
         car_specs = extract_car_specs(raw_car_specs)
 
         car_info.update(car_specs)
+
+        logging.info(f'Done for car: {car_info["car_name"]}')
 
         return car_info
 
@@ -902,7 +914,7 @@ def marlborough(url: str) -> list:
             page = requests.get( single_page_url )
             soup = BeautifulSoup(page.content, 'html.parser')
 
-            list_of_car_info.append( get_car_info(soup, url) )
+            list_of_car_info.append( get_car_info(soup, url, single_page_url) )
 
     driver.quit()
 
@@ -974,12 +986,13 @@ def universalford(url: str) -> list:
 
         return car_info
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, car_page_url):
         """ Return all the information in the car's card """
         image_soap = soap.find('div', {'class': 'gallery-media'})
 
         car_info = {"car_name": get_car_name(soap), "price": get_car_price(soap), "website": website,
-                    "img_link": get_car_image_link(image_soap, 'img', {})}
+                    "img_link": get_car_image_link(image_soap, 'img', {}, car_name=car_page_url),
+                    "car_page_link": car_page_url}
 
         raw_car_specs = get_car_specs_raw(soap)
 
@@ -998,12 +1011,12 @@ def universalford(url: str) -> list:
         for class_vehicle_title in all_class_vehicle_title:
             class_title_link = class_vehicle_title.find('a')
             if class_title_link.has_attr("href"):
-                url = class_title_link["href"]
+                car_page_url = class_title_link["href"]
                 time.sleep(2)
-                page = requests.get(url)
+                page = requests.get(car_page_url)
                 soup = BeautifulSoup(page.content, 'html.parser')
 
-                list_of_car_info.append( get_car_info(soup, website) )
+                list_of_car_info.append( get_car_info(soup, website, car_page_url) )
 
         return list_of_car_info
 
@@ -1074,13 +1087,14 @@ def camclarkfordairdrie(url: str) -> list:
 
         return car_info
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, car_page_url):
         """ Return all the information in the car's card """
         image_soap = soup.find('div', {'class': 'photo-gallery__image--main'})
 
         car_info = {"car_name": get_car_name(soap, html_tag='h1', attrs={'class': 'vdp-title'}),
                     "price": get_car_price(soap, html_tag='span', attrs={'class': 'df aifs'}), "website": website,
-                    "img_link": get_car_image_link(image_soap, 'img', {})}
+                    "img_link": get_car_image_link(image_soap, 'img', {}, car_name=car_page_url),
+                    "car_page_link": car_page_url}
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='div', attrs={'class': 'detailed-specs__single-content'})
 
@@ -1119,14 +1133,14 @@ def camclarkfordairdrie(url: str) -> list:
             time.sleep(4)
             soup = BeautifulSoup(page, 'html.parser')
 
-            list_of_car_info.append( get_car_info(soup, url) )
+            list_of_car_info.append( get_car_info(soup, url, single_car_url) )
 
     driver.quit()
 
     return list_of_car_info
 
 
-def get_car_page_link(soap, html_tag='a', attrs: dict = None, base_url: str = None):
+def get_car_page_link(soap, html_tag='a', attrs: dict = None, base_url: str = None, car_name=""):
     try:
         link_soap = soap.find(html_tag, attrs=attrs)
         if base_url is None:
@@ -1134,6 +1148,7 @@ def get_car_page_link(soap, html_tag='a', attrs: dict = None, base_url: str = No
         else:
             link = base_url + link_soap["href"]
     except Exception as err:
+        logging.error(f'Car Name: {car_name}')
         logging.error(f'Error in get_car_page_link() err - {err}')
         link = ""
     return link
@@ -1268,8 +1283,10 @@ def collegefordlincoln(url: str) -> list:
     def get_car_info(soap, website, driver):
         """ Return all the information in the car's card """
         logging.debug("Collegeford.get_car_info() before image_link_n_save")
-        car_info = {"website": website,
-                    "img_link": get_car_image_link(soap, 'img', {'class': 'img-responsive'})}
+        car_page_url_soap = soap.find('span', {'class': 'image'})
+
+        car_info = {"website": website, "img_link": get_car_image_link(soap, 'img', {'class': 'img-responsive'}),
+                    "car_page_link": get_car_page_link(car_page_url_soap, 'a', {}) }
 
         if "royalford.ca" in website:
             raw_car_name = get_car_name(soap, html_tag='h2', attrs={'class': 'centered'})
@@ -1298,8 +1315,6 @@ def collegefordlincoln(url: str) -> list:
         car_specs = extract_car_specs(raw_car_specs, search_dict)
 
         car_info.update(car_specs)
-
-        logging.info(f'Done for car: {car_info["car_name"]}')
 
         return car_info
 
@@ -1342,13 +1357,14 @@ def zenderford(url: str) -> list:
             max_page_num = 1
         return max_page_num
 
-    def get_car_info(soap, website):
+    def get_car_info(soap, website, car_page_url):
         """ Return all the information in the car's card """
         image_soap = soap.find('div', {'class': 'photo-gallery__main'})
 
         car_info = {"car_name": get_car_name(soap, html_tag='h1', attrs={'class': 'vdp-title'}),
                     "price": get_car_price(soap, html_tag='div', attrs={'class': 'price-block__price'}),
-                    "website": website, "img_link": get_car_image_link(image_soap, 'img', {})}
+                    "website": website, "img_link": get_car_image_link(image_soap, 'img', {}),
+                    "car_page_link": car_page_url}
 
         raw_car_specs = get_car_specs_raw(soap, html_tag='li', attrs={'class': 'detailed-specs__single'})
 
@@ -1396,7 +1412,7 @@ def zenderford(url: str) -> list:
                     time.sleep(2)
                     soup = BeautifulSoup(page, 'html.parser')
 
-                    list_of_car_info.append(get_car_info(soup, url))
+                    list_of_car_info.append(get_car_info(soup, url, single_car_url))
 
             # visi all pages
             url = url.replace(f'pg={current_page}', f'pg={current_page + 1}')
@@ -1422,7 +1438,7 @@ def zenderford(url: str) -> list:
                 time.sleep(2)
                 soup = BeautifulSoup(page, 'html.parser')
 
-                list_of_car_info.append( get_car_info(soup, url) )
+                list_of_car_info.append( get_car_info(soup, url, single_car_url) )
 
     driver.quit()
 

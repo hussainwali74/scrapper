@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # For development
-uvicorn main:app --host 0.0.0.0 --reload
+#uvicorn main:app --host 0.0.0.0 --reload
 
-# For full production
-# gunicorn -k uvicorn.workers.UvicornWorker
+# For production
+gunicorn main:app --bind 0.0.0.0:8000 -w 1 -k uvicorn.workers.UvicornWorker

@@ -224,23 +224,24 @@ async def add_single_car(db: Session = Depends(get_db)):
                          "engine": "vti",
                          "entry_date": "2020-11-10"},
 
-                        {"car_name": "Toyota GLI 3",
-                         "mileage": 100_000,
-                         "exterior": "white",
+                        # {"car_name": "Toyota GLI 3",
+                        {"mileage": 200,
+                        "exterior": "White",
                          "drivetrain": "4x4",
                          "price": 200_000,
                          "transmission": "auto",
                          "engine": "vti",
                          "entry_date": "2020-11-10"},
 
-                        {"car_name": "Hustler",
-                         "mileage": 200,
-                         "exterior": "white",
-                         "drivetrain": "4x4",
-                         "price": 200_000,
-                         "transmission": "auto",
-                         "engine": "vti",
-                         "entry_date": "2020-11-10"}, ]
+                        # {"car_name": "Hustler",
+                        #  "mileage": 200,
+                        #  "exterior": "Black",
+                        #  "drivetrain": "4x4",
+                        #  "price": 200_000,
+                        #  "transmission": "auto",
+                        #  "engine": "vti",
+                        #  "entry_date": "2020-11-10"},
+                        ]
     for one_car in list_of_car_info:
         res = crud.create(db, car_in=one_car, autocommit=True)
     return res

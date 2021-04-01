@@ -6,8 +6,6 @@ import re
 import time
 import logging
 from os import getenv
-from os.path import join
-from datetime import datetime
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 FAIL_SAFE_RUNS = 3

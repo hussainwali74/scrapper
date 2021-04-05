@@ -9,6 +9,7 @@ import logging
 
 from web_scrapper import get_car_info_from_web
 from datetime import date
+from time import time
 
 Base.metadata.create_all(bind=engine)
 
@@ -56,7 +57,7 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.gimliford.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.hometownford.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.kelleherforddauphin.com/used/used-vehicle-inventory.html?reset=1',
-        'https://www.metcalfesgarage.ca/used/used-vehicle-inventory.html?reset=1',
+        # # # # 'https://www.metcalfesgarage.ca/used/used-vehicle-inventory.html?reset=1',    # Got changed
         'https://www.roblinfordsales.com/used/used-vehicle-inventory?reset=1',
         'https://www.virdenford.ca/pre-owned/pre-owned-vehicle-inventory.html?reset=1',
         'https://www.westwardford.com/used/used-vehicle-inventory.html?reset=1',
@@ -129,6 +130,7 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
     ]
     # url_list = ['https://www.regalmotorsltd.com/used/used-vehicle-inventory.html']
+    start_time = time()
     done_for = []
     for url in url_list:
         car_count = 0
@@ -143,6 +145,8 @@ async def add_cars(db: Session = Depends(get_db)):
         logging.info(f'Total Cars added: {car_count}')
             # crud.create_car_dict(db, one_car, website=url)
     # db.commit()  # Uncomment if using autocommit=False
+    logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')
+    logging.info(f'Time in Minutes: {(time() - start_time) / 60}')
     return done_for
 
 

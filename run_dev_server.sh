@@ -4,4 +4,5 @@
 #uvicorn main:app --host 0.0.0.0 --reload
 
 # For production
-gunicorn main:app --bind 0.0.0.0:8000 -w 1 -k uvicorn.workers.UvicornWorker
+gunicorn main:app --bind 0.0.0.0:8000 -w 1 -k uvicorn.workers.UvicornWorker --timeout 21_600
+#gunicorn main:app --bind 0.0.0.0:8000 -w 1 

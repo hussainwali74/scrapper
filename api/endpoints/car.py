@@ -31,6 +31,8 @@ async def add_cars(db: Session = Depends(get_db)):
     # "uo", "yes", "https://www.google.com")
 
     url_list = [
+        # # 'https://www.royalford.ca/used/used-vehicle-inventory.html?reset=1',  # Got changed
+        # # 'https://www.metcalfesgarage.ca/used/used-vehicle-inventory.html?reset=1',    # Got changed
         'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
         'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
@@ -44,7 +46,6 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.castleford.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.collegefordtaber.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.westergardford.com/used/used-vehicle-inventory.html?reset=1',
-        'https://www.royalford.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.jubileeford.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.senchuk.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.centennialford.sk.ca/used/used-vehicle-inventory.html',
@@ -57,7 +58,6 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.gimliford.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.hometownford.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.kelleherforddauphin.com/used/used-vehicle-inventory.html?reset=1',
-        # # # # 'https://www.metcalfesgarage.ca/used/used-vehicle-inventory.html?reset=1',    # Got changed
         'https://www.roblinfordsales.com/used/used-vehicle-inventory?reset=1',
         'https://www.virdenford.ca/pre-owned/pre-owned-vehicle-inventory.html?reset=1',
         'https://www.westwardford.com/used/used-vehicle-inventory.html?reset=1',

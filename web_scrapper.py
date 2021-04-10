@@ -193,190 +193,193 @@ def get_car_info_from_web(url: str) -> list:
     logging.info(f'firefox: {FIREFOX_BIN}')
     logging.info(f'Gecko: {GECKODRIVER_PATH}')
     list_of_cars = None
-    if "regalmotors" in url:
-        # list_of_cars = regal_n_junct_north(url)
-        list_of_cars = collegefordlincoln(url)
-    elif "junctionmotors" in url:
-        # list_of_cars = regal_n_junct_north(url)
-        list_of_cars = collegefordlincoln(url)
-    elif "northstarfordsales" in url:
-        # list_of_cars = regal_n_junct_north(url)
-        list_of_cars = collegefordlincoln(url)
-    elif "collegefordlincoln" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "truenorthford" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "lambford" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "metroford" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "cslford" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "norrisford" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "patriciafordsales" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "castleford" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "collegefordtaber" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "westergardford" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "royalford.ca" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "jubileeford" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "senchuk" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "centennialford.sk.ca" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "formomotors.com" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "meritford.com" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "twowayservice.com" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "northlandford.mb.ca" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "rhinelandcar.com" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "steeltownford.com" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "gimliford.ca" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "hometownford.ca" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "kelleherforddauphin.com" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "metcalfesgarage.ca" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "roblinfordsales.com" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "virdenford.ca" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "westwardford.com" in url:
-        list_of_cars = collegefordlincoln(url)
-    elif "woodridgeford" in url:
-        list_of_cars = woodridgeford(url)
-    elif "okotoksford" in url:
-        list_of_cars = woodridgeford(url)
-    elif "advantageford" in url:
-        list_of_cars = woodridgeford(url)
-    elif "countryford.ca" in url:
-        list_of_cars = woodridgeford(url)
-    elif "zarownymotors" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "westlockford" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "griffithsford" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "bigmford" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "jerryford" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "draytonvalleyford" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "harwoodford" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "discoveryfordsales.com" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "langenburgmotors.com" in url:
-        try:
+    try:
+        if "regalmotors" in url:
+            # list_of_cars = regal_n_junct_north(url)
+            list_of_cars = collegefordlincoln(url)
+        elif "junctionmotors" in url:
+            # list_of_cars = regal_n_junct_north(url)
+            list_of_cars = collegefordlincoln(url)
+        elif "northstarfordsales" in url:
+            # list_of_cars = regal_n_junct_north(url)
+            list_of_cars = collegefordlincoln(url)
+        elif "collegefordlincoln" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "truenorthford" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "lambford" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "metroford" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "cslford" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "norrisford" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "patriciafordsales" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "castleford" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "collegefordtaber" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "westergardford" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "royalford.ca" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "jubileeford" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "senchuk" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "centennialford.sk.ca" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "formomotors.com" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "meritford.com" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "twowayservice.com" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "northlandford.mb.ca" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "rhinelandcar.com" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "steeltownford.com" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "gimliford.ca" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "hometownford.ca" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "kelleherforddauphin.com" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "metcalfesgarage.ca" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "roblinfordsales.com" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "virdenford.ca" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "westwardford.com" in url:
+            list_of_cars = collegefordlincoln(url)
+        elif "woodridgeford" in url:
+            list_of_cars = woodridgeford(url)
+        elif "okotoksford" in url:
+            list_of_cars = woodridgeford(url)
+        elif "advantageford" in url:
+            list_of_cars = woodridgeford(url)
+        elif "countryford.ca" in url:
+            list_of_cars = woodridgeford(url)
+        elif "zarownymotors" in url:
             list_of_cars = zarowny_n_westlock(url)
-        except:
+        elif "westlockford" in url:
             list_of_cars = zarowny_n_westlock(url)
-    elif "melodymotors.com" in url:
-        try:
+        elif "griffithsford" in url:
             list_of_cars = zarowny_n_westlock(url)
-        except:
+        elif "bigmford" in url:
             list_of_cars = zarowny_n_westlock(url)
-    elif "valleyfordhague.ca" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "fairwayford.ca" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "coldlakeford.com" in url:
-        list_of_cars = zarowny_n_westlock(url)
-    elif "fourlaneford" in url:
-        list_of_cars = fourlane(url)
-    elif "aspenford" in url:
-        list_of_cars = fourlane(url)
-    elif "webbsford" in url:
-        list_of_cars = fourlane(url)
-    elif "suncityford" in url:
-        list_of_cars = fourlane(url)
-    elif "pineridgeford.com" in url:
-        list_of_cars = fourlane(url)
-    elif "wilfselieford.ca" in url:
-        list_of_cars = fourlane(url)
-    elif "marlborough" in url:
-        list_of_cars = marlborough(url)
-    elif "universalford" in url:
-        list_of_cars = universalford(url)
-    elif "camclarkfordairdrie" in url:
-        list_of_cars = camclarkfordairdrie(url)
-    elif "integrityford" in url:
-        list_of_cars = camclarkfordairdrie(url)
-    elif "moosejawfordsales" in url:
-        list_of_cars = camclarkfordairdrie(url)
-    elif "bennettdunlopford" in url:
-        list_of_cars = camclarkfordairdrie(url)
-    elif "rivercityford" in url:
-        list_of_cars = camclarkfordairdrie(url)
-    elif "zenderford" in url:
-        list_of_cars = zenderford(url)
-    elif "boundaryford" in url:
-        list_of_cars = zenderford(url)
-    elif "denhamford" in url:
-        list_of_cars = zenderford(url)
-    elif "maclinfordcalgary" in url:
-        list_of_cars = zenderford(url)
-    elif "legacyfordponoka" in url:
-        list_of_cars = zenderford(url)
-    elif "legacyfordrimbey" in url:
-        list_of_cars = zenderford(url)
-    elif "vegford" in url:
-        list_of_cars = zenderford(url)
-    elif "vickarford" in url:
-        list_of_cars = zenderford(url)
-    elif "mid-townford" in url:
-        list_of_cars = zenderford(url)
-    # multi-page
-    elif "greatplainsford" in url:
-        list_of_cars = zenderford(url)
-    elif "esterhazyford.ca" in url:
-        list_of_cars = zenderford(url)
-    elif "futureford.ca" in url:
-        list_of_cars = zenderford(url)
-    elif "highriverford" in url:
-        list_of_cars = highriverford(url)
-    elif "hansenford" in url:
-        list_of_cars = hansenford(url)
-    elif "windsorford" in url:
-        list_of_cars = windsorford(url)
-    elif "northstarfordcarsandtrucks" in url:
-        list_of_cars = northstarfordcarsandtrucks(url)
-    elif "strathmoreford" in url:
-        list_of_cars = strathmoreford(url)
-    elif "revolutionford" in url:
-        list_of_cars = revolutionford(url)
-    elif "novlanbros.com" in url:
-        list_of_cars = novlanbros(url)
-    elif "knightfordlincoln.ca" in url:
-        list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
-    elif "capitalfordlincoln.com" in url:
-        list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
-    elif "capitalfordwinnipeg.ca" in url:
-        list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
-    elif "cypressmotors.com" in url:
-        list_of_cars = cypressmotors(url)
-    elif "birchwoodford.ca" in url:
-        list_of_cars = birchwoodford(url)
-    elif "merlinford.com" in url:
-        list_of_cars = merlinford(url)
-    elif "kelleherford.com" in url:
-        list_of_cars = kelleherford(url)
-    elif "rainbowford" in url:
-        list_of_cars = rainbowford(url)
+        elif "jerryford" in url:
+            list_of_cars = zarowny_n_westlock(url)
+        elif "draytonvalleyford" in url:
+            list_of_cars = zarowny_n_westlock(url)
+        elif "harwoodford" in url:
+            list_of_cars = zarowny_n_westlock(url)
+        elif "discoveryfordsales.com" in url:
+            list_of_cars = zarowny_n_westlock(url)
+        elif "langenburgmotors.com" in url:
+            try:
+                list_of_cars = zarowny_n_westlock(url)
+            except:
+                list_of_cars = zarowny_n_westlock(url)
+        elif "melodymotors.com" in url:
+            try:
+                list_of_cars = zarowny_n_westlock(url)
+            except:
+                list_of_cars = zarowny_n_westlock(url)
+        elif "valleyfordhague.ca" in url:
+            list_of_cars = zarowny_n_westlock(url)
+        elif "fairwayford.ca" in url:
+            list_of_cars = zarowny_n_westlock(url)
+        elif "coldlakeford.com" in url:
+            list_of_cars = zarowny_n_westlock(url)
+        elif "fourlaneford" in url:
+            list_of_cars = fourlane(url)
+        elif "aspenford" in url:
+            list_of_cars = fourlane(url)
+        elif "webbsford" in url:
+            list_of_cars = fourlane(url)
+        elif "suncityford" in url:
+            list_of_cars = fourlane(url)
+        elif "pineridgeford.com" in url:
+            list_of_cars = fourlane(url)
+        elif "wilfselieford.ca" in url:
+            list_of_cars = fourlane(url)
+        elif "marlborough" in url:
+            list_of_cars = marlborough(url)
+        elif "universalford" in url:
+            list_of_cars = universalford(url)
+        elif "camclarkfordairdrie" in url:
+            list_of_cars = camclarkfordairdrie(url)
+        elif "integrityford" in url:
+            list_of_cars = camclarkfordairdrie(url)
+        elif "moosejawfordsales" in url:
+            list_of_cars = camclarkfordairdrie(url)
+        elif "bennettdunlopford" in url:
+            list_of_cars = camclarkfordairdrie(url)
+        elif "rivercityford" in url:
+            list_of_cars = camclarkfordairdrie(url)
+        elif "zenderford" in url:
+            list_of_cars = zenderford(url)
+        elif "boundaryford" in url:
+            list_of_cars = zenderford(url)
+        elif "denhamford" in url:
+            list_of_cars = zenderford(url)
+        elif "maclinfordcalgary" in url:
+            list_of_cars = zenderford(url)
+        elif "legacyfordponoka" in url:
+            list_of_cars = zenderford(url)
+        elif "legacyfordrimbey" in url:
+            list_of_cars = zenderford(url)
+        elif "vegford" in url:
+            list_of_cars = zenderford(url)
+        elif "vickarford" in url:
+            list_of_cars = zenderford(url)
+        elif "mid-townford" in url:
+            list_of_cars = zenderford(url)
+        # multi-page
+        elif "greatplainsford" in url:
+            list_of_cars = zenderford(url)
+        elif "esterhazyford.ca" in url:
+            list_of_cars = zenderford(url)
+        elif "futureford.ca" in url:
+            list_of_cars = zenderford(url)
+        elif "highriverford" in url:
+            list_of_cars = highriverford(url)
+        elif "hansenford" in url:
+            list_of_cars = hansenford(url)
+        elif "windsorford" in url:
+            list_of_cars = windsorford(url)
+        elif "northstarfordcarsandtrucks" in url:
+            list_of_cars = northstarfordcarsandtrucks(url)
+        elif "strathmoreford" in url:
+            list_of_cars = strathmoreford(url)
+        elif "revolutionford" in url:
+            list_of_cars = revolutionford(url)
+        elif "novlanbros.com" in url:
+            list_of_cars = novlanbros(url)
+        elif "knightfordlincoln.ca" in url:
+            list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
+        elif "capitalfordlincoln.com" in url:
+            list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
+        elif "capitalfordwinnipeg.ca" in url:
+            list_of_cars = knightfordlincoln_n_capitalfordlincoln(url)
+        elif "cypressmotors.com" in url:
+            list_of_cars = cypressmotors(url)
+        elif "birchwoodford.ca" in url:
+            list_of_cars = birchwoodford(url)
+        elif "merlinford.com" in url:
+            list_of_cars = merlinford(url)
+        elif "kelleherford.com" in url:
+            list_of_cars = kelleherford(url)
+        elif "rainbowford" in url:
+            list_of_cars = rainbowford(url)
+    except Exception as e:
+        logging.error(f'Some error - {e} in {url}')
 
     # elif "westlockford" in url:
     #     list_of_cars = westlockford(url)

@@ -165,9 +165,9 @@ export default {
   },
   created() {
     console.log("get h");
-    // .get("https://car-scrapo.herokuapp.com/car/")
+    // .get("http://localhost:8000/car/cars/")
     axios
-      .get("http://localhost:8000/car/cars/")
+      .get("http://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=100/")
       .then((x) => {
         this.cars = x["data"];
         console.log(x["data"]);

@@ -167,7 +167,7 @@ export default {
     console.log("get h");
     // .get("http://localhost:8000/car/cars/")
     axios
-      .get("http://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=100")
+      .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=100")
       .then((x) => {
         this.cars = x["data"];
         console.log(x["data"]);

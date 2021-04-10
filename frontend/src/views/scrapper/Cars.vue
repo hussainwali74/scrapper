@@ -3,6 +3,61 @@
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
       <div class="row"></div>
     </base-header>
+    <div class="row px-3">
+      <div
+        class="card col-md-4 col-sm-12 mt-4 p-sm-2 p-4"
+        v-for="(row, index) in cars"
+        :key="index"
+      >
+        <div>
+          <img
+            alt="Image placeholder"
+            :src="row.img_link"
+            class="img-thumbnail"
+          />
+        </div>
+        <th scope="">{{ index }}</th>
+        <div class="name-detail">
+          <span class="name"> Name: </span>
+          <span class="detail"> {{ row.car_name }} </span>
+        </div>
+        <div class="name-detail">
+          <span class="name">Drive Train:</span>
+          <span class="detail">
+            {{ row.drivetrain }}
+          </span>
+        </div>
+        <div class="name-detail">
+          <span class="name">Engine:</span>
+          <span class="detail">
+            {{ row.engine }}
+          </span>
+        </div>
+
+        <div class="name-detail">
+          <span class="name"> Exterior: </span>
+          <span class="detail">
+            {{ row.exterior }}
+          </span>
+        </div>
+
+        <div class="name-detail">
+          <span class="name"> Mileage: </span>
+          <span class="detail">
+            {{ row.mileage }}
+          </span>
+        </div>
+
+        <div class="name-detail">
+          <span class="name"> Price: </span>
+          <span class="detail"> ${{ row.price || 0 }} </span>
+        </div>
+        <div class="name-detail">
+          <span class="name" style="width: 150px"> Date: </span>
+          <span class="detail"> {{ getDate(row.entry_date) }} </span>
+        </div>
+      </div>
+    </div>
 
     <div class="container-fluid">
       <div class="row">

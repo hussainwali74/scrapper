@@ -1,0 +1,348 @@
+1618054830843	geckodriver	INFO	Listening on 127.0.0.1:41735
+1618054831866	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilej6Kkse"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:6154): GLib-GObject-CRITICAL **: 04:40:34.428: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:6173): GLib-GObject-CRITICAL **: 04:40:34.576: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:6262): GLib-GObject-CRITICAL **: 04:40:36.958: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618054837118	Marionette	INFO	Listening on port 39935
+1618054837247	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1618054879851	geckodriver	INFO	Listening on 127.0.0.1:49397
+1618054879871	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileCq1ZO0"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:6410): GLib-GObject-CRITICAL **: 04:41:21.185: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:6432): GLib-GObject-CRITICAL **: 04:41:21.351: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1618054882465	Marionette	INFO	Listening on port 38121
+
+(/usr/lib/firefox/firefox:6499): GLib-GObject-CRITICAL **: 04:41:22.497: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618054882523	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618054912027	Marionette	INFO	Stopped listening on port 38121
+JavaScript error: resource://gre/modules/Sqlite.jsm, line 1030: Error: Sqlite.jsm has been shutdown. Cannot open connection to: /tmp/rust_mozprofileCq1ZO0/protections.sqlite
+1618054930088	geckodriver	INFO	Listening on 127.0.0.1:45417
+1618054930106	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileBVpWoa"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:6635): GLib-GObject-CRITICAL **: 04:42:11.905: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:6657): GLib-GObject-CRITICAL **: 04:42:12.088: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1618054933826	Marionette	INFO	Listening on port 41811
+
+(/usr/lib/firefox/firefox:6736): GLib-GObject-CRITICAL **: 04:42:13.844: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618054933888	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618054965266	Marionette	INFO	Stopped listening on port 41811
+JavaScript error: resource://gre/modules/Sqlite.jsm, line 1030: Error: Sqlite.jsm has been shutdown. Cannot open connection to: /tmp/rust_mozprofileBVpWoa/protections.sqlite
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1618054986378	geckodriver	INFO	Listening on 127.0.0.1:59959
+1618054986389	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile7vNOya"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:6877): GLib-GObject-CRITICAL **: 04:43:07.979: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:6899): GLib-GObject-CRITICAL **: 04:43:08.165: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:6972): GLib-GObject-CRITICAL **: 04:43:10.514: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618054990604	Marionette	INFO	Listening on port 42051
+1618054990755	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055038085	Marionette	INFO	Stopped listening on port 42051
+1618055083287	geckodriver	INFO	Listening on 127.0.0.1:40667
+1618055083303	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile8bG78e"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:7235): GLib-GObject-CRITICAL **: 04:44:44.651: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:7257): GLib-GObject-CRITICAL **: 04:44:44.837: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:7331): GLib-GObject-CRITICAL **: 04:44:46.621: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055086747	Marionette	INFO	Listening on port 46711
+1618055086782	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055118279	Marionette	INFO	Stopped listening on port 46711
+JavaScript error: resource://gre/modules/Sqlite.jsm, line 1030: Error: Sqlite.jsm has been shutdown. Cannot open connection to: /tmp/rust_mozprofile8bG78e/protections.sqlite
+1618055148274	geckodriver	INFO	Listening on 127.0.0.1:57727
+1618055148291	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile1uxDRH"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:7472): GLib-GObject-CRITICAL **: 04:45:50.973: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:7494): GLib-GObject-CRITICAL **: 04:45:51.178: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:7568): GLib-GObject-CRITICAL **: 04:45:52.886: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055153137	Marionette	INFO	Listening on port 37631
+1618055153241	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055180640	Marionette	INFO	Stopped listening on port 37631
+1618055190553	geckodriver	INFO	Listening on 127.0.0.1:38789
+1618055190568	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileRBfux0"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:7700): GLib-GObject-CRITICAL **: 04:46:32.088: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:7720): GLib-GObject-CRITICAL **: 04:46:32.247: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:7817): GLib-GObject-CRITICAL **: 04:46:34.092: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055194203	Marionette	INFO	Listening on port 39309
+1618055194228	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055235332	Marionette	INFO	Stopped listening on port 39309
+1618055282419	geckodriver	INFO	Listening on 127.0.0.1:40279
+1618055282433	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileeYWg1y"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:7951): GLib-GObject-CRITICAL **: 04:48:04.049: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:7970): GLib-GObject-CRITICAL **: 04:48:04.210: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:8045): GLib-GObject-CRITICAL **: 04:48:06.674: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055286736	Marionette	INFO	Listening on port 40649
+1618055286879	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://track.leadboxhq.com/analytics.js, line 1: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://track.leadboxhq.com/analytics.js, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://track.leadboxhq.com/analytics.js, line 1: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://track.leadboxhq.com/analytics.js, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://track.leadboxhq.com/analytics.js, line 1: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://track.leadboxhq.com/analytics.js, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://track.leadboxhq.com/analytics.js, line 1: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://track.leadboxhq.com/analytics.js, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055300710	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'interactive'.
+1618055300739	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'interactive'.
+JavaScript error: https://maps.googleapis.com/maps/api/js?key=AIzaSyDzIrP9b8yI31tUWSj5FkqhXMzDb55gT1w&libraries=places, line 160: TypeError: h is undefined
+1618055302731	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'interactive'.
+JavaScript error: https://maps.googleapis.com/maps/api/js?key=AIzaSyA31zxGecfeYitC-iILzFJW1oTIjH0cybU&libraries=places, line 160: TypeError: k is undefined
+1618055343064	Marionette	INFO	Stopped listening on port 40649
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 718: Error: Phase "Sqlite.jsm: wait until all connections are closed" is finished, it is too late to register completion condition "protections.sqlite#0: waiting for shutdown"
+1618055410215	geckodriver	INFO	Listening on 127.0.0.1:56845
+1618055410225	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile3UueJY"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:8325): GLib-GObject-CRITICAL **: 04:50:12.083: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:8342): GLib-GObject-CRITICAL **: 04:50:12.199: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:8433): GLib-GObject-CRITICAL **: 04:50:14.234: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055414288	Marionette	INFO	Listening on port 43149
+1618055414477	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055458644	Marionette	INFO	Stopped listening on port 43149
+1618055467178	geckodriver	INFO	Listening on 127.0.0.1:43733
+1618055468201	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileMh7Qf8"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:8590): GLib-GObject-CRITICAL **: 04:51:10.124: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:8612): GLib-GObject-CRITICAL **: 04:51:10.293: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:8685): GLib-GObject-CRITICAL **: 04:51:12.490: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055472518	Marionette	INFO	Listening on port 40939
+1618055472613	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055505148	Marionette	INFO	Stopped listening on port 40939
+1618055519276	geckodriver	INFO	Listening on 127.0.0.1:58703
+1618055519288	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileIl51Fh"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:8868): GLib-GObject-CRITICAL **: 04:52:00.617: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:8890): GLib-GObject-CRITICAL **: 04:52:00.787: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:8970): GLib-GObject-CRITICAL **: 04:52:02.445: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055522653	Marionette	INFO	Listening on port 43081
+1618055522784	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055549254	Marionette	INFO	Stopped listening on port 43081
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1618055551327	geckodriver	INFO	Listening on 127.0.0.1:46201
+1618055551340	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileX29pWf"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:9149): GLib-GObject-CRITICAL **: 04:52:32.673: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:9171): GLib-GObject-CRITICAL **: 04:52:32.856: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:9250): GLib-GObject-CRITICAL **: 04:52:34.439: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055554466	Marionette	INFO	Listening on port 44363
+1618055554498	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055591684	Marionette	INFO	Stopped listening on port 44363
+1618055601780	geckodriver	INFO	Listening on 127.0.0.1:48875
+1618055601796	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilemhgvrk"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:9400): GLib-GObject-CRITICAL **: 04:53:23.334: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:9417): GLib-GObject-CRITICAL **: 04:53:23.490: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:9512): GLib-GObject-CRITICAL **: 04:53:25.251: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055605350	Marionette	INFO	Listening on port 44219
+1618055605527	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://t2.dealer-leads.ca/main.js?uuid=2, line 14: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://t2.dealer-leads.ca/main.js?uuid=2, line 14: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://t2.dealer-leads.ca/main.js?uuid=2, line 14: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://t2.dealer-leads.ca/main.js?uuid=2, line 14: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055635849	Marionette	INFO	Stopped listening on port 44219
+1618055647279	geckodriver	INFO	Listening on 127.0.0.1:38383
+1618055647293	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileYMGyqR"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:9683): GLib-GObject-CRITICAL **: 04:54:08.804: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:9705): GLib-GObject-CRITICAL **: 04:54:08.973: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:9807): GLib-GObject-CRITICAL **: 04:54:10.443: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055650724	Marionette	INFO	Listening on port 37095
+1618055650787	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://assets.adobedtm.com/248d63c2ff6b/181add152d00/launch-cf5fe4eb2b72.min.js, line 6: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055683500	Marionette	INFO	Stopped listening on port 37095
+1618055696417	geckodriver	INFO	Listening on 127.0.0.1:59831
+1618055696422	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile405XJk"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:9968): GLib-GObject-CRITICAL **: 04:54:57.720: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:9988): GLib-GObject-CRITICAL **: 04:54:57.892: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:10065): GLib-GObject-CRITICAL **: 04:54:59.537: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1618055699812	Marionette	INFO	Listening on port 35793
+1618055699924	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8, line 3400: unreachable code after return statement
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8, line 21247: unreachable code after return statement
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8, line 21417: unreachable code after return statement
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8, line 3400: unreachable code after return statement
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8 line 28 > eval, line 24: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8 line 28 > eval, line 24: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8 line 28 > eval, line 24: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8 line 28 > eval, line 24: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8 line 28 > eval, line 24: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8 line 28 > eval, line 24: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8 line 28 > eval, line 24: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://www.royalford.ca/js_r/resource.loader.en.js?v=3&js=dVTbbtswDP2hxcGyYu9bL9iADujQFXscaJmOGcuiKlFx068f3Sayo7YPQezD--Gh17u43j0mDIdqFz-t5zfD3BMWYA0Rv14UYAOhF2Yr5AvLHiw1JGXq3aMEcLHlMJwsA5A7PVt4PkR6xlgNM3gMHSD22JDzSQpLC84can5afa6-VBeVB9MXHiMIhkGbPQtHLW1_gGsshiIg4B7BZrCD2AnUNpNiePAQ8CFikyGw6JSQRMckq0RFVgUWcyUNjsFv1i1Zba8Ca6vWkq9T284NTV73wV8_KXFFOh9Q5HDXsfCmML2wTELs3mFSOJnufiSP7xgRIrltNVG5MHrYYg3Onfe17J4cSYVzAPuUNTHemwBiujvIbMVXRMmPsM-0blErkPmlezlLpJLIhfcLscWxjcIB3wg4OWl4zN00uv8HIRtzVg-OBkXXNbNEpcufjZvNJ_XHb6_Ahx5uW3g4rC_BTn9Xit64t_jlrLB9wum37OEIraTD1aT9E96SU73jvyHp2UXB8vLwieR2MiyW5QM5-dNRnv-GAo4c-mXB6Rp-JzL99fT0l5ot5lNRghr86b5DeCvp8cxzxj0fFVjc8UvfaNGUMUHX1uhBGQ6L3g0EH5jb0zt7dB2nkGdpdYMYzvvdIt-ygWV5YdA9L4e9wnZSrfrcQYhzxaifLjzP18lgNwbcHnLZZmPE9OukzekJYDXtxS755CST7po68KjZy_f5tA4DOlExmGRB1Zw_T66ajkznj3pdltwkrf8 line 28 > eval, line 24: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1618055733614	Marionette	INFO	Stopped listening on port 35793
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x5D0009,name=PHttpChannel::Msg_DeletingChannel) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x230032,name=PBrowser::Msg___delete__) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A0143,name=PContent::Msg_ScriptError) Channel closing: too late to send/recv, messages will be lost
+

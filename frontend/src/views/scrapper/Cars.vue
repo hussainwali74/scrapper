@@ -259,5 +259,6 @@ td {
   justify-content: space-between;
   width: 100%;
   border-bottom: 1px solid rgba(128, 128, 128, 0.37);
+  clear: both;
 }
 </style>

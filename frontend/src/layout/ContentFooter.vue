@@ -5,14 +5,14 @@
         <div class="copyright text-center text-lg-left text-muted">
           © {{ year }}
           <a
-            href="https://www.creative-tim.com"
+            href="https://www.upwork.com/o/profiles/users/~0112a65d3fcd5acc08/"
             class="font-weight-bold ml-1"
             target="_blank"
-            >Creative Tim</a
-          >
+            >Created By Hussain
+          </a>
         </div>
       </div>
-      <div class="col-lg-6">
+      <!-- <div class="col-lg-6">
         <ul
           class="nav nav-footer justify-content-center justify-content-lg-end"
         >
@@ -49,7 +49,7 @@
             >
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </footer>
 </template>

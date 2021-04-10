@@ -6,13 +6,13 @@
       title="Argon"
     >
       <template v-slot:links>
-        <sidebar-item
+        <!-- <sidebar-item
           :link="{
             name: 'Dashboard',
             icon: 'ni ni-tv-2 text-primary',
             path: '/dashboard',
           }"
-        />
+        /> -->
 
         <sidebar-item
           :link="{
@@ -21,7 +21,7 @@
             path: '/cars',
           }"
         />
-        <sidebar-item
+        <!-- <sidebar-item
           :link="{
             name: 'Icons',
             icon: 'ni ni-planet text-blue',
@@ -62,7 +62,7 @@
             icon: 'ni ni-circle-08 text-pink',
             path: '/register',
           }"
-        />
+        /> -->
       </template>
     </side-bar>
     <div class="main-content" :data="sidebarBackground">

@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import DashboardLayout from "@/layout/DashboardLayout";
 import AuthLayout from "@/layout/AuthLayout";
 
-import Dashboard from "../views/Dashboard.vue";
+// import Dashboard from "../views/Dashboard.vue";
 import Icons from "../views/Icons.vue";
 import Maps from "../views/Maps.vue";
 import Profile from "../views/UserProfile.vue";
@@ -15,17 +15,17 @@ import Register from "../views/Register.vue";
 const routes = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/",
     component: DashboardLayout,
     children: [
       {
-        path: "/cars",
+        path: "/",
         component: CarsComponent,
       },
       {
         path: "/dashboard",
         name: "dashboard",
-        components: { default: Dashboard },
+        components: { default: CarsComponent },
       },
       {
         path: "/icons",

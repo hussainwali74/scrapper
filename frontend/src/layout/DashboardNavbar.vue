@@ -19,7 +19,7 @@
       </div>
     </form>
     <ul class="navbar-nav align-items-center d-none d-md-flex">
-      <li class="nav-item dropdown">
+      <!-- <li class="nav-item dropdown">
         <base-dropdown class="nav-link pr-0">
           <template v-slot:title>
             <div class="media align-items-center">
@@ -59,7 +59,7 @@
             <span>Logout</span>
           </router-link>
         </base-dropdown>
-      </li>
+      </li> -->
     </ul>
   </base-nav>
 </template>

@@ -32,33 +32,50 @@
                 :class="type === 'dark' ? 'table-dark' : ''"
                 :thead-classes="type === 'dark' ? 'thead-dark' : 'thead-light'"
                 tbody-classes="list"
-                :data="tableData"
+                :data="cars"
               >
-                <template v-slot:columns>
-                  <th>Project</th>
-                  <th>Budget</th>
-                  <th>Status</th>
-                  <th>Users</th>
-                  <th>Completion</th>
+                <template v-slot:columns class="text-bold font-bold">
+                  <th>Name</th>
+                  <th>Drive</th>
+                  <th>Engine</th>
+                  <th>Exterior</th>
+                  <th>Mileage</th>
+                  <th>Price</th>
                   <th></th>
                 </template>
 
                 <template v-slot:default="row">
                   <th scope="row">
                     <div class="media align-items-center">
-                      <a href="#" class="avatar rounded-circle mr-3">
-                        <img alt="Image placeholder" :src="row.item.img" />
-                      </a>
                       <div class="media-body">
-                        <span class="name mb-0 text-sm">{{
-                          row.item.title
-                        }}</span>
+                        <a :href="row.item.website">
+                          <span class="name mb-0 text-sm">{{
+                            row.item.car_name
+                          }}</span>
+                        </a>
                       </div>
                     </div>
                   </th>
-                  <td class="budget">
-                    {{ row.item.budget }}
+                  <td class="">
+                    {{ row.item.drivetrain }}
                   </td>
+                  <td class="">
+                    {{ row.item.engine }}
+                  </td>
+
+                  <td class="">
+                    {{ row.item.exterior }}
+                  </td>
+                  <td class="">
+                    {{ row.item.mileage }}
+                  </td>
+                  <td
+                    class="text-bold"
+                    style="font-weight: bold; color: #083d91bd"
+                  >
+                    ${{ row.item.price }}
+                  </td>
+
                   <td>
                     <badge class="badge-dot mr-4" :type="row.item.statusType">
                       <i :class="`bg-${row.item.statusType}`"></i>
@@ -66,92 +83,11 @@
                     </badge>
                   </td>
                   <td>
-                    <div class="avatar-group">
-                      <a
-                        href="#"
-                        class="avatar avatar-sm rounded-circle"
-                        data-toggle="tooltip"
-                        data-original-title="Ryan Tompson"
-                      >
-                        <img
-                          alt="Image placeholder"
-                          src="img/theme/team-1-800x800.jpg"
-                        />
-                      </a>
-                      <a
-                        href="#"
-                        class="avatar avatar-sm rounded-circle"
-                        data-toggle="tooltip"
-                        data-original-title="Romina Hadid"
-                      >
-                        <img
-                          alt="Image placeholder"
-                          src="img/theme/team-2-800x800.jpg"
-                        />
-                      </a>
-                      <a
-                        href="#"
-                        class="avatar avatar-sm rounded-circle"
-                        data-toggle="tooltip"
-                        data-original-title="Alexander Smith"
-                      >
-                        <img
-                          alt="Image placeholder"
-                          src="img/theme/team-3-800x800.jpg"
-                        />
-                      </a>
-                      <a
-                        href="#"
-                        class="avatar avatar-sm rounded-circle"
-                        data-toggle="tooltip"
-                        data-original-title="Jessica Doe"
-                      >
-                        <img
-                          alt="Image placeholder"
-                          src="img/theme/team-4-800x800.jpg"
-                        />
-                      </a>
-                    </div>
-                  </td>
-
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="completion mr-2"
-                        >{{ row.item.completion }}%</span
-                      >
-                      <div>
-                        <base-progress
-                          :type="row.item.statusType"
-                          :show-percentage="false"
-                          class="pt-0"
-                          :value="row.item.completion"
-                        />
-                      </div>
-                    </div>
-                  </td>
-
-                  <td class="text-right">
-                    <base-dropdown class="dropdown" position="right">
-                      <template v-slot:title>
-                        <a
-                          class="btn btn-sm btn-icon-only text-light"
-                          role="button"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                      </template>
-
-                      <template>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#"
-                          >Something else here</a
-                        >
-                      </template>
-                    </base-dropdown>
+                    <img
+                      alt="Image placeholder"
+                      :src="row.item.img_link"
+                      height="200"
+                    />
                   </td>
                 </template>
               </base-table>
@@ -224,14 +160,18 @@ export default {
           completion: 100,
         },
       ],
+      cars: [],
     };
   },
   created() {
     console.log("get h");
-    // .get("http://localhost:8000/car/cars/")
+    // .get("https://car-scrapo.herokuapp.com/car/")
     axios
-      .get("https://car-scrapo.herokuapp.com/car/")
-      .then((x) => console.log(x))
+      .get("http://localhost:8000/car/cars/")
+      .then((x) => {
+        this.cars = x["data"];
+        console.log(x["data"]);
+      })
       .catch((e) => console.log(e));
   },
 };

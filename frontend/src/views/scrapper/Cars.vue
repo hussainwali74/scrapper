@@ -1,14 +1,63 @@
 <template>
   <div>
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
-      <!-- Card stats -->
       <div class="row"></div>
     </base-header>
+    <div class="row">
+      <div
+        class="card col-md-3 col-sm-12 mt-4 p-sm-2 p-4"
+        v-for="(row, index) in cars"
+        :key="index"
+      >
+        <div>
+          <img
+            alt="Image placeholder"
+            :src="row.img_link"
+            class="img-thumbnail"
+          />
+        </div>
+        <th scope="">{{ index }}</th>
+        <div class="name-detail">
+          <span class="name"> Name: </span>
+          <span class="detail"> {{ row.car_name }} </span>
+        </div>
+        <div class="name-detail">
+          <span class="name">Drive Train:</span>
+          <span class="detail">
+            {{ row.drivetrain }}
+          </span>
+        </div>
+        <div class="name-detail">
+          <span class="name">Engine:</span>
+          <span class="detail">
+            {{ row.engine }}
+          </span>
+        </div>
 
-    <div class="container-fluid mt--7">
+        <div class="name-detail">
+          <span class="name"> Exterior: </span>
+          <span class="detail">
+            {{ row.exterior }}
+          </span>
+        </div>
+
+        <div class="name-detail">
+          <span class="name"> Mileage: </span>
+          <span class="detail">
+            {{ row.mileage }}
+          </span>
+        </div>
+
+        <div class="name-detail">
+          <span class="name"> Price: </span>
+          <span class="detail"> ${{ row.price || 0 }} </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <!-- <projects-table title="Light Table"></projects-table> -->
           <div class="card shadow" :class="type === 'dark' ? 'bg-default' : ''">
             <div
               class="card-header border-0"
@@ -35,60 +84,63 @@
                 :data="cars"
               >
                 <template v-slot:columns class="text-bold font-bold">
-                  <th>Name</th>
-                  <th>Drive</th>
-                  <th>Engine</th>
-                  <th>Exterior</th>
-                  <th>Mileage</th>
-                  <th>Price</th>
-                  <th></th>
+                  <tr>
+                    <th style="width: 10%">Name</th>
+                    <th style="width: 5%">Drive</th>
+                    <th style="width: 13%">Engine</th>
+                    <th style="width: 5%">Exterior</th>
+                    <th style="width: 5%">Mileage</th>
+                    <th style="width: 5%">Price</th>
+                    <th style="width: 20%"></th>
+                  </tr>
                 </template>
-
                 <template v-slot:default="row">
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <a :href="row.item.website">
-                          <span class="name mb-0 text-sm">{{
-                            row.item.car_name
-                          }}</span>
-                        </a>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="">
-                    {{ row.item.drivetrain }}
-                  </td>
-                  <td class="">
-                    {{ row.item.engine }}
-                  </td>
+                  <tr>
+                    <td
+                      class="pl-3"
+                      style="
+                        width: 100px;
+                        overflow: hidden;
+                        padding-left: 1.5rem !important;
+                        background: #eee;
+                      "
+                    >
+                      {{ row.item.car_name }} Lorem ipsum dolor sit amet
+                      consectetur adipisicing elit. Assumenda asperiores dolorem
+                      eius rem quia? Voluptate aspernatur atque quam expedita
+                      itaque quos nostrum saepe illum totam, ad maxime ullam
+                      numquam eveniet!
+                    </td>
+                    <td
+                      style="width: 100px; overflow: hidden; background: #ee1"
+                      class=""
+                    >
+                      {{ row.item.drivetrain }}
+                    </td>
+                    <td style="width: 100px" class="">
+                      {{ row.item.engine }}
+                    </td>
+                    <td style="width: 100px" class="">
+                      {{ row.item.exterior }}
+                    </td>
+                    <td style="width: 100px" class="">
+                      {{ row.item.mileage }}
+                    </td>
+                    <td
+                      class="text-bold"
+                      style="width: 100px; font-weight: bold; color: #083d91bd"
+                    >
+                      ${{ row.item.price || 0 }}
+                    </td>
 
-                  <td class="">
-                    {{ row.item.exterior }}
-                  </td>
-                  <td class="">
-                    {{ row.item.mileage }}
-                  </td>
-                  <td
-                    class="text-bold"
-                    style="font-weight: bold; color: #083d91bd"
-                  >
-                    ${{ row.item.price }}
-                  </td>
-
-                  <td>
-                    <badge class="badge-dot mr-4" :type="row.item.statusType">
-                      <i :class="`bg-${row.item.statusType}`"></i>
-                      <span class="status">{{ row.item.status }}</span>
-                    </badge>
-                  </td>
-                  <td>
-                    <img
-                      alt="Image placeholder"
-                      :src="row.item.img_link"
-                      height="200"
-                    />
-                  </td>
+                    <td style="width: 200px">
+                      <img
+                        alt="Image placeholder"
+                        :src="row.item.img_link"
+                        height="200"
+                      />
+                    </td>
+                  </tr>
                 </template>
               </base-table>
             </div>
@@ -170,10 +222,30 @@ export default {
       .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=100")
       .then((x) => {
         this.cars = x["data"];
+        this.cars.sort(function (a, b) {
+          return new Date(b.entry_date) - new Date(a.entry_date);
+        });
         console.log(x["data"]);
       })
       .catch((e) => console.log(e));
   },
 };
 </script>
-<style></style>
+<style scoped>
+td {
+  overflow: hidden !important;
+}
+.name {
+  font-weight: bold;
+  color: #083d91bd;
+  background: rgb(255, 0, 0);
+  width: 150px !important;
+}
+.detail {
+  width: 70%;
+  padding-left: 20px;
+}
+.name-detail {
+  width: 100%;
+}
+</style>

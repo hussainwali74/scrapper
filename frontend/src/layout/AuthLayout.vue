@@ -10,27 +10,10 @@
                 <img src="img/brand/white.png"/>
             </router-link> -->
 
-      <template v-slot="{ closeMenu }">
+      <template>
         <!-- Collapse header -->
         <div class="navbar-collapse-header d-md-none">
-          <div class="row">
-            <div class="col-6 collapse-brand">
-              <router-link to="/">
-                <img src="img/brand/green.png" />
-              </router-link>
-            </div>
-            <div class="col-6 collapse-close">
-              <button
-                type="button"
-                @click="closeMenu"
-                class="navbar-toggler"
-                aria-label="Toggle sidenav"
-              >
-                <span></span>
-                <span></span>
-              </button>
-            </div>
-          </div>
+          <div class="row"></div>
         </div>
         <!-- Navbar items -->
         <ul class="navbar-nav ml-auto">

@@ -3,9 +3,9 @@
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
       <div class="row"></div>
     </base-header>
-    <div class="row">
+    <div class="row px-3">
       <div
-        class="card col-md-3 col-sm-12 mt-4 p-sm-2 p-4"
+        class="card col-md-4 col-sm-12 mt-4 p-sm-2 p-4"
         v-for="(row, index) in cars"
         :key="index"
       >
@@ -51,6 +51,10 @@
         <div class="name-detail">
           <span class="name"> Price: </span>
           <span class="detail"> ${{ row.price || 0 }} </span>
+        </div>
+        <div class="name-detail">
+          <span class="name" style="width: 150px"> Date: </span>
+          <span class="detail"> {{ getDate(row.entry_date) }} </span>
         </div>
       </div>
     </div>
@@ -229,6 +233,11 @@ export default {
       })
       .catch((e) => console.log(e));
   },
+  methods: {
+    getDate(date) {
+      return new Date(date).toISOString();
+    },
+  },
 };
 </script>
 <style scoped>
@@ -238,7 +247,7 @@ td {
 .name {
   font-weight: bold;
   color: #083d91bd;
-  background: rgb(255, 0, 0);
+
   width: 150px !important;
 }
 .detail {
@@ -246,6 +255,9 @@ td {
   padding-left: 20px;
 }
 .name-detail {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.37);
 }
 </style>

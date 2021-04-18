@@ -1,6 +1,19 @@
 <template>
   <div>
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
+      <h3>seach</h3>
+      <form class="form mr-3 d-md-flex ml-lg-auto">
+        <div class="form-group mb-0">
+          <input
+            placeholder="Search"
+            class="input-group-alternative form-control"
+            alternative=""
+            v-model="searchQuery"
+            @input="onSearch"
+            addon-right-icon="fas fa-search"
+          />
+        </div>
+      </form>
       <div class="row"></div>
     </base-header>
     <div class="row px-3">
@@ -19,7 +32,9 @@
         <th scope="">{{ index }}</th>
         <div class="name-detail">
           <span class="name"> Name: </span>
-          <span class="detail"> {{ row.car_name }} </span>
+          <span class="detail">
+            <a :href="row.website">{{ row.car_name }}</a>
+          </span>
         </div>
         <div class="name-detail">
           <span class="name">Drive Train:</span>
@@ -55,6 +70,16 @@
         <div class="name-detail">
           <span class="name" style="width: 150px"> Date: </span>
           <span class="detail"> {{ getDate(row.entry_date) }} </span>
+        </div>
+        <div class="my-1">
+          <a
+            :href="row.car_page_link"
+            style="color: white; text-decoration: none"
+          >
+            <button type="button" class="btn btn-block btn-sm btn-info">
+              details
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -174,49 +199,9 @@ export default {
   },
   data() {
     return {
-      tableData: [
-        {
-          img: "img/theme/bootstrap.jpg",
-          title: "Argon Design System",
-          budget: "$2500 USD",
-          status: "pending",
-          statusType: "warning",
-          completion: 60,
-        },
-        {
-          img: "img/theme/angular.jpg",
-          title: "Angular Now UI Kit PRO",
-          budget: "$1800 USD",
-          status: "completed",
-          statusType: "success",
-          completion: 100,
-        },
-        {
-          img: "img/theme/sketch.jpg",
-          title: "Black Dashboard",
-          budget: "$3150 USD",
-          status: "delayed",
-          statusType: "danger",
-          completion: 72,
-        },
-        {
-          img: "img/theme/react.jpg",
-          title: "React Material Dashboard",
-          budget: "$4400 USD",
-          status: "on schedule",
-          statusType: "info",
-          completion: 90,
-        },
-        {
-          img: "img/theme/vue.jpg",
-          title: "Vue Paper UI Kit PRO",
-          budget: "$2200 USD",
-          status: "completed",
-          statusType: "success",
-          completion: 100,
-        },
-      ],
+      searchQuery: null,
       cars: [],
+      allcars: [],
     };
   },
   created() {
@@ -229,6 +214,7 @@ export default {
         this.cars.sort(function (a, b) {
           return new Date(b.entry_date) - new Date(a.entry_date);
         });
+        this.allcars = this.cars;
         console.log(x["data"]);
       })
       .catch((e) => console.log(e));
@@ -236,6 +222,42 @@ export default {
   methods: {
     getDate(date) {
       return new Date(date).toISOString();
+    },
+
+    onSearch() {
+      console.log(this.searchQuery);
+      if (this.searchQuery) {
+        console.log("this.carss");
+        this.cars = this.allcars.filter((item) => {
+          return this.searchQuery
+            .toLowerCase()
+            .split(" ")
+            .every((v) => {
+              return item.car_name.toLowerCase().includes(v);
+            });
+        });
+      } else {
+        console.log("this.cars");
+        return (this.cars = this.allcars);
+      }
+    },
+  },
+  computed: {
+    resultQuery() {
+      if (this.searchQuery) {
+        console.log("this.carss");
+        return this.cars.filter((item) => {
+          return this.searchQuery
+            .toLowerCase()
+            .split(" ")
+            .every((v) => {
+              return item.car_name.toLowerCase().includes(v);
+            });
+        });
+      } else {
+        console.log("this.cars");
+        return this.cars;
+      }
     },
   },
 };

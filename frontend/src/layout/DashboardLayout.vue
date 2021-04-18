@@ -66,7 +66,7 @@
       </template>
     </side-bar>
     <div class="main-content" :data="sidebarBackground">
-      <dashboard-navbar></dashboard-navbar>
+      <!-- <dashboard-navbar></dashboard-navbar> -->
 
       <div @click="toggleSidebar">
         <!-- your content here -->
@@ -77,12 +77,12 @@
   </div>
 </template>
 <script>
-import DashboardNavbar from "./DashboardNavbar.vue";
+// import DashboardNavbar from "./DashboardNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
 
 export default {
   components: {
-    DashboardNavbar,
+    // DashboardNavbar,
     ContentFooter,
   },
   data() {

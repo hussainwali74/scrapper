@@ -13,6 +13,8 @@
           placeholder="Search"
           class="input-group-alternative"
           alternative=""
+          v-model="searchQuery"
+          @change="onSearch"
           addon-right-icon="fas fa-search"
         >
         </base-input>
@@ -81,6 +83,9 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu;
+    },
+    onSearch() {
+      console.log(this.searchQuery);
     },
   },
 };

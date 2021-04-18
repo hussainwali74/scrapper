@@ -105,73 +105,56 @@
             </div>
 
             <div class="table-responsive">
-              <base-table
-                class="table align-items-center table-flush"
-                :class="type === 'dark' ? 'table-dark' : ''"
-                :thead-classes="type === 'dark' ? 'thead-dark' : 'thead-light'"
-                tbody-classes="list"
-                :data="cars"
-              >
-                <template v-slot:columns class="text-bold font-bold">
-                  <tr>
-                    <th style="width: 10%">Name</th>
-                    <th style="width: 5%">Drive</th>
-                    <th style="width: 13%">Engine</th>
-                    <th style="width: 5%">Exterior</th>
-                    <th style="width: 5%">Mileage</th>
-                    <th style="width: 5%">Price</th>
-                    <th style="width: 20%"></th>
-                  </tr>
-                </template>
-                <template v-slot:default="row">
-                  <tr>
-                    <td
-                      class="pl-3"
-                      style="
-                        width: 100px;
-                        overflow: hidden;
-                        padding-left: 1.5rem !important;
-                        background: #eee;
-                      "
-                    >
-                      {{ row.item.car_name }} Lorem ipsum dolor sit amet
-                      consectetur adipisicing elit. Assumenda asperiores dolorem
-                      eius rem quia? Voluptate aspernatur atque quam expedita
-                      itaque quos nostrum saepe illum totam, ad maxime ullam
-                      numquam eveniet!
-                    </td>
-                    <td
-                      style="width: 100px; overflow: hidden; background: #ee1"
-                      class=""
-                    >
-                      {{ row.item.drivetrain }}
-                    </td>
-                    <td style="width: 100px" class="">
-                      {{ row.item.engine }}
-                    </td>
-                    <td style="width: 100px" class="">
-                      {{ row.item.exterior }}
-                    </td>
-                    <td style="width: 100px" class="">
-                      {{ row.item.mileage }}
-                    </td>
-                    <td
-                      class="text-bold"
-                      style="width: 100px; font-weight: bold; color: #083d91bd"
-                    >
-                      ${{ row.item.price || 0 }}
-                    </td>
+              <table class="table">
+                <tr>
+                  <th style="width: 15%">Name</th>
+                  <th style="width: 5%">Drive</th>
+                  <th style="width: 13%">Engine</th>
+                  <th style="width: 5%">Exterior</th>
+                  <th style="width: 5%">Mileage</th>
+                  <th style="width: 5%">Price</th>
+                  <th style="width: 20%"></th>
+                </tr>
+                <tr v-for="(row, index) in cars" :key="index">
+                  <td
+                    class="pl-3"
+                    style="
+                      overflow: hidden;
+                      padding-left: 1.5rem !important;
+                      background: #eee;
+                      width: 15%;
+                    "
+                  >
+                    {{ row.car_name }}
+                  </td>
+                  <td style="overflow: hidden; background: #ee1" class="">
+                    {{ row.drivetrain }}
+                  </td>
+                  <td>
+                    {{ row.engine }}
+                  </td>
+                  <td>
+                    {{ row.exterior }}
+                  </td>
+                  <td>
+                    {{ row.mileage }}
+                  </td>
+                  <td
+                    class="text-bold"
+                    style="font-weight: bold; color: #083d91bd"
+                  >
+                    ${{ row.price || 0 }}
+                  </td>
 
-                    <td style="width: 200px">
-                      <img
-                        alt="Image placeholder"
-                        :src="row.item.img_link"
-                        height="200"
-                      />
-                    </td>
-                  </tr>
-                </template>
-              </base-table>
+                  <td style="width: 200px">
+                    <img
+                      alt="Image placeholder"
+                      :src="row.img_link"
+                      height="100"
+                    />
+                  </td>
+                </tr>
+              </table>
             </div>
 
             <div
@@ -205,7 +188,6 @@ export default {
     };
   },
   created() {
-    console.log("get h");
     // .get("http://localhost:8000/car/cars/")
     axios
       .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=100")
@@ -233,7 +215,11 @@ export default {
             .toLowerCase()
             .split(" ")
             .every((v) => {
-              return item.car_name.toLowerCase().includes(v);
+              console.log(item.price);
+              return (
+                item.car_name.toLowerCase().includes(v) ||
+                String(item.price).toLowerCase().includes(v)
+              );
             });
         });
       } else {
@@ -265,6 +251,12 @@ export default {
 <style scoped>
 td {
   overflow: hidden !important;
+  white-space: normal;
+  font-size: 0.75rem !important;
+}
+.table td,
+.table th {
+  white-space: normal !important;
 }
 .name {
   font-weight: bold;

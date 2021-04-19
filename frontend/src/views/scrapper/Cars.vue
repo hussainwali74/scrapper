@@ -2,18 +2,25 @@
   <div>
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
       <h3>seach</h3>
-      <form class="form mr-3 d-md-flex ml-lg-auto">
-        <div class="form-group mb-0">
-          <input
-            placeholder="Search"
-            class="input-group-alternative form-control"
-            alternative=""
-            v-model="searchQuery"
-            @input="onSearch"
-            addon-right-icon="fas fa-search"
-          />
+      <div class="row">
+        <div class="col-md-9 mt-2">
+          <form class="form mr-3 d-md-flex ml-lg-auto">
+            <div class="form-group mb-0">
+              <input
+                placeholder="Search"
+                class="input-group-alternative form-control"
+                alternative=""
+                v-model="searchQuery"
+                @input="onSearch"
+                addon-right-icon="fas fa-search"
+              />
+            </div>
+          </form>
         </div>
-      </form>
+        <div class="col-md-3 mt-2">
+          <h4 class="text-white">Total Cars: {{ allcars.length }}</h4>
+        </div>
+      </div>
       <div class="row"></div>
     </base-header>
     <div class="row px-3">
@@ -190,7 +197,7 @@ export default {
   created() {
     // .get("http://localhost:8000/car/cars/")
     axios
-      .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=100")
+      .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=10000")
       .then((x) => {
         this.cars = x["data"];
         this.cars.sort(function (a, b) {

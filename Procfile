@@ -1,1 +1,1 @@
-web: ENV="prod" uvicorn main:app --host=0.0.0.0 --port=${PORT:-5000}
+web: ENV='prod' gunicorn main:app --bind 0.0.0.0:5000 -w 1 -k uvicorn.workers.UvicornWorker --timeout 28_800

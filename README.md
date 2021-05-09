@@ -11,8 +11,7 @@ Python==3.8
 App runs on port `8000`
 Need to specify database credentials in `database.py`
 Set environment variables `FIREFOX_BIN` Path to firefox executable,
-`GECKODRIVER_PATH` path to geckodriver executable and `DIRECTORY_PATH `
-path to directory where images directories will be saved.
+`GECKODRIVER_PATH` path to geckodriver executable.
 
 ##### Starting Web Server
     

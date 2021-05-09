@@ -11,8 +11,7 @@ from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 FAIL_SAFE_RUNS = 3
 FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
 firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
-GECKODRIVER_PATH = getenv(
-    "GECKODRIVER_PATH", "/home/hussain/softwares/geckodriver")
+GECKODRIVER_PATH = getenv("GECKODRIVER_PATH", "/home/hussain/softwares/geckodriver" )
 CAR_CUT_PRICE = 20_000
 
 ENV = getenv("ENV")

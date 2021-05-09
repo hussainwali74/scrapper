@@ -1,4 +1,4 @@
-from fastapi import Depends, APIRouter,File, UploadFile
+from fastapi import Depends, APIRouter, File, UploadFile
 
 from database import SessionLocal, engine, Base, get_db
 from models.db_models.car import CarDB
@@ -33,11 +33,12 @@ async def add_cars(db: Session = Depends(get_db)):
     url_list = [
         # # 'https://www.royalford.ca/used/used-vehicle-inventory.html?reset=1',  # Got changed
         # # 'https://www.metcalfesgarage.ca/used/used-vehicle-inventory.html?reset=1',    # Got changed
+        # # 'https://www.formomotors.com/used/used-vehicle-inventory.html?reset=1',    # Got changed
         'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
         'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.collegefordlincoln.com/used/preowned-inventory.html?reset=1',
-        'http://www.truenorthford.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.truenorthford.ca/used/used-vehicle-inventory.html?reset=1'
         'https://www.lambford.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.metroford.ca/used/used-vehicle-inventory.html?reset=1',
         'https://www.cslford.ca/used/used-vehicle-inventory.html?reset=2',
@@ -49,7 +50,6 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.jubileeford.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.senchuk.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.centennialford.sk.ca/used/used-vehicle-inventory.html',
-        'https://www.formomotors.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.meritford.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.twowayservice.com/used/used-vehicle-inventory.html?reset=1',
         'https://www.northlandford.mb.ca/used/used-vehicle-inventory.html?reset=1',

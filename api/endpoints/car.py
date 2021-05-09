@@ -129,7 +129,7 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
         'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
     ]
-    # url_list = ['https://www.regalmotorsltd.com/used/used-vehicle-inventory.html']
+    # url_list = [ 'https://www.truenorthford.ca/used/used-vehicle-inventory.html?reset=1', ]
     start_time = time()
     done_for = []
     for url in url_list:
@@ -168,19 +168,30 @@ async def search_car(db: Session = Depends(get_db), name: str = "", price_ge: in
 
 # ------------- For testing -------------------
 
-@router.get("/add-highriverford")
-async def add_cars(db: Session = Depends(get_db)):
-    """ Adds cars to DB from the following website """
+@router.get("/add-few-sites")
+async def add_few_sites(db: Session = Depends(get_db)):
+    """ Adds cars to DB from a few websites """
+
     url_list = [ 'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc', ]
+    start_time = time()
     done_for = []
     for url in url_list:
-        print(f'For url: {url}')
+        car_count = 0
+        logging.info(f'For url: {url}')
         res = get_car_info_from_web(url)
         done_for.append(url)
         for one_car in res:
-            print(one_car)
-            crud.create(db, car_in=one_car, autocommit=True)
+            logging.info(one_car)
+            car_return = crud.create(db, car_in=one_car, autocommit=True)
+            car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
+            logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
+        logging.info(f'Total Cars added: {car_count}')
+        # crud.create_car_dict(db, one_car, website=url)
+    # db.commit()  # Uncomment if using autocommit=False
+    logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')
+    logging.info(f'Time in Minutes: {(time() - start_time) / 60}')
     return done_for
+
 
 @router.get("/add-zarowny-n-others")
 async def add_zarowny_n_others(db: Session = Depends(get_db)):

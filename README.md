@@ -56,3 +56,25 @@ https://towardsdatascience.com/data-science-skills-web-scraping-javascript-using
 
     INTEGER1 -ne INTEGER2
         INTEGER1 is not equal to INTEGER2
+
+### Heroku Guide
+https://devcenter.heroku.com/articles/dynos
+
+##### Others
+
+Old procfile contents
+
+    web: ENV="prod" uvicorn main:app --host=0.0.0.0 --port=${PORT:-5000}
+
+Connect to main app interface. Use `--tail` to persist connection.
+
+    heroku logs --tail
+
+Push code to Heroku from git       `git push heroku master`
+View Dynos deployed to Heroku      `heroku ps`
+SSH to Heroku                      `heroku ps:exec`
+Restart all Dynos	               `heroku ps:restart`
+
+#### Sample queries
+http://localhost:8000/car/search?price_ge=26_000&mileage_le=5_000&limit=100
+

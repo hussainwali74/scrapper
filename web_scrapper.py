@@ -5,10 +5,11 @@ from selenium import webdriver
 import re
 import time
 import logging
+import gc
 from os import getenv
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
-FAIL_SAFE_RUNS = 3
+FAIL_SAFE_RUNS = 20
 FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
 firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
 GECKODRIVER_PATH = getenv("GECKODRIVER_PATH", "/home/hussain/softwares/geckodriver" )
@@ -389,10 +390,13 @@ def get_car_info_from_web(url: str) -> list:
         logging.info(
             "get_car_info_from_web() Filtering cars now based on price")
         itr_object = filter(filter_cars, list_of_cars)
-        return list(itr_object)
+        itr_object = list(itr_object)
     else:
         logging.info("get_car_info_from_web() List_of_cars list is None")
-        return []
+        itr_object = []
+
+    gc.collect()
+    return itr_object
 
 
 # ========== Web scrapping functions ==========

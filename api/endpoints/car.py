@@ -6,6 +6,7 @@ from models.db_models.car import CarDB
 from sqlalchemy.orm import Session
 import crud
 import logging
+import gc
 
 from web_scrapper import get_car_info_from_web
 from datetime import date
@@ -143,7 +144,8 @@ async def add_cars(db: Session = Depends(get_db)):
             car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
             logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
         logging.info(f'Total Cars added: {car_count}')
-            # crud.create_car_dict(db, one_car, website=url)
+        del res
+        gc.collect()
     # db.commit()  # Uncomment if using autocommit=False
     logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')
     logging.info(f'Time in Minutes: {(time() - start_time) / 60}')
@@ -223,6 +225,8 @@ async def add_sites_set1(db: Session = Depends(get_db)):
             car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
             logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
         logging.info(f'Total Cars added: {car_count}')
+        del res
+        gc.collect()
         # crud.create_car_dict(db, one_car, website=url)
     # db.commit()  # Uncomment if using autocommit=False
     logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')

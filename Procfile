@@ -1,1 +1,1 @@
-web: ENV="prod" uvicorn main:app --host=0.0.0.0 --port=${PORT:-5000}
+web: ENV="prod" gunicorn main:app --preload --timeout 21_000 --max-requests 5

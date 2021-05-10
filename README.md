@@ -77,6 +77,7 @@ Connect to main app interface. Use `--tail` to persist connection.
 | SSH to Heroku                   |  `heroku ps:exec`         |
 | Restart all Dynos	              |  `heroku ps:restart`      |
 | Copy file from Heroku           |  `heroku ps:copy FILE`    |
+| Environment Variables app env   | `heroku config:set WEB_CONCURRENCY=1` |
 
 #### Sample queries
 http://localhost:8000/car/search?price_ge=26_000&mileage_le=5_000&limit=100

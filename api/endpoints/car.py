@@ -91,43 +91,43 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.marlboroughford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc',
         'https://www.universalford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc&page=1', # scrape first page
 
-        'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
-        'https://www.integrityford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
-        'https://www.moosejawfordsales.com/vehicles/used?view=grid&sc=used',
-        'https://www.bennettdunlopford.com/vehicles/used?st=price,asc&view=grid&sc=used',
-        'https://www.rivercityford.ca/vehicles/used/?st=price,desc&view=grid&sc=used',
-
-        'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
-        'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
-        'https://www.maclinfordcalgary.com/vehicles/used/?st=price,desc&sc=used&view=grid',
-        'https://www.legacyfordponoka.ca/vehicles/used/?view=grid&sc=used',
-        'https://www.legacyfordrimbey.ca/vehicles/used/?view=grid&sc=used',
-        'https://www.vegford.ca/vehicles/used/?v1=All&view=grid&sc=used',
-        'https://www.vickarford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
-        'https://www.mid-townford.com/vehicles/used/?sc=used&st=price,desc&view=grid',
-        # Multi-page
-        'https://www.greatplainsford.com/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
-        'https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid&pg=1',
-        'https://www.esterhazyford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
-        'https://www.futureford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
-
-        'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
-        'https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',
-        'https://www.windsorford.com/inventory/Used/?page=1',
-        'http://www.northstarfordcarsandtrucks.com/used/used-vehicle-inventory.html',
-        'https://www.strathmoreford.com/used-inventory/index.htm?start=0',
-        'https://www.revolutionford.com/used-inventory/page/1',
-
-        'https://novlanbros.com/inventory/list/#/?&orderBy=1&t=0&filter=[Used%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C',
-        'https://www.knightfordlincoln.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
-        'https://www.capitalfordlincoln.com/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
-        'https://www.capitalfordwinnipeg.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
-
-        'https://www.cypressmotors.com/used-vehicles-swift-current-sk',
-        'https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
-        'https://merlinford.com/used-inventory/?pag=1',
-        'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
-        'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
+        # 'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
+        # 'https://www.integrityford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
+        # 'https://www.moosejawfordsales.com/vehicles/used?view=grid&sc=used',
+        # 'https://www.bennettdunlopford.com/vehicles/used?st=price,asc&view=grid&sc=used',
+        # 'https://www.rivercityford.ca/vehicles/used/?st=price,desc&view=grid&sc=used',
+        #
+        # 'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
+        # 'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
+        # 'https://www.maclinfordcalgary.com/vehicles/used/?st=price,desc&sc=used&view=grid',
+        # 'https://www.legacyfordponoka.ca/vehicles/used/?view=grid&sc=used',
+        # 'https://www.legacyfordrimbey.ca/vehicles/used/?view=grid&sc=used',
+        # 'https://www.vegford.ca/vehicles/used/?v1=All&view=grid&sc=used',
+        # 'https://www.vickarford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
+        # 'https://www.mid-townford.com/vehicles/used/?sc=used&st=price,desc&view=grid',
+        # # Multi-page
+        # 'https://www.greatplainsford.com/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+        # 'https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid&pg=1',
+        # 'https://www.esterhazyford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+        # 'https://www.futureford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+        #
+        # 'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
+        # 'https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',
+        # 'https://www.windsorford.com/inventory/Used/?page=1',
+        # 'http://www.northstarfordcarsandtrucks.com/used/used-vehicle-inventory.html',
+        # 'https://www.strathmoreford.com/used-inventory/index.htm?start=0',
+        # 'https://www.revolutionford.com/used-inventory/page/1',
+        #
+        # 'https://novlanbros.com/inventory/list/#/?&orderBy=1&t=0&filter=[Used%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C',
+        # 'https://www.knightfordlincoln.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        # 'https://www.capitalfordlincoln.com/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        # 'https://www.capitalfordwinnipeg.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        #
+        # 'https://www.cypressmotors.com/used-vehicles-swift-current-sk',
+        # 'https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
+        # 'https://merlinford.com/used-inventory/?pag=1',
+        # 'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
+        # 'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
     ]
     # url_list = [ 'https://www.truenorthford.ca/used/used-vehicle-inventory.html?reset=1', ]
     start_time = time()
@@ -172,9 +172,43 @@ async def search_car(db: Session = Depends(get_db), name: str = "", price_ge: in
 async def add_sites_set1(db: Session = Depends(get_db)):
     """ Adds Cars from website set 1 """
     url_list = [
-        'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
-        'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
-        'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
+        'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
+        'https://www.integrityford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.moosejawfordsales.com/vehicles/used?view=grid&sc=used',
+        'https://www.bennettdunlopford.com/vehicles/used?st=price,asc&view=grid&sc=used',
+        'https://www.rivercityford.ca/vehicles/used/?st=price,desc&view=grid&sc=used',
+
+        'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
+        'https://www.maclinfordcalgary.com/vehicles/used/?st=price,desc&sc=used&view=grid',
+        'https://www.legacyfordponoka.ca/vehicles/used/?view=grid&sc=used',
+        'https://www.legacyfordrimbey.ca/vehicles/used/?view=grid&sc=used',
+        'https://www.vegford.ca/vehicles/used/?v1=All&view=grid&sc=used',
+        'https://www.vickarford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.mid-townford.com/vehicles/used/?sc=used&st=price,desc&view=grid',
+        # Multi-page
+        'https://www.greatplainsford.com/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+        'https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid&pg=1',
+        'https://www.esterhazyford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+        'https://www.futureford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+
+        'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
+        'https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',
+        'https://www.windsorford.com/inventory/Used/?page=1',
+        'http://www.northstarfordcarsandtrucks.com/used/used-vehicle-inventory.html',
+        'https://www.strathmoreford.com/used-inventory/index.htm?start=0',
+        'https://www.revolutionford.com/used-inventory/page/1',
+
+        'https://novlanbros.com/inventory/list/#/?&orderBy=1&t=0&filter=[Used%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C',
+        'https://www.knightfordlincoln.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        'https://www.capitalfordlincoln.com/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        'https://www.capitalfordwinnipeg.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+
+        'https://www.cypressmotors.com/used-vehicles-swift-current-sk',
+        'https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
+        'https://merlinford.com/used-inventory/?pag=1',
+        'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
+        'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
     ]
     start_time = time()
     done_for = []

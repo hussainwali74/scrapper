@@ -9,7 +9,7 @@ import gc
 from os import getenv
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
-FAIL_SAFE_RUNS = 20
+FAIL_SAFE_RUNS = 30
 FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
 firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
 GECKODRIVER_PATH = getenv("GECKODRIVER_PATH", "/home/hussain/softwares/geckodriver" )

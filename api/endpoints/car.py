@@ -193,9 +193,6 @@ async def add_sites_set1(db: Session = Depends(get_db)):
     # db.commit()  # Uncomment if using autocommit=False
     logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')
     logging.info(f'Time in Minutes: {(time() - start_time) / 60}')
-
-    set_2_sites = add_few_sites()
-    done_for.extend(set_2_sites)
     return done_for
 
 @router.get("/add-few-sites")

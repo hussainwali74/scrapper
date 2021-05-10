@@ -48,8 +48,8 @@ rootLogger.addHandler(stream_handler)
 @app.get('/')
 def get_all_urls():
     GECKODRIVER_PATH = getenv("GECKODRIVER_PATH")
-    print("------- Bout to print gecko driver ")
-    print(GECKODRIVER_PATH)
+    logging.info("------- Bout to print gecko driver ")
+    logging.info(GECKODRIVER_PATH)
     url_list = [
         {'path': route.path, 'name': route.name}
         for route in app.routes

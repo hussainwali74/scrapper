@@ -131,6 +131,7 @@ def main_soup_n_driver_scroll_down(url, driver=None):
         "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
     page = driver.page_source
     main_soup = BeautifulSoup(page, 'html.parser')
+    time.sleep(1)
     return main_soup, driver
 
 
@@ -189,8 +190,8 @@ def filter_cars(car: dict) -> bool:
 
 def get_car_info_from_web(url: str) -> list:
     logging.info(" ------- Starting Scrapping ------- ")
-    logging.info(f'firefox: {FIREFOX_BIN}')
-    logging.info(f'Gecko: {GECKODRIVER_PATH}')
+    logging.debug(f'firefox: {FIREFOX_BIN}')
+    logging.debug(f'Gecko: {GECKODRIVER_PATH}')
     list_of_cars = None
     try:
         if "regalmotors" in url:

@@ -168,6 +168,36 @@ async def search_car(db: Session = Depends(get_db), name: str = "", price_ge: in
 
 # ------------- For testing -------------------
 
+@router.get("/add-sites-set1")
+async def add_sites_set1(db: Session = Depends(get_db)):
+    """ Adds Cars from website set 1 """
+    url_list = [
+        'https://www.regalmotorsltd.com/used/used-vehicle-inventory.html',
+        'https://www.junctionmotors.com/used/used-vehicle-inventory.html?reset=1',
+        'https://www.northstarfordsalescalgary.ca/used/used-vehicle-inventory.html?reset=1',
+    ]
+    start_time = time()
+    done_for = []
+    for url in url_list:
+        car_count = 0
+        logging.info(f'For url: {url}')
+        res = get_car_info_from_web(url)
+        done_for.append(url)
+        for one_car in res:
+            logging.info(one_car)
+            car_return = crud.create(db, car_in=one_car, autocommit=True)
+            car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
+            logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
+        logging.info(f'Total Cars added: {car_count}')
+        # crud.create_car_dict(db, one_car, website=url)
+    # db.commit()  # Uncomment if using autocommit=False
+    logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')
+    logging.info(f'Time in Minutes: {(time() - start_time) / 60}')
+
+    set_2_sites = add_few_sites()
+    done_for.extend(set_2_sites)
+    return done_for
+
 @router.get("/add-few-sites")
 async def add_few_sites(db: Session = Depends(get_db)):
     """ Adds cars to DB from a few websites """

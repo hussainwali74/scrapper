@@ -70,10 +70,13 @@ Connect to main app interface. Use `--tail` to persist connection.
 
     heroku logs --tail
 
-Push code to Heroku from git       `git push heroku master`
-View Dynos deployed to Heroku      `heroku ps`
-SSH to Heroku                      `heroku ps:exec`
-Restart all Dynos	               `heroku ps:restart`
+| Actions                         |        Commands           |
+|---------------------------------|---------------------------|
+| Push code to Heroku from git    |  `git push heroku master` | 
+| View Dynos deployed to Heroku   |  `heroku ps`              |
+| SSH to Heroku                   |  `heroku ps:exec`         |
+| Restart all Dynos	              |  `heroku ps:restart`      |
+| Copy file from Heroku           |  `heroku ps:copy FILE`    |
 
 #### Sample queries
 http://localhost:8000/car/search?price_ge=26_000&mileage_le=5_000&limit=100

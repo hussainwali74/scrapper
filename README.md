@@ -6,7 +6,18 @@ Python==3.8
 
 #### Instructions to Run
 
+Install python packages
+
     pip install -r requirements
+
+##### Note
+
+If error installing psycopg2 use the link below.
+https://stackoverflow.com/questions/5420789/how-to-install-psycopg2-with-pip-on-python
+
+Install Gecko-driver driver
+
+    https://askubuntu.com/questions/870530/how-to-install-geckodriver-in-ubuntu
 
 App runs on port `8000`
 Need to specify database credentials in `database.py`

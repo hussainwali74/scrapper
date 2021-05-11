@@ -143,10 +143,10 @@ async def add_cars(db: Session = Depends(get_db)):
             car_return = crud.create(db, car_in=one_car, autocommit=True)
             car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
             logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
+        # db.commit()  # Uncomment if using autocommit=False
         logging.info(f'Total Cars added: {car_count}')
         del res
         gc.collect()
-    # db.commit()  # Uncomment if using autocommit=False
     logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')
     logging.info(f'Time in Minutes: {(time() - start_time) / 60}')
     return done_for
@@ -217,18 +217,18 @@ async def add_sites_set1(db: Session = Depends(get_db)):
     for url in url_list:
         car_count = 0
         logging.info(f'For url: {url}')
-        res = get_car_info_from_web(url)
+        res = get_car_info_from_web(url, db)
         done_for.append(url)
         for one_car in res:
             logging.info(one_car)
             car_return = crud.create(db, car_in=one_car, autocommit=True)
             car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
             logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
+        # db.commit()  # Uncomment if using autocommit=False
         logging.info(f'Total Cars added: {car_count}')
         del res
         gc.collect()
         # crud.create_car_dict(db, one_car, website=url)
-    # db.commit()  # Uncomment if using autocommit=False
     logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')
     logging.info(f'Time in Minutes: {(time() - start_time) / 60}')
     return done_for

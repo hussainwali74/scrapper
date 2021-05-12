@@ -19,6 +19,7 @@ origins = [
     "https://localhost.tiangolo.com",
     "http://localhost",
     "http://localhost:8000",
+    "http://192.46.223.236"
 ]
 
 app.add_middleware(
@@ -35,13 +36,16 @@ rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.INFO)
 log_format = logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s", datefmt='%Y-%m-%d %H:%M:%S')
 
-file_handler = RotatingFileHandler("app.log", maxBytes=1.049e+7, backupCount=3)
-file_handler.setFormatter(log_format)
-rootLogger.addHandler(file_handler)
+# file_handler = RotatingFileHandler("app.log", maxBytes=1.049e+7, backupCount=3)  # maxBytes 10 MB
+# file_handler.setFormatter(log_format)
+# rootLogger.addHandler(file_handler)
 
 stream_handler = StreamHandler(stdout )
 stream_handler.setFormatter(log_format)
 rootLogger.addHandler(stream_handler)
+
+gunicorn_logger = logging.getLogger('gunicorn.error')
+rootLogger.addHandler(*gunicorn_logger.handlers)
 
 # car1 = Car(carName="toyota")
 # @app.get('/url-list')

@@ -92,43 +92,43 @@ async def add_cars(db: Session = Depends(get_db)):
         'https://www.marlboroughford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc',
         'https://www.universalford.com/used-cars-calgary-ab?sort=DateInStock&direction=desc&page=1', # scrape first page
 
-        # 'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
-        # 'https://www.integrityford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
-        # 'https://www.moosejawfordsales.com/vehicles/used?view=grid&sc=used',
-        # 'https://www.bennettdunlopford.com/vehicles/used?st=price,asc&view=grid&sc=used',
-        # 'https://www.rivercityford.ca/vehicles/used/?st=price,desc&view=grid&sc=used',
-        #
-        # 'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
-        # 'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
-        # 'https://www.maclinfordcalgary.com/vehicles/used/?st=price,desc&sc=used&view=grid',
-        # 'https://www.legacyfordponoka.ca/vehicles/used/?view=grid&sc=used',
-        # 'https://www.legacyfordrimbey.ca/vehicles/used/?view=grid&sc=used',
-        # 'https://www.vegford.ca/vehicles/used/?v1=All&view=grid&sc=used',
-        # 'https://www.vickarford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
-        # 'https://www.mid-townford.com/vehicles/used/?sc=used&st=price,desc&view=grid',
-        # # Multi-page
-        # 'https://www.greatplainsford.com/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
-        # 'https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid&pg=1',
-        # 'https://www.esterhazyford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
-        # 'https://www.futureford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
-        #
-        # 'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
-        # 'https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',
-        # 'https://www.windsorford.com/inventory/Used/?page=1',
-        # 'http://www.northstarfordcarsandtrucks.com/used/used-vehicle-inventory.html',
-        # 'https://www.strathmoreford.com/used-inventory/index.htm?start=0',
-        # 'https://www.revolutionford.com/used-inventory/page/1',
-        #
-        # 'https://novlanbros.com/inventory/list/#/?&orderBy=1&t=0&filter=[Used%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C',
-        # 'https://www.knightfordlincoln.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
-        # 'https://www.capitalfordlincoln.com/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
-        # 'https://www.capitalfordwinnipeg.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
-        #
-        # 'https://www.cypressmotors.com/used-vehicles-swift-current-sk',
-        # 'https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
-        # 'https://merlinford.com/used-inventory/?pag=1',
-        # 'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
-        # 'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
+        'https://www.camclarkfordairdrie.com/vehicles/2020/ford/expedition/olds/ab/47305249/?sale_class=used',
+        'https://www.integrityford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.moosejawfordsales.com/vehicles/used?view=grid&sc=used',
+        'https://www.bennettdunlopford.com/vehicles/used?st=price,asc&view=grid&sc=used',
+        'https://www.rivercityford.ca/vehicles/used/?st=price,desc&view=grid&sc=used',
+
+        'https://www.zenderford.com/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
+        'https://www.maclinfordcalgary.com/vehicles/used/?st=price,desc&sc=used&view=grid',
+        'https://www.legacyfordponoka.ca/vehicles/used/?view=grid&sc=used',
+        'https://www.legacyfordrimbey.ca/vehicles/used/?view=grid&sc=used',
+        'https://www.vegford.ca/vehicles/used/?v1=All&view=grid&sc=used',
+        'https://www.vickarford.ca/vehicles/used/?view=grid&sc=used&st=price,desc',
+        'https://www.mid-townford.com/vehicles/used/?sc=used&st=price,desc&view=grid',
+        # Multi-page
+        'https://www.greatplainsford.com/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+        'https://www.denhamford.ca/vehicles/used/?sc=used&st=price,desc&view=grid&pg=1',
+        'https://www.esterhazyford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+        'https://www.futureford.ca/vehicles/used/?st=year,desc&view=grid&sc=used&pg=1',
+
+        'https://www.highriverford.com/used-cars-high-river-ab?sort=Sfield_Price&direction=desc',
+        'https://www.hansenford.ca/inventory/used-vehicles/price-40000--/srp-page-1/',
+        'https://www.windsorford.com/inventory/Used/?page=1',
+        'http://www.northstarfordcarsandtrucks.com/used/used-vehicle-inventory.html',
+        'https://www.strathmoreford.com/used-inventory/index.htm?start=0',
+        'https://www.revolutionford.com/used-inventory/page/1',
+
+        'https://novlanbros.com/inventory/list/#/?&orderBy=1&t=0&filter=[Used%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C',
+        'https://www.knightfordlincoln.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        'https://www.capitalfordlincoln.com/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+        'https://www.capitalfordwinnipeg.ca/used-vehicles/?_p=0&_dFR%5Btype%5D%5B0%5D=Used&_dFR%5Btype%5D%5B1%5D=Certified%2520Used&_paymentType=our_price',
+
+        'https://www.cypressmotors.com/used-vehicles-swift-current-sk',
+        'https://www.birchwoodford.ca/vehicles/?results_page=1&condition=used&sort=price',
+        'https://merlinford.com/used-inventory/?pag=1',
+        'https://kelleherford.com/used-inventory/sort_by/price/sort_order/desc/?pag=1',
+        'https://www.rainbowford.ca/inventory/?condition=pre-owned',  # done
     ]
     # url_list = [ 'https://www.truenorthford.ca/used/used-vehicle-inventory.html?reset=1', ]
     start_time = time()
@@ -154,7 +154,7 @@ async def add_cars(db: Session = Depends(get_db)):
 
 @router.get("/cars/")
 async def read_item(db: Session = Depends(get_db), date_gt: date = None, skip: int = 0, limit: int = 10):
-    print(f'main: date_gt: {date_gt}')
+    logging.info(f'main: date_gt: {date_gt}')
     res = crud.get_car_filter_date(db, date_gt, limit=limit)
     return res
 
@@ -162,8 +162,9 @@ async def read_item(db: Session = Depends(get_db), date_gt: date = None, skip: i
 async def search_car(db: Session = Depends(get_db), name: str = "", price_ge: int = None, price_le: int = None,
                      mileage_ge: int = None, mileage_le: int = None, date_ge: date = None, date_le: date = None,
                      limit: int = 10):
-    print(f"name: {name}, price_ge: {price_ge}, price_le: {price_le}, "
-          f"mileage_ge: {mileage_ge}, mileage_le: {mileage_le}, date_ge: {date_ge}, date_le: {date_le}, limit: {limit}")
+    logging.info(f"name: {name}, price_ge: {price_ge}, price_le: {price_le}, "
+                 f"mileage_ge: {mileage_ge}, mileage_le: {mileage_le}, date_ge: {date_ge}, "
+                 f"date_le: {date_le}, limit: {limit}")
     result = crud.get_car(db, name=name, price_ge=price_ge, price_le=price_le, mileage_ge=mileage_ge,
                           mileage_le=mileage_le, date_ge=date_ge, date_le=date_le, limit=limit)
     return result
@@ -217,7 +218,7 @@ async def add_sites_set1(db: Session = Depends(get_db)):
     for url in url_list:
         car_count = 0
         logging.info(f'For url: {url}')
-        res = get_car_info_from_web(url, db)
+        res = get_car_info_from_web(url)
         done_for.append(url)
         for one_car in res:
             logging.info(one_car)
@@ -268,11 +269,11 @@ async def add_zarowny_n_others(db: Session = Depends(get_db)):
     ]
     done_for = []
     for url in url_list:
-        print(f'For url: {url}')
+        logging.info(f'For url: {url}')
         res = get_car_info_from_web(url)
         done_for.append(url)
         for one_car in res:
-            print(one_car)
+            logging.info(one_car)
             crud.create(db, car_in=one_car, autocommit=True)
     return done_for
 

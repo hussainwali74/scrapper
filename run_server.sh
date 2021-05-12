@@ -4,4 +4,5 @@
 # ENV='prod' uvicorn main:app --host 0.0.0.0
 
 # Uses Gunicorn
-ENV='prod' gunicorn main:app --bind 0.0.0.0:8000 -w 1 -k uvicorn.workers.UvicornWorker --timeout 21_600
+GECKODRIVER_PATH="/root/geckodriver" ENV='prod' gunicorn main:app --bind 0.0.0.0:8000 -w 3 -k uvicorn.workers.UvicornWorker
+--timeout 28_800

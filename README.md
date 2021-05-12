@@ -6,13 +6,23 @@ Python==3.8
 
 #### Instructions to Run
 
+Install python packages
+
     pip install -r requirements
+
+##### Note
+
+If error installing psycopg2 use the link below.
+https://stackoverflow.com/questions/5420789/how-to-install-psycopg2-with-pip-on-python
+
+Install Gecko-driver driver
+
+    https://askubuntu.com/questions/870530/how-to-install-geckodriver-in-ubuntu
 
 App runs on port `8000`
 Need to specify database credentials in `database.py`
 Set environment variables `FIREFOX_BIN` Path to firefox executable,
-`GECKODRIVER_PATH` path to geckodriver executable and `DIRECTORY_PATH `
-path to directory where images directories will be saved.
+`GECKODRIVER_PATH` path to geckodriver executable.
 
 ##### Starting Web Server
     
@@ -57,3 +67,32 @@ https://towardsdatascience.com/data-science-skills-web-scraping-javascript-using
 
     INTEGER1 -ne INTEGER2
         INTEGER1 is not equal to INTEGER2
+
+### Heroku Guide
+https://devcenter.heroku.com/articles/dynos
+
+##### Others
+
+Old procfile contents
+
+    web: ENV="prod" uvicorn main:app --host=0.0.0.0 --port=${PORT:-5000}
+
+    web: ENV="prod" gunicorn main:app --preload -k uvicorn.workers.UvicornWorker --timeout 21_000 --max-requests 5
+    --bind="0.0.0.0:8000"
+
+Connect to main app interface. Use `--tail` to persist connection.
+
+    heroku logs --tail
+
+| Actions                         |        Commands           |
+|---------------------------------|---------------------------|
+| Push code to Heroku from git    |  `git push heroku master` | 
+| View Dynos deployed to Heroku   |  `heroku ps`              |
+| SSH to Heroku                   |  `heroku ps:exec`         |
+| Restart all Dynos	              |  `heroku ps:restart`      |
+| Copy file from Heroku           |  `heroku ps:copy FILE`    |
+| Environment Variables app env   | `heroku config:set WEB_CONCURRENCY=1` |
+
+#### Sample queries
+http://localhost:8000/car/search?price_ge=26_000&mileage_le=5_000&limit=100
+

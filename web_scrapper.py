@@ -5,14 +5,16 @@ from selenium import webdriver
 import re
 import time
 import logging
+import gc
 from os import getenv
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from sqlalchemy.orm import Session
+import crud
 
-FAIL_SAFE_RUNS = 3
+FAIL_SAFE_RUNS = 30
 FIREFOX_BIN = getenv("FIREFOX_BIN", "/usr/bin/firefox")
 firefox_binary_path = FirefoxBinary(FIREFOX_BIN)
-GECKODRIVER_PATH = getenv(
-    "GECKODRIVER_PATH", "/home/hussain/softwares/geckodriver")
+GECKODRIVER_PATH = getenv("GECKODRIVER_PATH", "/home/hussain/softwares/geckodriver" )
 CAR_CUT_PRICE = 20_000
 
 ENV = getenv("ENV")
@@ -132,6 +134,7 @@ def main_soup_n_driver_scroll_down(url, driver=None):
         "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
     page = driver.page_source
     main_soup = BeautifulSoup(page, 'html.parser')
+    time.sleep(1)
     return main_soup, driver
 
 
@@ -188,10 +191,10 @@ def filter_cars(car: dict) -> bool:
         return False
 
 
-def get_car_info_from_web(url: str) -> list:
+def get_car_info_from_web(url: str, db: Session) -> list:
     logging.info(" ------- Starting Scrapping ------- ")
-    logging.info(f'firefox: {FIREFOX_BIN}')
-    logging.info(f'Gecko: {GECKODRIVER_PATH}')
+    logging.debug(f'firefox: {FIREFOX_BIN}')
+    logging.debug(f'Gecko: {GECKODRIVER_PATH}')
     list_of_cars = None
     try:
         if "regalmotors" in url:
@@ -314,15 +317,15 @@ def get_car_info_from_web(url: str) -> list:
         elif "universalford" in url:
             list_of_cars = universalford(url)
         elif "camclarkfordairdrie" in url:
-            list_of_cars = camclarkfordairdrie(url)
+            list_of_cars = camclarkfordairdrie(url, db)
         elif "integrityford" in url:
-            list_of_cars = camclarkfordairdrie(url)
+            list_of_cars = camclarkfordairdrie(url, db)
         elif "moosejawfordsales" in url:
-            list_of_cars = camclarkfordairdrie(url)
+            list_of_cars = camclarkfordairdrie(url, db)
         elif "bennettdunlopford" in url:
-            list_of_cars = camclarkfordairdrie(url)
+            list_of_cars = camclarkfordairdrie(url, db)
         elif "rivercityford" in url:
-            list_of_cars = camclarkfordairdrie(url)
+            list_of_cars = camclarkfordairdrie(url, db)
         elif "zenderford" in url:
             list_of_cars = zenderford(url)
         elif "boundaryford" in url:
@@ -389,10 +392,13 @@ def get_car_info_from_web(url: str) -> list:
         logging.info(
             "get_car_info_from_web() Filtering cars now based on price")
         itr_object = filter(filter_cars, list_of_cars)
-        return list(itr_object)
+        itr_object = list(itr_object)
     else:
         logging.info("get_car_info_from_web() List_of_cars list is None")
-        return []
+        itr_object = []
+
+    gc.collect()
+    return itr_object
 
 
 # ========== Web scrapping functions ==========
@@ -1090,11 +1096,12 @@ def universalford(url: str) -> list:
     return list_of_car_info
 
 
-def camclarkfordairdrie(url: str) -> list:
+def camclarkfordairdrie(url: str, db: Session) -> list:
     """
     This Major function has minor website specific functions. They are defined in this function to avoid
     function's names overlapping.
     :param url: Website url from where to scrape
+    :param db: Database session object
     :return list: list of car_info dictionaries
     """
 
@@ -1175,6 +1182,7 @@ def camclarkfordairdrie(url: str) -> list:
         logging.error(f'Unable to scrape {url}')
         return list_of_car_info
 
+    car_count = 0
     for a_vehicle in all_a_vehicle:
         if a_vehicle.has_attr("href"):
             single_car_url = a_vehicle["href"]
@@ -1184,10 +1192,16 @@ def camclarkfordairdrie(url: str) -> list:
             time.sleep(2)
             soup = BeautifulSoup(page, 'html.parser')
 
-            list_of_car_info.append(get_car_info(soup, url, single_car_url))
+            # list_of_car_info.append(get_car_info(soup, url, single_car_url))
+            car_info = get_car_info(soup, url, single_car_url)
+            logging.info(car_info)
+            car_return = crud.create(db, car_in=car_info, autocommit=True)
+            car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
 
+    # db.commit()  # Uncomment if using autocommit=False
+    logging.info(f'Total Cars added: {car_count}')
     driver.quit()
-
+    # Return empty list cuz cars stored in DB above, this is just so rest of the code doesn't break.
     return list_of_car_info
 
 

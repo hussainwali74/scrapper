@@ -1,15 +1,13 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from database import SessionLocal, engine, Base, get_db
-from models.db_models.car import CarDB
+from database import engine, Base
 
-from sqlalchemy.orm import Session
-import crud
 import logging
+from logging import StreamHandler
+from logging.handlers import RotatingFileHandler
 from os import getenv
-from web_scrapper import get_car_info_from_web
-from datetime import date
+from sys import stdout
 from api import api
 
 Base.metadata.create_all(bind=engine)
@@ -33,16 +31,25 @@ app.add_middleware(
 
 app.include_router(api.api_router)
 
-logging.basicConfig(level=logging.INFO, filename='app.log', filemode='a',
-                    format='%(asctime)s:%(levelname)s:%(name)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+rootLogger = logging.getLogger()
+rootLogger.setLevel(logging.INFO)
+log_format = logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s", datefmt='%Y-%m-%d %H:%M:%S')
+
+file_handler = RotatingFileHandler("app.log", maxBytes=1.049e+7, backupCount=3)
+file_handler.setFormatter(log_format)
+rootLogger.addHandler(file_handler)
+
+stream_handler = StreamHandler(stdout )
+stream_handler.setFormatter(log_format)
+rootLogger.addHandler(stream_handler)
 
 # car1 = Car(carName="toyota")
 # @app.get('/url-list')
 @app.get('/')
 def get_all_urls():
     GECKODRIVER_PATH = getenv("GECKODRIVER_PATH")
-    print("------- Bout to print gecko driver ")
-    print(GECKODRIVER_PATH)
+    logging.info("------- Bout to print gecko driver ")
+    logging.info(GECKODRIVER_PATH)
     url_list = [
         {'path': route.path, 'name': route.name}
         for route in app.routes

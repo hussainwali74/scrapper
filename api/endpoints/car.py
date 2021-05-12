@@ -217,7 +217,7 @@ async def add_sites_set1(db: Session = Depends(get_db)):
     for url in url_list:
         car_count = 0
         logging.info(f'For url: {url}')
-        res = get_car_info_from_web(url, db)
+        res = get_car_info_from_web(url)
         done_for.append(url)
         for one_car in res:
             logging.info(one_car)

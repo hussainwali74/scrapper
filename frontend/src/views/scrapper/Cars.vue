@@ -198,7 +198,7 @@ export default {
     // .get("http://localhost:8000/car/cars/")
     // .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=10000")
     axios
-      .get("http://192.46.223.236:8000/car/cars/?skip=0&limit=10000")
+      .get("https://192.46.223.236/car/cars/?skip=0&limit=10000")
       .then((x) => {
         this.cars = x["data"];
         this.cars.sort(function (a, b) {

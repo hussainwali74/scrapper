@@ -192,13 +192,20 @@ export default {
       searchQuery: null,
       cars: [],
       allcars: [],
+      no_img_link: "../assets/no-image.png",
     };
   },
   created() {
+    var date = new Date();
+    date.setDate(date.getDate() - 2);
+    date = date.toISOString().split("T")[0];
+
     // .get("http://localhost:8000/car/cars/")
     // .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=10000")
     axios
-      .get("https://192.46.223.236/car/cars/?skip=0&limit=10000")
+      .get(
+        `https://192.46.223.236/car/cars/?date_gt=${date}&skip=0&limit=10000`
+      )
       .then((x) => {
         this.cars = x["data"];
         this.cars.sort(function (a, b) {

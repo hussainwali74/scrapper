@@ -154,7 +154,7 @@ async def add_cars(db: Session = Depends(get_db)):
 
 @router.get("/cars/")
 async def read_item(db: Session = Depends(get_db), date_gt: date = None, skip: int = 0, limit: int = 10):
-    print(f'main: date_gt: {date_gt}')
+    logging.info(f'main: date_gt: {date_gt}')
     res = crud.get_car_filter_date(db, date_gt, limit=limit)
     return res
 
@@ -162,8 +162,9 @@ async def read_item(db: Session = Depends(get_db), date_gt: date = None, skip: i
 async def search_car(db: Session = Depends(get_db), name: str = "", price_ge: int = None, price_le: int = None,
                      mileage_ge: int = None, mileage_le: int = None, date_ge: date = None, date_le: date = None,
                      limit: int = 10):
-    print(f"name: {name}, price_ge: {price_ge}, price_le: {price_le}, "
-          f"mileage_ge: {mileage_ge}, mileage_le: {mileage_le}, date_ge: {date_ge}, date_le: {date_le}, limit: {limit}")
+    logging.info(f"name: {name}, price_ge: {price_ge}, price_le: {price_le}, "
+                 f"mileage_ge: {mileage_ge}, mileage_le: {mileage_le}, date_ge: {date_ge}, "
+                 f"date_le: {date_le}, limit: {limit}")
     result = crud.get_car(db, name=name, price_ge=price_ge, price_le=price_le, mileage_ge=mileage_ge,
                           mileage_le=mileage_le, date_ge=date_ge, date_le=date_le, limit=limit)
     return result
@@ -268,11 +269,11 @@ async def add_zarowny_n_others(db: Session = Depends(get_db)):
     ]
     done_for = []
     for url in url_list:
-        print(f'For url: {url}')
+        logging.info(f'For url: {url}')
         res = get_car_info_from_web(url)
         done_for.append(url)
         for one_car in res:
-            print(one_car)
+            logging.info(one_car)
             crud.create(db, car_in=one_car, autocommit=True)
     return done_for
 

@@ -96,3 +96,31 @@ Connect to main app interface. Use `--tail` to persist connection.
 #### Sample queries
 http://localhost:8000/car/search?price_ge=26_000&mileage_le=5_000&limit=100
 
+#### Check Cars in DB
+To access DB: `sudo -u postgres psql scrapper_db`
+
+    scrapper_db=# SELECT id, car_name FROM cars ORDER BY id DESC;
+
+#### Logrotate 
+location: `/etc/logrotate.d/scrapper.conf`
+```bash
+    /root/scrapper/app.log {
+    daily
+    rotate 3
+    size 10M
+    dateext
+    }
+```
+
+#### Adding Certificates to Gunicorn to enable HTTPS
+https://stackoverflow.com/questions/51340872/can-i-certify-website-without-domain-name#:~:text=LetsEncrypt%20does%20not%20issue%20certs,use%20to%20access%20the%20site.
+https://stackoverflow.com/questions/7406805/running-gunicorn-on-https
+
+self sign the certificates
+
+    openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+
+Make Gunicorn use SSL
+
+    gunicorn --certfile=server.crt --keyfile=server.key --bind 0.0.0.0:443 test:app
+

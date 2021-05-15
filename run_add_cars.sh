@@ -1,3 +1,3 @@
 #!/bin/bash
 
-curl http://localhost:8000/car/add-cars
+curl --insecure https://localhost/car/add-cars

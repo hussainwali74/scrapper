@@ -267,18 +267,28 @@ async def add_zarowny_n_others(db: Session = Depends(get_db)):
         'https://www.griffithsford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC&query=',
         'https://www.rainbowford.ca/inventory/search?stock_type=Used&page=1&page_length=100&sort_by=price&sort_order=DESC',
     ]
+    start_time = time()
     done_for = []
     for url in url_list:
+        car_count = 0
         logging.info(f'For url: {url}')
         res = get_car_info_from_web(url)
         done_for.append(url)
         for one_car in res:
             logging.info(one_car)
-            crud.create(db, car_in=one_car, autocommit=True)
+            car_return = crud.create(db, car_in=one_car, autocommit=True)
+            car_count = car_count + 1 if car_return["in_db"] == "Added" else car_count
+            logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
+        logging.info(f'Total Cars added: {car_count}')
+        # crud.create_car_dict(db, one_car, website=url)
+    # db.commit()  # Uncomment if using autocommit=False
+    logging.info(f'Time in Hours: {(time() - start_time) / (60 * 60)}')
+    logging.info(f'Time in Minutes: {(time() - start_time) / 60}')
     return done_for
 
-@router.get("/one-car")
-async def add_single_car( db: Session = Depends(get_db) ):
+
+@router.get("/add-hardcoded-car")
+async def add_hardcoded_car( db: Session = Depends(get_db) ):
     car_info = {"car_name": "Honda city",
                 "mileage": "12245km",
                 "exterior": "white",
@@ -287,12 +297,16 @@ async def add_single_car( db: Session = Depends(get_db) ):
                 "engine": "vti",
                 "date": "2020-11-10"}
     car_info = {'car_name': '2018 Ford F-350 Lariat | Nav | Quad Beams | BLIS | Only 37K!', 'price': 74221,
-                'website': 'https://www.boundaryford.com/vehicles/used/?st=price,desc&sc=used&view=grid',
+                'car_page_link': 'http://www.hardcodded-link.com/first-car-on-the-page',
+                'website': 'http://www.hardcodded-link.com',
                 'mileage': 37825, 'body_style': 'Truck', 'engine': '6.7L Power Stroke', 'exterior': 'White',
                 'transmission': '6 Speed Automatic', 'drivetrain': '4x4',
-                'img_link': '/home/teemo/free_work/2021-03-16/regalmotorsltd_35cd61546bf51cd84c4f.jpg'}
-    res = crud.create(db, car_in=car_info, autocommit=True)
-    return res
+                'img_link': 'https://chrome.cdn.searchoptics.com/inventory_parser/uploads/2019/ford/ranger/1FTER4FH8KLA92282/640/2019-ford-ranger-1486285608.jpg'}
+
+    logging.info(car_info)
+    car_return = crud.create(db, car_in=car_info, autocommit=True)
+    logging.info(f'  --- Car status in DB: {car_return["in_db"]}')
+    return car_return
 
 @router.get("/multi-car")
 async def add_single_car(db: Session = Depends(get_db)):

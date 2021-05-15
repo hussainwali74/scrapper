@@ -9,7 +9,7 @@ class Car(BaseModel):
     car_page_link: str
     body_style: str
     mileage: int
-    exterior: str  #= Field(..., gt=0, lt=450)  # means str 0 < length < 450
+    exterior: str  # = Field(..., gt=0, lt=450)  # means str 0 < length < 450
     drivetrain: str
     transmission = str
     engine = str
@@ -30,7 +30,7 @@ class CarIN(BaseModel):
     car_page_link: str
     body_style: str
     mileage: int
-    exterior: str#= Field(..., gt=0, lt=450)
+    exterior: str  # = Field(..., gt=0, lt=450)
     drivetrain: str
     transmission: str
     engine: str

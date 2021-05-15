@@ -196,27 +196,33 @@ export default {
     };
   },
   created() {
-    var date = new Date();
-    date.setDate(date.getDate() - 2);
-    date = date.toISOString().split("T")[0];
-
-    // .get("http://localhost:8000/car/cars/")
-    // .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=10000")
-    axios
-      .get(
-        `https://192.46.223.236/car/cars/?date_gt=${date}&skip=0&limit=10000`
-      )
-      .then((x) => {
-        this.cars = x["data"];
-        this.cars.sort(function (a, b) {
-          return new Date(b.entry_date) - new Date(a.entry_date);
-        });
-        this.allcars = this.cars;
-        console.log(x["data"]);
-      })
-      .catch((e) => console.log(e));
+    setTimeout(() => {
+      alert("getting cars");
+      this.getCars();
+    }, 1000);
   },
   methods: {
+    getCars() {
+      var date = new Date();
+      date.setDate(date.getDate() - 2);
+      date = date.toISOString().split("T")[0];
+
+      // .get("http://localhost:8000/car/cars/")
+      // .get("https://car-scrapo.herokuapp.com/car/cars/?skip=0&limit=10000")
+      axios
+        .get(
+          `https://192.46.223.236/car/cars/?date_gt=${date}&skip=0&limit=10000`
+        )
+        .then((x) => {
+          this.cars = x["data"];
+          this.cars.sort(function (a, b) {
+            return new Date(b.entry_date) - new Date(a.entry_date);
+          });
+          this.allcars = this.cars;
+          console.log(x["data"]);
+        })
+        .catch((e) => console.log(e));
+    },
     getDate(date) {
       return new Date(date).toISOString();
     },

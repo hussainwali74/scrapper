@@ -106,7 +106,9 @@
                   </h3>
                 </div>
                 <div class="col text-right">
-                  <base-button type="primary" size="sm">See all</base-button>
+                  <base-button type="primary" v-on:click="getCars()" size="sm"
+                    >Get Cars</base-button
+                  >
                 </div>
               </div>
             </div>
@@ -196,10 +198,7 @@ export default {
     };
   },
   created() {
-    setTimeout(() => {
-      alert("getting cars");
-      this.getCars();
-    }, 1000);
+    this.getCars();
   },
   methods: {
     getCars() {

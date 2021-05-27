@@ -2,6 +2,7 @@
   <div>
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
       <h3>seach</h3>
+
       <div class="row">
         <div class="col-md-9 mt-2">
           <form class="form mr-3 d-md-flex ml-lg-auto">
@@ -21,7 +22,12 @@
           <h4 class="text-white">Total Cars: {{ allcars.length }}</h4>
         </div>
       </div>
-      <div class="row"></div>
+
+      <div class="row mt-3 pl-3">
+        <base-button type="primary" v-on:click="getCars()" size="sm"
+          >Get Cars</base-button
+        >
+      </div>
     </base-header>
     <div class="row px-3">
       <div
@@ -202,6 +208,7 @@ export default {
   },
   methods: {
     getCars() {
+      alert("getting cars");
       var date = new Date();
       date.setDate(date.getDate() - 2);
       date = date.toISOString().split("T")[0];

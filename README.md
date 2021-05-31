@@ -99,6 +99,9 @@ location: `/etc/logrotate.d/scrapper.conf`
     }
 ```
 
+#### Get Trusted Certificate from Certbot
+resource: https://certbot.eff.org/lets-encrypt/ubuntufocal-other
+
 #### Adding Certificates to Gunicorn to enable HTTPS
 https://stackoverflow.com/questions/51340872/can-i-certify-website-without-domain-name#:~:text=LetsEncrypt%20does%20not%20issue%20certs,use%20to%20access%20the%20site.
 https://stackoverflow.com/questions/7406805/running-gunicorn-on-https
